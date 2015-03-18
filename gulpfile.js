@@ -109,6 +109,11 @@ gulp.task('api', function () {
     .pipe(gulp.dest('dist/api'));
 });
 
+gulp.task('phone', function () {
+  return gulp.src('app/phone/**/*')
+    .pipe(gulp.dest('dist/phone'));
+});
+
 gulp.task('fonts', function () {
   return gulp.src(require('main-bower-files')().concat('app/fonts/**/*'))
     .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
@@ -173,7 +178,8 @@ gulp.task('watch', ['connect'], function () {
     '.tmp/styles/**/*.css',
     'app/scripts/**/*.js',
     'app/images/**/*',
-    'app/api/**/*'
+    'app/api/**/*',
+    'app/phone/**/*'
   ]).on('change', $.livereload.changed);
 
   gulp.watch('app/styles/**/*.scss', ['styles']);
@@ -182,13 +188,42 @@ gulp.task('watch', ['connect'], function () {
 
 gulp.task('publish', ['build'], function () {
   return gulp.src('dist/**/*')
-    .pipe(gulp.dest('../ft/olizh.github.io/'));
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
 });
 
-gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras', 'api'], function () {
+
+var replace = require('gulp-replace');
+var rename = require("gulp-rename");
+gulp.task('copy', ['build'], function(){
+  gulp.src(['dist/index.html'])
+    .pipe(replace(/\<html\>/g, '<html manifest="iphone-2014.manifest">'))
+    .pipe(rename("iphone-2014.html"))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['dist/index.html'])
+    .pipe(replace(/\<html\>/g, '<html manifest="ipad-2014.manifest">'))
+    .pipe(rename("ipad-2014.html"))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['dist/index.html'])
+    .pipe(replace(/\<html\>/g, '<html manifest="bb-2014.manifest">'))
+    .pipe(rename("bb-2014.html"))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['dist/index.html'])
+    .pipe(replace(/\<html\>/g, '<html manifest="phone-2014.manifest">'))
+    .pipe(rename("phone.html"))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['dist/phone/**/*'])
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/iphone-2014'));
+  gulp.src(['dist/phone/**/*'])
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/ipad-2014'));
+  gulp.src(['dist/phone/**/*'])
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/bb-2014'));
+  console.log ('files copied');
+});
+
+gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras', 'api', 'phone'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
 gulp.task('default', ['clean'], function () {
-  gulp.start('build').start('publish');
+  gulp.start('build').start('publish').start('copy');
 });
