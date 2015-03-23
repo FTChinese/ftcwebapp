@@ -300,12 +300,14 @@ display:none;
 }
 .navleftcontainer {
 left: 0;
-@include background-image(linear-gradient(left, #a7a49b, #a7a49b 50%, rgba(0,0,0,0.2) 50%, transparent 100%));
+background: -webkit-gradient(linear, 0 0, 100% 0, from(#a7a49b), to(transparent), color-stop(0.5, #a7a49b), color-stop(0.5, rgba(0,0,0,0.2)));
+background: -ms-linear-gradient(left, #a7a49b, #a7a49b 50%, rgba(0,0,0,0.2) 50%, transparent 100%);
 cursor: pointer;
 }
 .navrightcontainer {
 right: 0;
-@include background-image(linear-gradient(right, #a7a49b, #a7a49b 50%, rgba(0,0,0,0.2) 50%, transparent 100%));
+background: -webkit-gradient(linear, 0 0, 100% 0, from(transparent), to(#a7a49b), color-stop(0.5, rgba(0,0,0,0.2)), color-stop(0.5, #a7a49b));
+background: -ms-linear-gradient(right, #a7a49b, #a7a49b 50%, rgba(0,0,0,0.2) 50%, transparent 100%);
 cursor: pointer;
 }
 .subleftbg {
@@ -357,7 +359,11 @@ vertical-align: top;
 box-sizing: border-box;
 border: 1px solid #57534C;
 background-color: #9d9793;
-@include background-image (linear-gradient(top, #9d9793 0%,#766e68 100%));
+background-image: -moz-linear-gradient(top, #9d9793 0%, #766e68 100%);
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9d9793), color-stop(100%, #766e68));
+background-image: -webkit-linear-gradient(top, #9d9793 0%, #766e68 100%);
+background-image: -ms-linear-gradient(top, #9d9793 0%, #766e68 100%);
+background-image: linear-gradient(top, #9d9793 0%,#766e68 100%);
 padding:0 9px;
 }
 a.light-btn.button,button.light-btn,.night #fullbodycontainer .pink .light-btn {
@@ -366,7 +372,12 @@ text-decoration: none;
 color: #363636;
 border-color: #BAA994;
 background-color: #ece4da;
-@include background-image (linear-gradient(top, #ece4da 0%,#ddd1c2 100%));
+background-image: -moz-linear-gradient(top, #ece4da 0%, #ddd1c2 100%);
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ece4da), color-stop(100%, #ddd1c2));
+background-image: -webkit-linear-gradient(top, #ece4da 0%, #ddd1c2 100%);
+background-image: -o-linear-gradient(top, #ece4da 0%, #ddd1c2 100%);
+background-image: -ms-linear-gradient(top, #ece4da 0%, #ddd1c2 100%);
+background-image: linear-gradient(top, #ece4da 0%,#ddd1c2 100%);
 }
 .ui-light-btn,.night #fullbodycontainer .overlay .ui-light-btn,.night #fullbodycontainer .pink .ui-light-btn,a.button.ui-light-btn,.button.ui-light-btn {
 border: solid 1px;
@@ -438,7 +449,10 @@ dd.all {text-align:right;margin-bottom:15px;}
 
 /*--functions at the bottom--*/
 #contentRail{position:absolute;font-size:15px;text-align:center;bottom:0;left:0;width:100%;height:45px;line-height:20px;border-top: solid 1px #423E3A;
-@include background-image(linear-gradient(#878476,#6b685c));}
+background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #878476), color-stop(100%, #6b685c));
+background-image: -webkit-linear-gradient(#878476,#6b685c);
+background-image: -moz-linear-gradient(#878476,#6b685c);
+background-image: linear-gradient(#878476,#6b685c);}
 #toolRail{height:45px;margin-bottom:20px;}
 #booktitle {font-size:52px;line-height:168%;}
 #imageRail{white-space:nowrap;width:100%;overflow:hidden;}
@@ -653,7 +667,8 @@ height: 27px;
 margin-top: -5px;
 padding: 0;
 border: 1px solid #93857C;
-@include background-image( linear-gradient(to left, #a59887, #a59887) );
+background: -webkit-gradient(linear, 0 0, 0 100%, from(#a59887), to(#e3d3bc));
+background: -ms-linear-gradient(#a59887, #e3d3bc);
 font-size: 12px;
 font-weight: bold;
 line-height: 27px;
@@ -666,7 +681,8 @@ height: 25px;
 width: 30px;
 border: 1px solid white;
 border-radius: 5px;
-@include background-image( linear-gradient(to left, #FFF, #dcdcdc) );
+background: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#dcdcdc));
+background: -ms-linear-gradient(#fff, #dcdcdc);
 -webkit-transition: -webkit-transform 100ms ease-in;
 -ms-transition: -ms-transform 100ms ease-in;
 }
@@ -677,7 +693,7 @@ transform:translate3d(48px, 0, 0);
 }
 .ui-toggle-label {
 display: inline-block;
-width: 47%;
+width: 45%;
 text-align: center;
 }
 

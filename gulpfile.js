@@ -4,6 +4,76 @@
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 
+function getUrltoFile (urlSource, fileName) {
+  var http = require('http');
+  var url = require('url');
+  var options = {
+      host: url.parse(urlSource).hostname,
+      path: url.parse(urlSource).pathname + unescape(url.parse(urlSource).search)
+  }
+  console.log (options.path);
+  var request = http.request(options, function (res) {
+      var data = '';
+      res.on('data', function (chunk) {
+          data += chunk;
+      });
+      res.on('end', function () {
+        var fs = require('fs');
+        fs.writeFile(fileName, data, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+            console.log(urlSource);
+            console.log('writen to');
+            console.log(fileName);
+        });
+      });
+  });
+  request.on('error', function (e) {
+      console.log(e.message);
+  });
+  request.end();
+}
+
+
+function postDatatoFile (urlSource, postData, fileName) {
+  var url = require('url');
+  var querystring = require('querystring');
+  var post_data = JSON.stringify(postData);
+  var http = require('http');
+  var options = {
+      host: url.parse(urlSource).hostname,
+      path: url.parse(urlSource).pathname + unescape(url.parse(urlSource).search),
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': post_data.length
+      }
+  }
+  var request = http.request(options, function (res) {
+      var data = '';
+      res.on('data', function (chunk) {
+          data += chunk;
+      });
+      res.on('end', function () {
+        var fs = require('fs');
+        fs.writeFile(fileName, data, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+            console.log(urlSource);
+            console.log('post data writen to');
+            console.log('fileName');
+        }); 
+      });
+  });
+  request.on('error', function (e) {
+      console.log(e.message);
+  });
+  request.write(post_data);
+  request.end();
+}
+
 gulp.task('styles', function () {
   return gulp.src('app/styles/main.scss')
     .pipe($.plumber())
@@ -15,64 +85,23 @@ gulp.task('styles', function () {
     .pipe(gulp.dest('.tmp/styles'));
 });
 
-gulp.task('origami-css', function () {
-  var http = require('http');
-  var options = {
-      host: 'build.origami.ft.com',
-      path: '/bundles/css?modules=o-ft-header@^2.5.15,o-ft-footer@^2.0.4,o-table@^1.6.0'
-  }
-  var request = http.request(options, function (res) {
-      var data = '';
-      res.on('data', function (chunk) {
-          data += chunk;
-      });
-      res.on('end', function () {
-        var fs = require('fs');
-        fs.writeFile("./bower_components/origami/build.scss", data, function(err) {
-            if(err) {
-                return console.log(err);
-            }
-
-            console.log("Origami CSS was updated!");
-        }); 
-      });
-  });
-  request.on('error', function (e) {
-      console.log(e.message);
-  });
-  request.end();
-});
-
-gulp.task('origami-js', function () {
-  var http = require('http');
-  var options = {
-      host: 'build.origami.ft.com',
-      path: '/bundles/js?modules=o-ft-header@^2.5.15,o-table@^1.6.0'
-  }
-  var request = http.request(options, function (res) {
-      var data = '';
-      res.on('data', function (chunk) {
-          data += chunk;
-      });
-      res.on('end', function () {
-        var fs = require('fs');
-        fs.writeFile("./bower_components/origami/build.js", data, function(err) {
-            if(err) {
-                return console.log(err);
-            }
-
-            console.log("Origami JS was updated!");
-        }); 
-      });
-  });
-  request.on('error', function (e) {
-      console.log(e.message);
-  });
-  request.end();
-});
 
 gulp.task('origami', function () {
-  gulp.start('origami-css').start('origami-js');
+  getUrltoFile('http://build.origami.ft.com/bundles/js?modules=o-ft-header@^2.5.15,o-table@^1.6.0', './bower_components/origami/build.js');
+  getUrltoFile ('http://build.origami.ft.com/bundles/css?modules=o-ft-header@^2.5.15,o-ft-footer@^2.0.4,o-table@^1.6.0', './bower_components/origami/build.scss');
+});
+
+
+gulp.task('ea', function () {
+  var message = {};
+  message.head = {};
+  message.head.transactiontype = '10001';
+  message.head.source = 'web';
+  message.body = {};
+  message.body.ielement = {};
+  message.body.ielement.num = 30;
+  postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea001.json');
+  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?', './app/api/home.tpl');
 });
 
 gulp.task('jshint', function () {
@@ -112,6 +141,11 @@ gulp.task('api', function () {
 gulp.task('phone', function () {
   return gulp.src('app/phone/**/*')
     .pipe(gulp.dest('dist/phone'));
+});
+
+gulp.task('log', function () {
+  return gulp.src('app/log/**/*')
+    .pipe(gulp.dest('dist/log'));
 });
 
 gulp.task('fonts', function () {
@@ -186,18 +220,15 @@ gulp.task('watch', ['connect'], function () {
   gulp.watch('bower.json', ['wiredep']);
 });
 
-gulp.task('publish', ['build'], function () {
-  return gulp.src('dist/**/*')
+gulp.task('copy', ['build'], function () {
+  var replace = require('gulp-replace');
+  var rename = require("gulp-rename");
+  var thedatestamp = new Date().getTime();
+  gulp.src('dist/**/*')
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
-});
-
-
-var replace = require('gulp-replace');
-var rename = require("gulp-rename");
-gulp.task('copy', ['build'], function(){
   gulp.src(['dist/index.html'])
     .pipe(replace(/\<html\>/g, '<html manifest="iphone-2014.manifest">'))
-    .pipe(rename("iphone-2014.html"))
+    .pipe(rename('iphone-2014.html'))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['dist/index.html'])
     .pipe(replace(/\<html\>/g, '<html manifest="ipad-2014.manifest">'))
@@ -211,19 +242,132 @@ gulp.task('copy', ['build'], function(){
     .pipe(replace(/\<html\>/g, '<html manifest="phone-2014.manifest">'))
     .pipe(rename("phone.html"))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['dist/index.html'])
+    .pipe(replace(/\<html\>/g, '<html manifest="phone-2014.manifest">'))
+    .pipe(rename("phoneapp.html"))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['dist/mba.html'])
+    .pipe(replace(/\<html\>/g, '<html manifest="mba-2014.manifest">'))
+    .pipe(rename("mba-2014.html"))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['dist/phone/**/*'])
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/iphone-2014'));
   gulp.src(['dist/phone/**/*'])
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/ipad-2014'));
   gulp.src(['dist/phone/**/*'])
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/bb-2014'));
+  gulp.src(['app/cache/phone.manifest'])
+    .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
+    .pipe(rename('phone-2014.manifest'))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['app/cache/phone.manifest'])
+    .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
+    .pipe(rename('iphone-2014.manifest'))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['app/cache/phone.manifest'])
+    .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
+    .pipe(rename('ipad-2014.manifest'))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['app/cache/phone.manifest'])
+    .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
+    .pipe(rename('bb-2014.manifest'))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['app/cache/phone.manifest'])
+    .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
+    .pipe(rename('bb-2014.manifest'))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['app/cache/android.manifest'])
+    .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
+    .pipe(rename('android-2014.manifest'))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['app/cache/mba.manifest'])
+    .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
+    .pipe(rename('mba-2014.manifest'))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  
+  // android file;
+  var fs = require('fs');
+  var cssbundle = fs.readFileSync('dist/phone/s.css', 'utf8');
+  var googleanalytics = fs.readFileSync('dist/log/ga.js', 'utf8');
+  var fa = fs.readFileSync('dist/log/analytics.js', 'utf8');
+  var mainjs = fs.readFileSync('dist/phone/m.js', 'utf8');
+
+  gulp.src(['app/android.html'])
+    .pipe(replace(/\{\{cssbundle\}\}/g, cssbundle))
+    .pipe(replace(/\{\{googleanalytics\}\}/g, googleanalytics))
+    .pipe(replace(/\{\{fa\}\}/g, fa))
+    .pipe(replace(/\{\{mainjs\}\}/g, mainjs))
+    .pipe(replace(/\<html\>/g, '<html manifest="android-2014.manifest">'))
+    .pipe(rename('androidapp.html'))
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+
   console.log ('files copied');
 });
 
-gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras', 'api', 'phone'], function () {
+
+gulp.task('ga', function () {
+  var http = require('http');
+  var options = {
+      host: 'm.ftchinese.com',
+      path: '/index.php/jsapi/analytics'
+  }
+  var request = http.request(options, function (res) {
+      var data = '';
+      res.on('data', function (chunk) {
+          data += chunk;
+      });
+      res.on('end', function () {
+        var fs = require('fs');
+        fs.writeFile("./dist/log/ga.js", data, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+            console.log("GA JS was updated!");
+        }); 
+      });
+  });
+  request.on('error', function (e) {
+      console.log(e.message);
+  });
+  request.end();
+});
+
+
+gulp.task('publish', function () {
+  gulp.src('../testing/dev_www/mobile_webroot/phone/**/*')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/phone'));
+  gulp.src('../testing/dev_www/mobile_webroot/ipad-2014/**/*')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/ipad-2014'));
+  gulp.src('../testing/dev_www/mobile_webroot/iphone-2014/**/*')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/iphone-2014'));
+  gulp.src('../testing/dev_www/mobile_webroot/bb-2014/**/*')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/bb-2014'));
+  gulp.src('../testing/dev_www/mobile_webroot/mba-2014/**/*')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/mba-2014'));
+  gulp.src('../testing/dev_www/mobile_webroot/assets/svg/**/*')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/assets/svg'));
+  gulp.src('../testing/dev_www/mobile_webroot/*.manifest')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/'));
+  gulp.src('../testing/dev_www/mobile_webroot/phone.html')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/'));
+  gulp.src('../testing/dev_www/mobile_webroot/phoneapp.html')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/'));
+  gulp.src('../testing/dev_www/mobile_webroot/iphone-2014.html')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/'));
+  gulp.src('../testing/dev_www/mobile_webroot/bb-2014.html')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/'));
+  gulp.src('../testing/dev_www/mobile_webroot/ipad-2014.html')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/'));
+  gulp.src('../testing/dev_www/mobile_webroot/androidapp.html')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/'));
+  gulp.src('../testing/dev_www/mobile_webroot/mba-2014.html')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/'));
+});
+
+gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras', 'api', 'phone', 'log', 'ga'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
 gulp.task('default', ['clean'], function () {
-  gulp.start('build').start('publish').start('copy');
+  gulp.start('build').start('copy');
 });

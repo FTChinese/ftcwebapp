@@ -1,7 +1,12 @@
 //申明各种Global变量
-var _currentVersion=965.1; //与manifest的版本号一致，便于识别当前的版本号，以保证版本修改后能稳定推出
-var _localStorage=0, exp_times = Math.round(new Date().getTime() / 1000) + 86400, username, ori, touchstartx, touchendx, cs, lateststory="", pmessage, latestunix, commentfolder = '', bgMode="", fontPreference="medium", allstories = [], osVersion, connectInternet="no", uaString=navigator.userAgent || navigator.vendor || "", osVersionMore="",useFTScroller=0, noFixedPosition=0, unusedEntryIndex, requestTime, successTime, screenWidth,screenHeight, gInGesture=false, startFreeze, fixedContent, headHeight, fStatus=0, ftScrollerTop=0,gHomeAPIRequest,gHomeAPISuccess,gHomeAPIFail,gDeviceType='',gStartPageTemplate = '/index.php/ft/channel/phonetemplate.html?', gStartPageAPI = true, gHomePageStorageKey = 'homePage', gNewStoryStorageKey = 'homepage', gAppName = 'Web App', gStartStatus = "", gPullRefresh = false, gVerticalScrollOpts, gOnlineAPI = false, gSpecial = false, gDeviceId = "", gShowStatusBar = 0;
+var _currentVersion=965.10; //与manifest的版本号一致，便于识别当前的版本号，以保证版本修改后能稳定推出
+var _localStorage=0, exp_times = Math.round(new Date().getTime() / 1000) + 86400, username, ori, touchstartx, touchendx, cs, lateststory="", pmessage, latestunix, commentfolder = '', bgMode="", fontPreference="medium", allstories = [], osVersion, connectInternet="no", uaString=navigator.userAgent || navigator.vendor || "", osVersionMore="",useFTScroller=0, noFixedPosition=0, unusedEntryIndex, requestTime, successTime, screenWidth,screenHeight, gInGesture=false, startFreeze, fixedContent, headHeight, fStatus=0, ftScrollerTop=0,gHomeAPIRequest,gHomeAPISuccess,gHomeAPIFail,gDeviceType='',gStartPageTemplate = '/index.php/ft/channel/phonetemplate.html?', gStartPageAPI = true, gHomePageStorageKey = 'homePage', gNewStoryStorageKey = 'homepage', gAppName = 'Web App', gStartStatus = "", gPullRefresh = false, gVerticalScrollOpts, gOnlineAPI = false, gSpecial = false, gDeviceId = "", gShowStatusBar = 0, gApiUrl = '/eaclient/apijson.php';
 
+//在本地测试
+if (window.location.hostname === 'localhost') {
+    gStartPageTemplate = 'api/home.tpl?';
+    gApiUrl = 'api/ea001.json';
+}
 
 //选择模板
 if (typeof window.gCustom === "object") {
@@ -897,7 +902,7 @@ function filloneday(onedaydate) {
             apiurl = '/index.php/jsapi/get_last_publish_story?day='+ onedaydate + '&';
         } else {
             //apiurl = '/index.php/jsapi/get_new_story?rows=30&';
-            apiurl = '/eaclient/apijson.php';
+            apiurl = gApiUrl;
             try{
                 if (_localStorage===1 && localStorage.getItem(gNewStoryStorageKey)) {
                     savedhomepage = localStorage.getItem(gNewStoryStorageKey);
