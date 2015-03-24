@@ -9,7 +9,7 @@ function getUrltoFile (urlSource, fileName) {
   var url = require('url');
   var options = {
       host: url.parse(urlSource).hostname,
-      path: url.parse(urlSource).pathname + unescape(url.parse(urlSource).search)
+      path: url.parse(urlSource).pathname + unescape(url.parse(urlSource).search || '')
   }
   console.log (options.path);
   var request = http.request(options, function (res) {
@@ -101,7 +101,16 @@ gulp.task('ea', function () {
   message.body.ielement = {};
   message.body.ielement.num = 30;
   postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea001.json');
+  message.head.transactiontype = '10003';
+  postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea003.json');
+  message.head.transactiontype = '10007';
+  postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea007.json');
   getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?', './app/api/home.tpl');
+  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homepagevideo&', './app/api/homepagevideo.tpl');
+  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=skyZ&', './app/api/skyZ.tpl');
+  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/ipadvideo.html?', './app/api/ipadvideo.tpl');
+  getUrltoFile ('http://m.ftchinese.com/index.php/jsapi/get_last_updatetime?', './app/api/get_last_updatetime.json');
+  getUrltoFile ('http://m.ftchinese.com/index.php/jsapi/hotstory/1days?', './app/api/hotstory.json');
 });
 
 gulp.task('jshint', function () {
@@ -306,30 +315,8 @@ gulp.task('copy', ['build'], function () {
 
 
 gulp.task('ga', function () {
-  var http = require('http');
-  var options = {
-      host: 'm.ftchinese.com',
-      path: '/index.php/jsapi/analytics'
-  }
-  var request = http.request(options, function (res) {
-      var data = '';
-      res.on('data', function (chunk) {
-          data += chunk;
-      });
-      res.on('end', function () {
-        var fs = require('fs');
-        fs.writeFile("./dist/log/ga.js", data, function(err) {
-            if(err) {
-                return console.log(err);
-            }
-            console.log("GA JS was updated!");
-        }); 
-      });
-  });
-  request.on('error', function (e) {
-      console.log(e.message);
-  });
-  request.end();
+    getUrltoFile('http://m.ftchinese.com/index.php/jsapi/analytics', './app/log/ga.js');
+    getUrltoFile('http://m.ftchinese.com/index.php/jsapi/analytics', './dist/log/ga.js');
 });
 
 

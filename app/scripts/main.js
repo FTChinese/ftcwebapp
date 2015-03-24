@@ -1,11 +1,29 @@
 //申明各种Global变量
 var _currentVersion=965.10; //与manifest的版本号一致，便于识别当前的版本号，以保证版本修改后能稳定推出
-var _localStorage=0, exp_times = Math.round(new Date().getTime() / 1000) + 86400, username, ori, touchstartx, touchendx, cs, lateststory="", pmessage, latestunix, commentfolder = '', bgMode="", fontPreference="medium", allstories = [], osVersion, connectInternet="no", uaString=navigator.userAgent || navigator.vendor || "", osVersionMore="",useFTScroller=0, noFixedPosition=0, unusedEntryIndex, requestTime, successTime, screenWidth,screenHeight, gInGesture=false, startFreeze, fixedContent, headHeight, fStatus=0, ftScrollerTop=0,gHomeAPIRequest,gHomeAPISuccess,gHomeAPIFail,gDeviceType='',gStartPageTemplate = '/index.php/ft/channel/phonetemplate.html?', gStartPageAPI = true, gHomePageStorageKey = 'homePage', gNewStoryStorageKey = 'homepage', gAppName = 'Web App', gStartStatus = "", gPullRefresh = false, gVerticalScrollOpts, gOnlineAPI = false, gSpecial = false, gDeviceId = "", gShowStatusBar = 0, gApiUrl = '/eaclient/apijson.php';
-
+var _localStorage=0, exp_times = Math.round(new Date().getTime() / 1000) + 86400, username, ori, touchstartx, touchendx, cs, lateststory="", pmessage, latestunix, commentfolder = '', bgMode="", fontPreference="medium", allstories = [], osVersion, connectInternet="no", uaString=navigator.userAgent || navigator.vendor || "", osVersionMore="",useFTScroller=0, noFixedPosition=0, unusedEntryIndex, requestTime, successTime, screenWidth,screenHeight, gInGesture=false, startFreeze, fixedContent, headHeight, fStatus=0, ftScrollerTop=0,gHomeAPIRequest,gHomeAPISuccess,gHomeAPIFail,gDeviceType='',gStartPageTemplate = '/index.php/ft/channel/phonetemplate.html?', gStartPageAPI = true, gHomePageStorageKey = 'homePage', gNewStoryStorageKey = 'homepage', gAppName = 'Web App', gStartStatus = "", gPullRefresh = false, gVerticalScrollOpts, gOnlineAPI = false, gSpecial = false, gDeviceId = "", gShowStatusBar = 0;
+var gApiUrl = {
+    'a10001':'/eaclient/apijson.php',
+    'a10003':'/eaclient/apijson.php',
+    'a10007':'/eaclient/apijson.php'
+};
+var gPostMethod='POST';
+var gHomePageVideo = '/index.php/ft/channel/phonetemplate.html?channel=homepagevideo&';
+var gSkyZ = '/index.php/ft/channel/phonetemplate.html?channel=skyZ&';
+var giPadVideo = '/index.php/ft/channel/ipadvideo.html?';
+var gGetLastUpdateTime = '/index.php/jsapi/get_last_updatetime?';
+var gHotStory = '/index.php/jsapi/hotstory/1days?';
 //在本地测试
 if (window.location.hostname === 'localhost') {
     gStartPageTemplate = 'api/home.tpl?';
-    gApiUrl = 'api/ea001.json';
+    gApiUrl.a10001 = 'api/ea001.json';
+    gApiUrl.a10003 = 'api/ea003.json';
+    gApiUrl.a10007 = 'api/ea007.json';
+    gPostMethod = 'GET';
+    gHomePageVideo = 'api/homepagevideo.tpl?';
+    gSkyZ = 'api/skyZ.tpl?';
+    giPadVideo = 'api/ipadvideo.tpl?';
+    gGetLastUpdateTime = 'api/get_last_updatetime.json?';
+    gHotStory = 'api/hotstory.json?';
 }
 
 //选择模板
@@ -147,14 +165,15 @@ function startpage() {
     } else {
         startFromOnline();
     }
+
     requestTime = new Date().getTime();
     gStartStatus = "startpage get_last_updatetime";
-    $.get('/index.php/jsapi/get_last_updatetime?' + requestTime, function(data) {
+    $.get(gGetLastUpdateTime + requestTime, function(data) {
         lateststory = data;
     });
     setInterval(function() {
         requestTime = new Date().getTime();
-        $.get('/index.php/jsapi/get_last_updatetime?' + requestTime,
+        $.get(gGetLastUpdateTime + requestTime,
             function(data) {
                 if (lateststory != data) {filloneday(oneday);}
                 lateststory = data;
@@ -458,7 +477,7 @@ function fillContent() {
             $("#openWeChat").removeAttr("class").removeAttr("href");
         }
 	});
-    
+
     //热门文章
     if (isOnline()=="no" && _localStorage===1) {        
         mpdata = getvalue('smostpopular');
@@ -467,7 +486,7 @@ function fillContent() {
         fillArticles(hcdata, 'comment');
     }else{
         //十大热门文章
-        $.get('/index.php/jsapi/hotstory/1days?' + themi, function(data) {
+        $.get(gHotStory + themi, function(data) {
             fillArticles(data, 'popoular');
             try {
                 localStorage.removeItem('smostpopular');
@@ -483,15 +502,20 @@ function fillContent() {
         message.body = {};
         message.body.ielement = {};
         message.body.ielement.days = 7;
-        $.post('/eaclient/apijson.php', JSON.stringify(message), function (data, textStatus) {
+
+        $.ajax({
+            method: gPostMethod,
+            url: gApiUrl.a10003,
+            data: JSON.stringify(message),
+            dataType: "json"
+        }).done(function(data, textStatus) {
             if (textStatus == 'success' && data.body.oelement.errorcode === 0) {
                 var hotdata = JSON.stringify(data.body.odatalist);
                 fillArticles(data.body.odatalist, 'comment');
                 localStorage.removeItem('mostcomment');
                 saveLocalStorage('mostcomment', hotdata);
             }
-        }, 'json')
-        .fail(function(){
+        }).fail(function(jqXHR){
             trackErr(message.head.transactiontype, "Most Commented");
         });
     }
@@ -893,8 +917,8 @@ function filloneday(onedaydate) {
             });
         }
     } else if (!onedaydate || onedaydate == 'newyear') {
-        fetchItem('/index.php/ft/channel/phonetemplate.html?channel=homepagevideo&'+themi, 'homepagevideo', '#homepageVideo');
-        fetchItem('/index.php/ft/channel/phonetemplate.html?channel=skyZ&'+themi, 'skyz', '#skyZ');
+        fetchItem(gHomePageVideo+themi, 'homepagevideo', '#homepageVideo');
+        fetchItem(gSkyZ+themi, 'skyz', '#skyZ');
     }
     if (gStartPageAPI === true) {
         if (onedaydate != '' && onedaydate != null) {
@@ -902,7 +926,7 @@ function filloneday(onedaydate) {
             apiurl = '/index.php/jsapi/get_last_publish_story?day='+ onedaydate + '&';
         } else {
             //apiurl = '/index.php/jsapi/get_new_story?rows=30&';
-            apiurl = gApiUrl;
+            apiurl = gApiUrl.a10001;
             try{
                 if (_localStorage===1 && localStorage.getItem(gNewStoryStorageKey)) {
                     savedhomepage = localStorage.getItem(gNewStoryStorageKey);
@@ -932,37 +956,41 @@ function filloneday(onedaydate) {
                 message.body.ielement = {};
                 message.body.ielement.num = 30;
                 gHomeAPIRequest = new Date().getTime();
-                $.post(apiurl, JSON.stringify(message), function(data) {
-                    gHomeAPISuccess = new Date().getTime();
-                    var timeSpent = gHomeAPISuccess - gHomeAPIRequest;
-                    ga('send', 'timing', 'App', 'API Request', timeSpent, 'Home Stories');
-                    if (data.length <= 300) {
-                        return;
-                    }
-                    clearfields();
-                    //console.log (data);
-                    gOnlineAPI = true;
-                    fillPage(data);
-                    saveoneday(onedaydate, data);
-                    notifysuccess();
-                    if (ipadstorage) {
-                        setTimeout(function() {
-                            ipadstorage.droptable();
-                            save_allimg_to_offline_db();
-                        },10000);
-                    }
-                },'text')
-                .fail(function(jqXHR){
-                    gOnlineAPI = false;
-                    gHomeAPIFail = new Date().getTime();
-                    var timeSpent = gHomeAPIFail - gHomeAPIRequest;
-                    trackFail(message.head.transactiontype + ":" + jqXHR.status + "," + jqXHR.statusText + "," + timeSpent, "Latest News");
-                    //ga('send','event', 'CatchError', 'Latest News', message.head.transactiontype + ":" + jqXHR.status + "," + jqXHR.statusText);
-                    //fa('send','event', 'CatchError', 'Latest News', message.head.transactiontype + ":" + jqXHR.status + "," + jqXHR.statusText);
-                    //trackErr(message.head.transactiontype + ":" + , "Latest News");
-                });
+
+                $.ajax({
+                    method: gPostMethod,
+                    url: apiurl,
+                    data: JSON.stringify(message),
+                    dataType: "text"
+                })
+                    .done(function(data) {
+                        gHomeAPISuccess = new Date().getTime();
+                        var timeSpent = gHomeAPISuccess - gHomeAPIRequest;
+                        ga('send', 'timing', 'App', 'API Request', timeSpent, 'Home Stories');
+                        if (data.length <= 300) {
+                            return;
+                        }
+                        clearfields();
+                        //console.log (data);
+                        gOnlineAPI = true;
+                        fillPage(data);
+                        saveoneday(onedaydate, data);
+                        notifysuccess();
+                        if (ipadstorage) {
+                            setTimeout(function() {
+                                ipadstorage.droptable();
+                                save_allimg_to_offline_db();
+                            },10000);
+                        }
+                    }).fail(function(jqXHR){
+                        gOnlineAPI = false;
+                        gHomeAPIFail = new Date().getTime();
+                        var timeSpent = gHomeAPIFail - gHomeAPIRequest;
+                        trackFail(message.head.transactiontype + ":" + jqXHR.status + "," + jqXHR.statusText + "," + timeSpent, "Latest News");
+                    });
+
                 $('.video').remove();
-                $.get('/index.php/ft/channel/ipadvideo.html?'+ onedaydate + themi, function(data) {
+                $.get(giPadVideo+ onedaydate + themi, function(data) {
                     if (data != null && data != '') {
                         data = checkhttps(data);
                         $('#videocoveranchor').html(data);
@@ -1095,7 +1123,13 @@ function checkbreakingnews() {
     message.body = {};
     message.body.ielement = {};
     message.body.ielement.type = 'breaking';
-    $.post('/eaclient/apijson.php', JSON.stringify(message), function (data, textStatus) {
+
+    $.ajax({
+        method: gPostMethod,
+        url: gApiUrl.a10007,
+        data: JSON.stringify(message),
+        dataType: "json"
+    }).done(function(data, textStatus) {
         if (textStatus == 'success' && data.body.oelement.errorcode === 0) {
             var breakingNews = data.body.odatalist[0].title || '';
             breakingNews = breakingNews.replace(/\r\n\t/g,'');
@@ -1104,8 +1138,7 @@ function checkbreakingnews() {
             }
             $('#breakingnews').html(breakingNews);
         }
-    }, 'json')
-    .fail(function(){
+    }).fail(function(jqXHR){
         trackErr(message.head.transactiontype, 'breaking news');
     });
 }
@@ -1934,6 +1967,9 @@ function getvalue(thekey) {
 }
 
 function save_allimg_to_offline_db() {
+    if (window.location.hostname === 'localhost') {
+        return;
+    }
     var all_img = [];
     $('#coveranchor img').each(function() {
         var mediaurl = removehttps(this.src);
@@ -2829,6 +2865,9 @@ function checkSectionScroller($currentSlide){
 
 //读者评论
 function loadcomment(storyid, theid, type) {
+    if (window.location.hostname === 'localhost') {
+        return;
+    }
     var url, new_comment_prefix, common_comment_prefix, user_icon='', isvip, commentnumber, cfoption, cftype, commentsortby;
     new_comment_prefix = "/index.php/comments/newcommentsbysort/";
     common_comment_prefix = "/index.php/common_comments/newcommentsbysort/";
