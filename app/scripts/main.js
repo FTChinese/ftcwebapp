@@ -1,10 +1,13 @@
 //申明各种Global变量
-var _currentVersion=965.10; //与manifest的版本号一致，便于识别当前的版本号，以保证版本修改后能稳定推出
+var _currentVersion=992; //与manifest的版本号一致，便于识别当前的版本号，以保证版本修改后能稳定推出
 var _localStorage=0, exp_times = Math.round(new Date().getTime() / 1000) + 86400, username, ori, touchstartx, touchendx, cs, lateststory="", pmessage, latestunix, commentfolder = '', bgMode="", fontPreference="medium", allstories = [], osVersion, connectInternet="no", uaString=navigator.userAgent || navigator.vendor || "", osVersionMore="",useFTScroller=0, noFixedPosition=0, unusedEntryIndex, requestTime, successTime, screenWidth,screenHeight, gInGesture=false, startFreeze, fixedContent, headHeight, fStatus=0, ftScrollerTop=0,gHomeAPIRequest,gHomeAPISuccess,gHomeAPIFail,gDeviceType='',gStartPageTemplate = '/index.php/ft/channel/phonetemplate.html?', gStartPageAPI = true, gHomePageStorageKey = 'homePage', gNewStoryStorageKey = 'homepage', gAppName = 'Web App', gStartStatus = "", gPullRefresh = false, gVerticalScrollOpts, gOnlineAPI = false, gSpecial = false, gDeviceId = "", gShowStatusBar = 0;
 var gApiUrl = {
-    'a10001':'/eaclient/apijson.php',
+    //'a10001':'',
+    'efforts':0,
+    'a10001':'/index.php/jsapi/get_new_story?rows=25&',
     'a10003':'/eaclient/apijson.php',
-    'a10007':'/eaclient/apijson.php'
+    'a10007':'/eaclient/apijson.php',
+    'aBackUp':'/eaclient/apijson.php'
 };
 var gPostMethod='POST';
 var gHomePageVideo = '/index.php/ft/channel/phonetemplate.html?channel=homepagevideo&';
@@ -13,11 +16,12 @@ var giPadVideo = '/index.php/ft/channel/ipadvideo.html?';
 var gGetLastUpdateTime = '/index.php/jsapi/get_last_updatetime?';
 var gHotStory = '/index.php/jsapi/hotstory/1days?';
 //在本地测试
-if (window.location.hostname === 'localhost') {
+if (window.location.hostname === 'localhost' || window.location.hostname.indexOf('192.168') === 0 || window.location.hostname.indexOf('127.0') === 0) {
     gStartPageTemplate = 'api/home.tpl?';
     gApiUrl.a10001 = 'api/ea001.json';
     gApiUrl.a10003 = 'api/ea003.json';
     gApiUrl.a10007 = 'api/ea007.json';
+    gApiUrl.aBackUp = 'api/ea001-backup.json';
     gPostMethod = 'GET';
     gHomePageVideo = 'api/homepagevideo.tpl?';
     gSkyZ = 'api/skyZ.tpl?';
@@ -222,12 +226,15 @@ function startpage() {
     }
     //Delegate Click Events for Any New Development
     gStartStatus = "startpage inline-video-container";
-    $("body").on("click",".inline-video-container",function(){
-        var videoId = $(this).attr("id") || $(this).attr("vsource") || "", videoTitle = $(this).attr("title") || "视频";
-        if (videoId!=="") {
-            if (videoId.indexOf("/")>=0) {videoId = "http://v.ftimg.net/" + videoId;}
+    $('body').on('click','.inline-video-container',function(){
+        var videoId = $(this).attr('id') || $(this).attr('vsource') || '', videoTitle = $(this).attr('title') || '视频';
+        if (videoId!=='') {
+            if (videoId.indexOf('/')>=0) {videoId = 'http://v.ftimg.net/' + videoId;}
             watchVideo(videoId,videoTitle);
         }
+    });
+    $('body').on('click', '.outbound-link', function(){
+        ga('send','event','Outbound Link in App', 'click', $(this).attr('href') + '/' + window.location.href);
     });
     gStartStatus = "startpage end";
     //Delegate Click on Home Page
@@ -374,12 +381,16 @@ function fillContent() {
 
     if (historyAPI()==true) {
         window.addEventListener("popstate", function() {
-            if (pageStarted==1) {
+            
+            //alert ('_popstate: ' + _popstate + "; pageStarted: " + pageStarted +  ' url: ' + location.href);
+            
+            if (pageStarted === 1) {
                 _popstate=1;
                 jumpToPage();
             }
             pageStarted=1;
             _popstate=0;
+            
         });
     }
 
@@ -656,6 +667,8 @@ function fillPage(thedata) {
     gStartStatus = "fillPage start";
     //遍历接口的所有文章，根据其属性将其插入相应位置
     var jsondata, cover1 = 0,  todaystamp,  storytotalnum = 0, longheadline, shortheadline, longlead, shortlead, coverImg, cauthor, tag, genre, topic, industry, priority, byline, onhomepage = 0, iconImg, bigButton, portraitImg="", errorMessage="", jsonHeadPosition, jsonWrong, specialTag="", specialTitle="";
+    var dataStatus = 'unknown';
+    //var backupAPIDate;
     countInsert=[];
     
 	//如果返回数据长度不足1000，说明此次返回的数据根本就不对，跳出函数
@@ -677,21 +690,40 @@ function fillPage(thedata) {
         thedata = thedata.substring(0,22);
         if (gOnlineAPI === true) {
             trackErr(err + "." + thedata, "fillPage jsondata");
+            dataStatus = 'online error';
         } else {
             trackErr(err + "." + thedata, "fillPage jsondata cache");
-        }        
+            dataStatus = 'cache error';
+        }
     }
 
-	
+
 	//清空这个数据
 	thedata="";
     thisday = new Date();
 	thisdayunix = Math.round(thisday.getTime() / 1000);
 
+    //如果第一次在线获取的数据返回错误
+    //则先尝试备份的API
+    //再尝试当天文章的API
+    if (dataStatus === 'online error') {
+
+        if (gApiUrl.efforts === 0) {
+            gApiUrl.efforts = 1;
+            gApiUrl.a10001 = gApiUrl.aBackUp;
+            //console.log ('try backup api: ' + gApiUrl.efforts);
+            filloneday();
+        } else if (gApiUrl.efforts === 1){
+            gApiUrl.efforts = 2;
+            backupAPIDate = thisday.getFullYear() + '/' + (thisday.getMonth() + 1) + '/' + thisday.getDate();
+            //console.log (backupAPIDate + ' First API Wrong, you should get the backup one!');
+            filloneday(backupAPIDate);
+        }
+    }
 
 	//检查数据格式是否符合标准
-    if (!jsondata || jsondata.length <= 1) {
-      return;
+    if (!jsondata || jsondata.length <= 1 || dataStatus === 'error') {
+        return;
 	}
     
     try {
@@ -1061,6 +1093,7 @@ function jumpToPage(){
         backhome();
     }
     _popstate=0;
+    
 }
 
 function startFromOnline() {
@@ -1350,33 +1383,44 @@ function readstory(theid, theHeadline) {
 	pauseallvideo();
 }
 
+function removeTag(theCode) {
+    var k = theCode.replace(/<\/*p>/gi, '').replace(/^<div.*<\/div>$/gi, '').replace(/<img.*>/gi, '');
+    //alert (theCode + '\r\n' + k);
+    return k;
+}
+
 function displaystory(theid, language) {
-    var columnintro = '', 
-        storyimage, 
-        allId = allstories[theid],
-        allIdColumnIfoHeadline,
-        byline,
-        contentnumber,
-        i,
-        storytag,
-        tagdata,
-        ct,
-        leftc,
-        rightc,
-        firstChild,
-        myfont,
-        sinten,
-        k="",
-        l="",
-        d="",
-        e,
-        ceDiff,
-        ua = navigator.userAgent || navigator.vendor || "",
-        eLen,
-        cLen,
-        eText,
-        cText,
-        relatedStory="";
+    var columnintro = ''; 
+    var storyimage;
+    var allId = allstories[theid];
+    var allIdColumnIfoHeadline;
+    var byline;
+    var contentnumber;
+    var i;
+    var storytag;
+    var tagdata;
+    var ct;
+    var leftc;
+    var rightc;
+    var firstChild;
+    var myfont;
+    var sinten;
+    var k='';
+    var l='';
+    var d='';
+    var e;
+    var ceDiff;
+    var ua = navigator.userAgent || navigator.vendor || "";
+    var eLen;
+    var cLen;
+    var eText;
+    var cText;
+    var relatedStory="";
+    var cbodyCount = 0;
+    var ebodyCount = 0;
+    var cbodyTotal = 0;
+    var ebodyTotal = 0;
+    var shareSource = '';
     langmode = language;
     //文章的scroller
     addStoryScroller();
@@ -1415,8 +1459,6 @@ function displaystory(theid, language) {
         storyimage = '';
     }
 
-
-
     $('.cebutton,.enbutton,.chbutton').removeClass('nowreading');
     $('#storyview').removeClass('ceview enview');
 
@@ -1439,17 +1481,41 @@ function displaystory(theid, language) {
         eLen = (eText !== null) ? eText.length : 0;
         cLen = (cText !== null) ? cText.length : 0;
         contentnumber = Math.max(eLen, cLen);
-        ceDiff = cLen - eLen;
-        ct = '<div class=ce>';
+        //ceDiff = cLen - eLen;
+        ct = '';
+        //alert (cText);
         for (i = 0; i < contentnumber; i++) {
-            leftc = eText[i] || '';
-            leftc = leftc.replace(/<p>(.*)<\/p>/gi,"$1");
-            rightc = cText[i] || '';
-            rightc = rightc.replace(/<p>(.*)<\/p>/gi,"$1");
-            ct += '<div class=ebodyt>'+ leftc + '</div><div class=cbodyt>' + rightc + '</div><div class=clearfloat></div>';
-        }
+            leftc = eText[ebodyCount] || '';
+            //remove p tag and img tag
+            //if leftc or right c is empty, it means it probably is an img in a p
+            //then check the next p
+            //the check is needed only once
+            //assuming editors don't attach two images without text between
+            leftc = removeTag(leftc);
+            if (leftc === '') {
+                ebodyCount += 1;
+                leftc = eText[ebodyCount] || '';
+                leftc = removeTag(leftc);
+            } else {
+                ebodyTotal += 1; 
+            }
+            ebodyCount += 1;
+            rightc = cText[cbodyCount] || '';
 
-        $('#storyview .storybody').html(ct + '</div>');
+            rightc = removeTag(rightc);
+            //alert (rightc);
+            if (rightc === '') {
+                cbodyCount += 1;
+                rightc = cText[cbodyCount] || '';
+                rightc = removeTag(rightc);
+            } else {
+                cbodyTotal += 1; 
+            }
+            cbodyCount += 1;
+            ct += '<div class=ebodyt title="'+ ebodyTotal +'">'+ leftc + '</div><div class=cbodyt title="'+ cbodyTotal +'">' + rightc + '</div><div class=clearfloat></div>';
+        }
+        ceDiff = cbodyTotal - ebodyTotal;
+        $('#storyview .storybody').html('<div class=ce>' + ct + '</div>');
         $('#storyview .storybody').prepend('<div id="ceTwoColumn" class=centerButton><button class="ui-light-btn">中英文并排</button></div>');
         $("#ceTwoColumn").unbind().bind("click",function(){
             $("div.ebodyt").css({"float":"left","width":"48%","overflow":"hidden"});
@@ -1475,9 +1541,7 @@ function displaystory(theid, language) {
         }
         if (allId.ebody && allId.ebody.length > 30) {$('.chbutton').addClass('nowreading');} else {$('.cebutton,.enbutton,.chbutton').addClass('nowreading');}
     }
-    
     $('<div class="adiframe mpu-phone for-phone" type="250" frame="ad300x250-story"></div>').insertBefore($('#storyview .storybody p').eq(3));
-    
     if (byline.replace(/ /g,"")==""){byline = "FT中文网";}
     storytag = allId.tag||'';
     storytag = ',' + storytag + ',';
@@ -1617,7 +1681,10 @@ function displaystory(theid, language) {
         }
         e=allId.cheadline;
         if (location.href.indexOf("android")>=0) {d=d.replace(/%/g,'％');e=e.replace(/%/g,'％');}
-        k="ftcweixin://?url="+encodeURIComponent("http://m.ftchinese.com/story/"+allId.id)+"&title="+encodeURIComponent(e)+d+l;
+        if (/iPad/i.test(uaString) || /iPhone/i.test(uaString) || /iPod/i.test(uaString)) {
+            shareSource = ' - FT中文网';
+        }
+        k="ftcweixin://?url=" + encodeURIComponent("http://m.ftchinese.com/story/"+allId.id) + "&title=" + encodeURIComponent(e) + shareSource + d + l;
         k=k.replace(/[\r\n\"\'<>]/g,"");
         $("#shareChat").attr("href",k+"&to=chat");
         $("#shareMoment").attr("href",k+"&to=moment");
@@ -1642,10 +1709,36 @@ function displaystory(theid, language) {
     }
     //Sticky Right Rail
     freezeCheck();
+    //Display HighCharts in Article
+    //Caution: if the code is writen like the following
+    //it'll break the JS when compiled into inline JS
+    //causing the android app to break on starting
+    highchartsCheck(allId.cbody);
 }
 //阅读文章
 
-
+//检查文章中是否有High Charts代码
+function highchartsCheck(storyBody) {
+    if (storyBody.indexOf('highcharts')>=0) {
+        if ($('.highcharts[data-chart-id]').length>0) {
+            var gChartId = $('.highcharts[data-chart-id]').attr('data-chart-id') || '';
+            if (gChartId !== '') {
+                (function (d) {
+                    var js;
+                    var s = d.getElementsByTagName('script')[0];
+                    var h = '';
+                    js = d.createElement('script');
+                    js.async = true;
+                    if (typeof Highcharts === 'object') {
+                        h = '&highcharts=hide';
+                    }
+                    js.src = '/index.php/ft/interactive/' + gChartId + '?type=js' + h + '&' + new Date().getTime();
+                    s.parentNode.insertBefore(js, s);
+                })(window.document);
+            }
+        }
+    }
+}
 
 
 //运行环境检测
@@ -1858,7 +1951,7 @@ function httpspv(theurl) {
             var adHeight=$(this).attr('type') || 0, adFrame=$(this).attr('frame') || "", adwidth=$(this).attr('adwidth') || "300", FrameID, adOverlay="", forPhone;
             adHeight = parseInt(adHeight,10);
             forPhone = ($(this).hasClass("for-phone") === true) ? true : false; 
-            if ((adHeight>90 && screenWidth>=700 && forPhone===false) || (adHeight<90 && screenWidth<700) || (adHeight === 90 && (screenWidth===768 || screenWidth===1024)) || (forPhone === true && screenWidth<700)) {
+            if ((adHeight>90 && screenWidth>=700 && forPhone===false) || (adHeight<90 && screenWidth<700) || (adHeight === 90 && (screenWidth===768 || screenWidth===1024)) || (forPhone === true && screenWidth<700) || adHeight ===0) {
                 if ($(this).find("iframe").length>0) {
                     FrameID = $(this).find("iframe").eq(0).attr("id");
                     document.getElementById(FrameID).contentDocument.location.reload(true);
@@ -2695,8 +2788,12 @@ function refresh(){
                 }
             })
             .fail(function() {
-                $("#refreshButton").removeClass("blue");
-                alert("您现在连接不到FT中文网的服务器，请稍后尝试刷新");
+                $('#popup-title').html("提示");
+                $('#popup-description').html("您现在连接不到FT中文网的服务器，请稍后尝试刷新");
+                $('#popup-content').html("<button class='ui-light-btn' onclick=\"$('#popup').removeClass('on');\">我知道了</button></div>");
+                $('#popup').addClass('on');
+                //$("#refreshButton").removeClass("blue");
+                //alert("您现在连接不到FT中文网的服务器，请稍后尝试刷新");
             });
     } else {
         window.location.reload();

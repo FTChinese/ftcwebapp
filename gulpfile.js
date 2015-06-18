@@ -101,6 +101,7 @@ gulp.task('ea', function () {
   message.body.ielement = {};
   message.body.ielement.num = 30;
   postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea001.json');
+  //postDatatoFile('http://m.ftchinese.com/index.php/jsapi/get_last_publish_story?day=2015-6-11&', message, './app/api/ea001.json');
   message.head.transactiontype = '10003';
   postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea003.json');
   message.head.transactiontype = '10007';
@@ -331,6 +332,8 @@ gulp.task('publish', function () {
     .pipe(gulp.dest('../dev_www/mobile_webroot/bb-2014'));
   gulp.src('../testing/dev_www/mobile_webroot/mba-2014/**/*')
     .pipe(gulp.dest('../dev_www/mobile_webroot/mba-2014'));
+  gulp.src('../testing/dev_www/mobile_webroot/log/**/*')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/log'));
   gulp.src('../testing/dev_www/mobile_webroot/assets/svg/**/*')
     .pipe(gulp.dest('../dev_www/mobile_webroot/assets/svg'));
   gulp.src('../testing/dev_www/mobile_webroot/*.manifest')

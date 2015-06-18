@@ -55,6 +55,7 @@
 <div class="loadonce righthd">
 
 <div url="/index.php/ft/column/007000005?i=2" class="channel oneStory more first-child">第一时间解读</div>
+<div url="/index.php/ft/column/007000058?i=2" class="channel oneStory more">中西两半录</div>
 <div url="/index.php/ft/column/007000002?i=2" class="channel oneStory more">朝九晚五</div>
 <div url="/index.php/ft/column/007000007?i=2" class="channel oneStory more">中国纪事</div>
 <div url="/index.php/ft/column/007000054?i=2" class="channel oneStory more">一知半解</div>
@@ -114,6 +115,6 @@
 
 <div class=copyright>
     <b><font face="arial">&copy; </font>英国金融时报</b> 有限公司 <font face="arial">2015</font>&nbsp;&nbsp;
-    <span><acronym title="Financial Times">FT中文网</acronym>为英国金融时报的注册商标</span>
+    <span><acronym title="Financial Times">FT中文网</acronym>为英国金融���报的注册商标</span>
 </div>
 

@@ -96,7 +96,7 @@ function handleLogoError(){
 	<div id=fullbodycontainer>
 	
 	</div>
-<script>
+<script type="text/javascript">
     var uaForMail=navigator.userAgent || navigator.vendor || "";
     document.getElementById("startFeedback").href="mailto:ftchinese.feedback@gmail.com?subject=Feedback about FTC Web App - from start screen&body=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0AMy UA String for Your Reference: %0D%0A%0D%0A"+uaForMail+"%0D%0A%0D%0AResources version: "+window._currentVersion+"%0D%0A%0D%0AScreen Mode: "+screen.width+"X"+screen.height+"%0D%0A%0D%0Amy URL: " + location.href;
     setTimeout (function() {
@@ -106,7 +106,7 @@ function handleLogoError(){
     },8000);
 </script>
 
-<script>
+<script type="text/javascript">
 
 var cacheStatusValues = [ 'uncached',
                           'idle',
@@ -133,24 +133,27 @@ window.applicationCache.addEventListener('updateready', function() {
 
 setTimeout(function() { if(cache && navigator.online==true) cache.update();},10000);
 </script>
-<script>window.scrollTo(0, 0);</script>
-<script>var FTAdch = "NP_Home";</script>
-<script>
+<script type="text/javascript">window.scrollTo(0, 0);</script>
+<script type="text/javascript">var FTAdch = "NP_Home";</script>
+<script type="text/javascript">
 {{googleanalytics}}
 ga('create', 'UA-1608715-1');ga('require', 'displayfeatures');
 ga('send', 'pageview');
 </script>
-<script>
+<script type="text/javascript">
 {{fa}}
 fa('create','UA-XXXX-Y',{'alwaysSendReferrer':true});fa('send','pageview');
 </script>
-<script>
+<script type="text/javascript">
 {{mainjs}}
+</script>
+<script type="text/javascript">
 if (document.getElementById("startbar")) {document.getElementById("startbar").style.width="25%";}
 if (osVersion.indexOf("Android")<0) {
     new FastClick(document.body);
 }
 </script>
+
 
 </body>
 </html>

@@ -11,6 +11,7 @@
 .ad50 a,.ad90 a {display:table-cell;vertical-align:middle;}
 .ad50 {height:30px;}
 .ad90 {height:90px;}
+.hidden {display:none;}
 img {border:0;max-width:100%;}
 </style>
 </head>
@@ -42,7 +43,9 @@ if (adCode=="ad300x250-SP" || (parent.window.gSpecial === true && adCode==="ad30
     c="20200103";
     adType="mpu";
 } else {
-    if (/OS [0-9]+\_/i.test(uaString) && (/iPhone/i.test(uaString) || /iPad/i.test(uaString) || /iPod/i.test(uaString))) {
+    if (/iPad/i.test(uaString)) {
+    adchannelId = "2021";
+    } else if (/OS [0-9]+\_/i.test(uaString) && (/iPhone/i.test(uaString) || /iPod/i.test(uaString))) {
     adchannelId = "2022";
     } else if (/Android/i.test(uaString)) {
     adchannelId = "2023";
@@ -58,6 +61,12 @@ if (adCode=="ad300x250-SP" || (parent.window.gSpecial === true && adCode==="ad30
         
         adType="ad90 fullWidth";
         adchannelId = "2021";
+    } else if (adCode === 'fullScreen') {
+        if (bodyWidth>750) {
+            adchannelId = '2021';
+        }
+        adPositionId = '0107';
+        adType = 'hidden';
     } else if (adCode=="ad300x90") {
         adPositionId="0102";
         adType="ad90";

@@ -78,7 +78,7 @@
                     <!--calendar end-->
                     <div class="section">十大热门文章</div>
                     <div id="mostPopular" class="loadonce"></div>
-                    <div class="adiframe mpu" type="250" frame="ad300x250-2"></div>                    <div class=container>
+                    <div class="adiframe mpu" type="250" frame="ad300x250-2"></div>                    <div class="adiframe hidden" type="0" adwidth="0" frame="fullScreen"></div>                    <div class=container>
                         <div class=clearfloat></div>
                         <div class=footer>
                             <div class=centerButton><button class="ui-light-btn channel" url="/index.php/ft/channel/phonetemplate.html?channel=help">帮助与反馈</button></div>
@@ -350,7 +350,7 @@ background-color: rgba(0,0,0,0.14) !important;
                 <div class="standalonebutton"><button class="ui-light-btn" onclick="turnonOverlay('loginBox')">登录</button></div>                
                 <div class="standalonebutton"><button class="ui-light-btn channel" url="/index.php/ft/channel/phonetemplate.html?channel=myftsetup">设置我的<font class=english>FT</font></button></div>                                
                 <div class="standalonebutton nativeButton"><a href="https://itunes.apple.com/cn/app/ft-zhong-wen-wang-zhi-neng/id443870811?mt=8" target=_blank><button class="ui-light-btn">到<span class=english>App Store</span>上推荐这个应用</button></a></div>
-                <div class="standalonebutton"><button class="ui-light-btn channel" url="/index.php/ft/channel/phonetemplate.html?channel=help">帮助与反���</button></div>
+                <div class="standalonebutton"><button class="ui-light-btn channel" url="/index.php/ft/channel/phonetemplate.html?channel=help">帮助与反馈</button></div>
                 <div class="currentVersion" id="storytotalnum"></div>
 				<div id="testMessage"></div>                
 			</div>
@@ -452,7 +452,7 @@ background-color: rgba(0,0,0,0.14) !important;
 					<p>重要提示</p>
 				</div>
                 <div class="padding note">
-                    <p>亲爱的读者，您似乎关闭了设备的Cookie和离线存储功能，这���导致您无法登录，也无法利用本地存储来节省您的时间和流量。</p>
+                    <p>亲爱的读者，您似乎关闭了设备的Cookie和离线存储功能，这会导致您无法登录，也无法利用本地存储来节省您的时间和流量。</p>
                     <p>如果您是使用iPhone或iPad，可以进入<b>设置>Safari>阻止Cookie</b>，选择“来自第三方和广告商”或“永不”均可。</p>
                 </div>
 			</div>
