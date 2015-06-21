@@ -115,6 +115,6 @@
 
 <div class=copyright>
     <b><font face="arial">&copy; </font>英国金融时报</b> 有限公司 <font face="arial">2015</font>&nbsp;&nbsp;
-    <span><acronym title="Financial Times">FT中文网</acronym>为英国金融���报的注册商标</span>
+    <span><acronym title="Financial Times">FT中文网</acronym>为英国金融时报的注册商标</span>
 </div>
 

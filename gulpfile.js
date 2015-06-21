@@ -100,8 +100,10 @@ gulp.task('ea', function () {
   message.body = {};
   message.body.ielement = {};
   message.body.ielement.num = 30;
-  postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea001.json');
-  //postDatatoFile('http://m.ftchinese.com/index.php/jsapi/get_last_publish_story?day=2015-6-11&', message, './app/api/ea001.json');
+  //http://app003.ftmailbox.com/index.php/jsapi/get_last_publish_story?day=2015-6-17&
+
+  //postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea001.json');
+  postDatatoFile('http://m.ftchinese.com/index.php/jsapi/get_last_publish_story?day=2015-6-17&', message, './app/api/ea001.json');
   message.head.transactiontype = '10003';
   postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea003.json');
   message.head.transactiontype = '10007';

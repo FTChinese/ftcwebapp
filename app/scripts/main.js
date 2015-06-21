@@ -1,5 +1,5 @@
 //申明各种Global变量
-var _currentVersion=992; //与manifest的版本号一致，便于识别当前的版本号，以保证版本修改后能稳定推出
+var _currentVersion=994; //与manifest的版本号一致，便于识别当前的版本号，以保证版本修改后能稳定推出
 var _localStorage=0, exp_times = Math.round(new Date().getTime() / 1000) + 86400, username, ori, touchstartx, touchendx, cs, lateststory="", pmessage, latestunix, commentfolder = '', bgMode="", fontPreference="medium", allstories = [], osVersion, connectInternet="no", uaString=navigator.userAgent || navigator.vendor || "", osVersionMore="",useFTScroller=0, noFixedPosition=0, unusedEntryIndex, requestTime, successTime, screenWidth,screenHeight, gInGesture=false, startFreeze, fixedContent, headHeight, fStatus=0, ftScrollerTop=0,gHomeAPIRequest,gHomeAPISuccess,gHomeAPIFail,gDeviceType='',gStartPageTemplate = '/index.php/ft/channel/phonetemplate.html?', gStartPageAPI = true, gHomePageStorageKey = 'homePage', gNewStoryStorageKey = 'homepage', gAppName = 'Web App', gStartStatus = "", gPullRefresh = false, gVerticalScrollOpts, gOnlineAPI = false, gSpecial = false, gDeviceId = "", gShowStatusBar = 0;
 var gApiUrl = {
     //'a10001':'',
@@ -1384,8 +1384,15 @@ function readstory(theid, theHeadline) {
 }
 
 function removeTag(theCode) {
-    var k = theCode.replace(/<\/*p>/gi, '').replace(/^<div.*<\/div>$/gi, '').replace(/<img.*>/gi, '');
-    //alert (theCode + '\r\n' + k);
+    var k = theCode.replace(/<\/*p>/gi, '')
+                    .replace(/^<div.*<\/div>$/gi, '')
+                    .replace(/<table.*<\/table>/g,'')
+                    .replace(/<img.*>/gi, '');
+    if (theCode.indexOf('table')>=0) {
+        //alert (k.charCodeAt(0));
+    } else {
+        
+    }
     return k;
 }
 
@@ -1492,8 +1499,9 @@ function displaystory(theid, language) {
             //the check is needed only once
             //assuming editors don't attach two images without text between
             leftc = removeTag(leftc);
-            if (leftc === '') {
+            if (leftc.length <= 2) { //short code means no need to display
                 ebodyCount += 1;
+                alert (leftc + '/' + leftc.length);
                 leftc = eText[ebodyCount] || '';
                 leftc = removeTag(leftc);
             } else {
@@ -1504,7 +1512,7 @@ function displaystory(theid, language) {
 
             rightc = removeTag(rightc);
             //alert (rightc);
-            if (rightc === '') {
+            if (rightc.length <= 2) { //short code means no need to display
                 cbodyCount += 1;
                 rightc = cText[cbodyCount] || '';
                 rightc = removeTag(rightc);
