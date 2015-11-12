@@ -24,7 +24,8 @@
                 <li class="channel markets" url="/index.php/ft/channel/phonetemplate.html?channel=markets">金融市场</li>
                 <li class="channel business" url="/index.php/ft/channel/phonetemplate.html?channel=business">商业</li>
                 <li class="channel management" url="/index.php/ft/channel/phonetemplate.html?channel=management">管理</li>
-                <li class="channel management" url="/index.php/ft/tag/VFTT?i=2">高端视点</li>
+                <li class="channel management" url="/index.php/ft/channel/phonetemplate.html?channel=specialreport">特别报道</li>
+                <li class="channel management" url="/index.php/ft/tag/与FT共进午餐?i=2">与FT共进午餐</li>
                 <li class="channel lifestyle" url="/index.php/ft/channel/phonetemplate.html?channel=lifestyle">生活时尚</li>
                 <li class="channel photo" url="/index.php/ft/channel/phonetemplate.html?channel=video">视频</li>
                 <li class="channel vd" url="/index.php/ft/channel/phonetemplate.html?channel=photo">图辑</li>
@@ -36,31 +37,34 @@
             </ul>
         </div>
     </div>
-            <div class=loadingStory></div>
-        <div id=breakingnews></div>
-        <div class=layout-a_region-3>
-            <div class=inner>
+            <div class="loadingStory"></div>
+        <div id="breakingnews"></div>
+        <div class="layout-a_region-3">
+            <div class="inner">
                 <div class="adiframe banner" type="50" frame="ad300"></div>
-                <div id=coveranchor class=toempty></div>
+                <div id="coveranchor" class="toempty"></div>
                 <div class=clearfloat></div>
 <div class="adiframe banner midBanner" type="90" adwidth="100%" frame="midBanner"></div>
-<div class=clearfloat></div>                <div id=newsanchor class=toempty></div>
-                <div class="adiframe mpu-phone for-phone" type="250" frame="ad300x250-home"></div>                                <div id=mediaanchor class=toempty></div>
-                <div id=peopleanchor class=toempty></div>
-                <div id=politicsanchor class=toempty></div>
-                <div id=economyanchor class=toempty></div>
-                <div id=businessanchor class=toempty></div>
-                <div id=societyanchor class=toempty></div>
+<div class=clearfloat></div>                                <div id="newsanchor" class="toempty"></div>
+                <div class="adiframe mpu-phone for-phone" type="250" frame="ad300x250-home"></div>                                    <div class="toempty specialanchor" tag="与FT共进午餐" title="与FT共进午餐" adid="2013"></div>
+                                <div id="mediaanchor" class="toempty"></div>
+                <div id="peopleanchor" class="toempty"></div>
+                <div id="politicsanchor" class="toempty"></div>
+                <div id="economyanchor" class="toempty"></div>
+                <div class=clearfloat></div>
+<div class="adiframe banner" type="50" frame="banner-bottom-home"></div>
+<div class=clearfloat></div>                <div id="businessanchor" class="toempty"></div>
+                <div id="societyanchor" class="toempty"></div>
                 <a id="homepageEmail" class="banner grey-box" href="mailto:ftchinese.feedback@gmail.com?subject=Feedback about FTC Web App - from home page">
                     <div style="text-align:center;">帮我们做得更好，请致信：</div>
-                    <div style="text-align:center;font-family:arial;font-size:15px;" class=english>ftchinese.feedback@gmail.com</div>
+                    <div style="text-align:center;font-family:arial;font-size:15px;" class="english">ftchinese.feedback@gmail.com</div>
                 </a>
-                <div id=lifestyleanchor class=toempty></div>
-                <div id=bookanchor class=toempty></div>
-                <div id=letteranchor class=toempty></div>
-                <div id=ideaanchor class=toempty></div>
-                <div id=moreanchor class=toempty></div>
-                                <div class=clearfloat></div>
+                <div id="lifestyleanchor" class="toempty"></div>
+                <div id="bookanchor" class="toempty"></div>
+                <div id="letteranchor" class="toempty"></div>
+                <div id="ideaanchor" class="toempty"></div>
+                <div id="moreanchor" class="toempty"></div>
+                <div class="clearfloat"></div>
             </div>
         </div>
         <div class=layout-a_region-4>
@@ -90,11 +94,12 @@
                 </div>
             </div>
         </div>
-
-        <div class=copyright>
+		<div id="o-connection-status"></div>
+        <div class=copyright onclick="showConnectionStatus()">
             <b>&copy; 英国金融时报</b> 有限公司 2015&nbsp;&nbsp;
             <span><acronym title="Financial Times">FT中文网</acronym>为英国金融时报的注册商标</span>
         </div>
+        
     </div>
 </div>
 
@@ -110,10 +115,15 @@
                         <div class="storydate dateStamp"></div>
                         <div class="storytitle title"></div>
                         <div class="storybyline story_info"></div>
-                        <div class="storybody cbody" id=bodytext></div>
+                        <div class="storybody cbody" id="bodytext"></div>
                     </div>
                 </div>
-                <div class="mobile-screen"><div id="columnintro"></div><div class=storymore></div></div>
+                <div class=clearfloat></div>
+<div class="adiframe banner" type="50" frame="banner-bottom-story"></div>
+<div class=clearfloat></div>                <div class="mobile-screen">
+                    <div id="columnintro"></div>
+                    <div class=storymore></div>
+                </div>
                 <div class="section readerCommentTitle">读者评论</div>
                 <div id="logincomment">
                     <form id="storyForm">
@@ -291,7 +301,7 @@ background-color: rgba(0,0,0,0.14) !important;
                     <button class="homeOnly channelOnly" onclick="openSearch()"><i class="ft-icon-search"></i><span>搜索</span></button>
                     <button class="homeOnly channelOnly nutmeg_settings-btnn floatright" onclick="turnonOverlay('setting')" aria-label="Settings"><i class="ft-icon-setting"></i><span>设置</span></button>
                     <button id="refreshButton" class="homeOnly channelOnly floatright" onclick="refresh()"><i class="ft-icon-refresh"></i><span>刷新</span></button>
-                    <button class="storyOnly floatright" onclick="shareArticle();"><i class="ft-icon-share"></i><span>分享</span></button>
+                    <button id="shareButton" class="storyOnly floatright" onclick="shareArticle();"><i class="ft-icon-share"></i><span>分享</span></button>
                     <button class="storyOnly floatright" onclick="openClip()"><i class="ft-icon-clippings"></i><span>收藏</span></button>
                 </div>
              </div>
@@ -350,7 +360,7 @@ background-color: rgba(0,0,0,0.14) !important;
                 <div class="standalonebutton"><button class="ui-light-btn" onclick="turnonOverlay('loginBox')">登录</button></div>                
                 <div class="standalonebutton"><button class="ui-light-btn channel" url="/index.php/ft/channel/phonetemplate.html?channel=myftsetup">设置我的<font class=english>FT</font></button></div>                                
                 <div class="standalonebutton nativeButton"><a href="https://itunes.apple.com/cn/app/ft-zhong-wen-wang-zhi-neng/id443870811?mt=8" target=_blank><button class="ui-light-btn">到<span class=english>App Store</span>上推荐这个应用</button></a></div>
-                <div class="standalonebutton"><button class="ui-light-btn channel" url="/index.php/ft/channel/phonetemplate.html?channel=help">帮助与反馈</button></div>
+                <div class="standalonebutton"><button class="ui-light-btn channel" url="/index.php/ft/channel/phonetemplate.html?channel=help">帮���与反馈</button></div>
                 <div class="currentVersion" id="storytotalnum"></div>
 				<div id="testMessage"></div>                
 			</div>
@@ -461,21 +471,27 @@ background-color: rgba(0,0,0,0.14) !important;
 </div>
 
 
-<div id=watchVideo class=overlay>
-	<div class=overlayBG></div>
-	<div class=inner>
-		<div class=cell>
-			<div class=settingbox>
-				<div class=overlay-header>
-					<div class="nutmeg-content_right rightmargin"><button onclick="closeOverlay()" class="overlay_close-btn" aria-label="Settings"></button></div>
-					<p></p>
-				</div>
-                <div id=videoContent>
-                    
+<div id="watchVideo" class="overlay">
+    <div class="overlayBG"></div>
+    <div class="inner">
+        <div class="cell">
+            <div class="settingbox">
+                <div class="overlay-header">
+                    <div class="nutmeg-content_right rightmargin">
+                        <button onclick="shareArticle();"><i class="ft-icon-share"></i></button>
+                        <button onclick="closeOverlay()" class="overlay_close-btn" aria-label="Settings"></button>
+                    </div>
+                    <p></p>
                 </div>
-			</div>
-		</div>
-	</div>
+                <div class="o-responsive-video-container">
+                    <div class="o-responsive-video-wrapper-outer">
+                        <div id="videoContent" class="o-responsive-video-wrapper-inner">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id=slideShow class=overlay></div>
@@ -541,34 +557,34 @@ background-color: rgba(0,0,0,0.14) !important;
 </div>
 
 
-<div id=shareStory class=overlay>
-	<div class=overlayBG></div>
-	<div class=inner>
-		<div class=cell>
-			<div class=settingbox>
-				<div class=overlay-header>
-					<div class="nutmeg-content_right rightmargin"><button onclick="closeOverlay()" class="overlay_close-btn" aria-label="Settings"></button></div>
-					分享本文
-				</div>
-				<div id="shareScroller">
-				<div class="standalonebutton"><a class="button ui-light-btn" id="shareEmail" target=_blank onclick="ga('send','event', 'PhoneApp', 'Share', 'Email');">电子邮件</a></div>
-				<div class="standalonebutton"><a class="button ui-light-btn" id="shareSina" onclick="turnonOverlay('shareWeiboChoose');" target=_blank>新浪微博</a></div>
+<div id=shareStory class="overlay close-self-only">
+    <div class=overlayBG></div>
+    <div class=inner>
+        <div class="cell">
+            <div class=settingbox>
+                <div class=overlay-header>
+                    <div class="nutmeg-content_right rightmargin"><button onclick="closeShareArticle()" class="overlay_close-btn" aria-label="Settings"></button></div>
+                    分享
+                </div>
+                <div id="shareScroller">
+                <div class="standalonebutton"><a class="button ui-light-btn" id="shareEmail" target=_blank onclick="ga('send','event', 'PhoneApp', 'Share', 'Email');">电子邮件</a></div>
+                <div class="standalonebutton"><a class="button ui-light-btn" id="shareSina" onclick="turnonOverlay('shareWeiboChoose');" target=_blank>新浪微博</a></div>
                 <div class="standalonebutton"><a class="button ui-light-btn" id="shareWeChat" onclick="turnonOverlay('shareMobileOverlay');$('#openWeChat').hide();$('#shareMobile').focus();">微信</a></div>
-				<div class="standalonebutton"><a class="button ui-light-btn" id="shareQQ" target=_blank>腾讯微博</a></div>
-				<div class="standalonebutton"><a class="button ui-light-btn" id="shareLinkedIn" target=_blank><span class=english>LinkedIn</span></a></div>
-				<div class="standalonebutton"><a class="button ui-light-btn" id="shareFacebook" target=_blank><span class=english>FACEBOOK</span></a></div>
-				<div class="standalonebutton"><a class="button ui-light-btn" id="shareTwitter" target=_blank><span class=english>TWITTER</span></a></div>
+                <div class="standalonebutton"><a class="button ui-light-btn" id="shareQQ" target=_blank>腾讯微博</a></div>
+                <div class="standalonebutton"><a class="button ui-light-btn" id="shareLinkedIn" target=_blank><span class=english>LinkedIn</span></a></div>
+                <div class="standalonebutton"><a class="button ui-light-btn" id="shareFacebook" target=_blank><span class=english>FACEBOOK</span></a></div>
+                <div class="standalonebutton"><a class="button ui-light-btn" id="shareTwitter" target=_blank><span class=english>TWITTER</span></a></div>
                 <div class="standalonebutton"><a class="button ui-light-btn" id="shareRenren" target=_blank>人人网</a></div>
-				<div class="padding">
-					<div>复制到手机上其他客户端</div>
-					<textarea class="commentTextArea paste" rows=6 type="text" id="shareSocial" value="" /></textarea>
-					<div>复制文章网址</div>
-					<input class="commentTextArea paste" type="text" id="shareURL" value="" />
-				</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                <div class="padding">
+                    <div>复制到手机上其他客户端</div>
+                    <textarea class="commentTextArea paste" rows=6 type="text" id="shareSocial" value="" /></textarea>
+                    <div>复制文章网址</div>
+                    <input class="commentTextArea paste" type="text" id="shareURL" value="" />
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -663,7 +679,8 @@ background-color: rgba(0,0,0,0.14) !important;
         <li class="channel markets" url="/index.php/ft/channel/phonetemplate.html?channel=markets">金融市场</li>
         <li class="channel business" url="/index.php/ft/channel/phonetemplate.html?channel=business">商业</li>
         <li class="channel management" url="/index.php/ft/channel/phonetemplate.html?channel=management">管理</li>
-        <li class="channel management" url="/index.php/ft/tag/VFTT?i=2">高端视点</li>
+        <li class="channel management" url="/index.php/ft/channel/phonetemplate.html?channel=specialreport">特别报道</li>
+        <li class="channel management" url="/index.php/ft/tag/与FT共进午餐?i=2">与FT共进午餐</li>
         <li class="channel lifestyle" url="/index.php/ft/channel/phonetemplate.html?channel=lifestyle">生活时尚</li>
         <li class="channel vd" url="/index.php/ft/channel/phonetemplate.html?channel=video">视频</li>
         <li class="channel photo" url="/index.php/ft/channel/phonetemplate.html?channel=photo">图辑</li>
@@ -675,5 +692,5 @@ background-color: rgba(0,0,0,0.14) !important;
     </ul>
 </div>
 
-<div id="tip" class="tip"></div>
+<div id="tip" class="tip"></div>
 

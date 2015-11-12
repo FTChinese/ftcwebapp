@@ -19,7 +19,8 @@
                 <li class="channel markets" url="/index.php/ft/channel/phonetemplate.html?channel=markets">金融市场</li>
                 <li class="channel business" url="/index.php/ft/channel/phonetemplate.html?channel=business">商业</li>
                 <li class="channel management" url="/index.php/ft/channel/phonetemplate.html?channel=management">管理</li>
-                <li class="channel management" url="/index.php/ft/tag/VFTT?i=2">高端视点</li>
+                <li class="channel management" url="/index.php/ft/channel/phonetemplate.html?channel=specialreport">特别报道</li>
+                <li class="channel management" url="/index.php/ft/tag/与FT共进午餐?i=2">与FT共进午餐</li>
                 <li class="channel lifestyle" url="/index.php/ft/channel/phonetemplate.html?channel=lifestyle">生活时尚</li>
                 <li class="channel photo" url="/index.php/ft/channel/phonetemplate.html?channel=video">视频</li>
                 <li class="channel vd" url="/index.php/ft/channel/phonetemplate.html?channel=photo">图辑</li>
@@ -84,6 +85,8 @@
 <div url="/index.php/ft/column/007000010?i=2" class="channel oneStory more">中间论坛</div>
 <div url="/index.php/ft/column/007000046?i=2" class="channel oneStory more">杏林守望者</div>
 <div url="/index.php/ft/column/007000055?i=2" class="channel oneStory more">名利场</div>
+<div url="/index.php/ft/column/007000059?i=2" class="channel oneStory more">时代的噪音</div>
+<div url="/index.php/ft/column/007000060?i=2" class="channel oneStory more">谈艺录</div>
 
 </div>
 
@@ -93,7 +96,7 @@
 <div url="/index.php/ft/column/007000013?i=2" class="channel oneStory more">露西•凯拉韦</div>
 <div url="/index.php/ft/column/007000021?i=2" class="channel oneStory more">约翰•奥瑟兹</div>
 <div url="/index.php/ft/column/007000023?i=2" class="channel oneStory more">戴维•皮林</div>
-<div url="/index.php/ft/column/007000022?i=2" class="channel oneStory more">卧底经济学家</div>
+<div url="/index.php/ft/column/007000022?i=2" class="channel oneStory more">卧底经济���家</div>
 <div url="/index.php/ft/column/007000024?i=2" class="channel oneStory more">吉莲•邰蒂</div>
 <div url="/index.php/ft/column/007000025?i=2" class="channel oneStory more">吉迪恩•拉赫曼</div>
 <div url="/index.php/ft/column/007000015?i=2" class="channel oneStory more">约翰•加普</div>

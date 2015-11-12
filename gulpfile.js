@@ -99,15 +99,17 @@ gulp.task('ea', function () {
   message.head.source = 'web';
   message.body = {};
   message.body.ielement = {};
-  message.body.ielement.num = 30;
+  message.body.ielement.num = 25;
   //http://app003.ftmailbox.com/index.php/jsapi/get_last_publish_story?day=2015-6-17&
 
   //postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea001.json');
-  postDatatoFile('http://m.ftchinese.com/index.php/jsapi/get_last_publish_story?day=2015-6-17&', message, './app/api/ea001.json');
+  postDatatoFile('http://m.ftchinese.com/index.php/jsapi/get_last_publish_story?day=2015-10-13&', message, './app/api/ea001.json');
   message.head.transactiontype = '10003';
   postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea003.json');
   message.head.transactiontype = '10007';
   postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea007.json');
+  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homecontent', './app/api/homecontent.tpl');
+  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homecontent&screentype=wide', './app/api/homecontentwide.tpl');
   getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?', './app/api/home.tpl');
   getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homepagevideo&', './app/api/homepagevideo.tpl');
   getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=skyZ&', './app/api/skyZ.tpl');
@@ -240,14 +242,17 @@ gulp.task('copy', ['build'], function () {
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['dist/index.html'])
     .pipe(replace(/\<html\>/g, '<html manifest="iphone-2014.manifest">'))
+    .pipe(replace(/=phone\//g, '=iphone-2014/'))
     .pipe(rename('iphone-2014.html'))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['dist/index.html'])
     .pipe(replace(/\<html\>/g, '<html manifest="ipad-2014.manifest">'))
+    .pipe(replace(/=phone\//g, '=ipad-2014/'))
     .pipe(rename("ipad-2014.html"))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['dist/index.html'])
     .pipe(replace(/\<html\>/g, '<html manifest="bb-2014.manifest">'))
+    .pipe(replace(/=phone\//g, '=bb-2014/'))
     .pipe(rename("bb-2014.html"))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['dist/index.html'])
@@ -260,6 +265,7 @@ gulp.task('copy', ['build'], function () {
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['dist/mba.html'])
     .pipe(replace(/\<html\>/g, '<html manifest="mba-2014.manifest">'))
+    .pipe(replace(/=phone\//g, '=mba-2014/'))
     .pipe(rename("mba-2014.html"))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['dist/phone/**/*'])
@@ -268,24 +274,25 @@ gulp.task('copy', ['build'], function () {
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/ipad-2014'));
   gulp.src(['dist/phone/**/*'])
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/bb-2014'));
+    gulp.src(['dist/phone/**/*'])
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/mba-2014'));
   gulp.src(['app/cache/phone.manifest'])
     .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
     .pipe(rename('phone-2014.manifest'))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['app/cache/phone.manifest'])
     .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
+    .pipe(replace(/phone\//g, 'iphone-2014/'))
     .pipe(rename('iphone-2014.manifest'))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['app/cache/phone.manifest'])
     .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
+    .pipe(replace(/phone\//g, 'ipad-2014/'))
     .pipe(rename('ipad-2014.manifest'))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['app/cache/phone.manifest'])
     .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
-    .pipe(rename('bb-2014.manifest'))
-    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
-  gulp.src(['app/cache/phone.manifest'])
-    .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
+    .pipe(replace(/phone\//g, 'bb-2014/'))
     .pipe(rename('bb-2014.manifest'))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['app/cache/android.manifest'])
@@ -294,6 +301,7 @@ gulp.task('copy', ['build'], function () {
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   gulp.src(['app/cache/mba.manifest'])
     .pipe(replace(/#changelogdatestamp/g, '#datestamp' + thedatestamp))
+    .pipe(replace(/phone\//g, 'mba-2014/'))
     .pipe(rename('mba-2014.manifest'))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
   
@@ -302,13 +310,26 @@ gulp.task('copy', ['build'], function () {
   var cssbundle = fs.readFileSync('dist/phone/s.css', 'utf8');
   var googleanalytics = fs.readFileSync('dist/log/ga.js', 'utf8');
   var fa = fs.readFileSync('dist/log/analytics.js', 'utf8');
-  var mainjs = fs.readFileSync('dist/phone/m.js', 'utf8');
+  // use jquery.min.js directly
+  // to avoid gulp compiling bug
+  var jqueryM = fs.readFileSync('bower_components/jquery/dist/jquery.min.js', 'utf8');
+  var html5storageM = fs.readFileSync('dist/phone/html5storage-m.js', 'utf8');
+  var trackingM = fs.readFileSync('dist/phone/tracking-m.js', 'utf8');
+  var fastclickM = fs.readFileSync('dist/phone/fastclick-m.js', 'utf8');
+  var ftscrollerM = fs.readFileSync('dist/phone/ftscroller-m.js', 'utf8');
+  var mainM = fs.readFileSync('dist/phone/main-m.js', 'utf8');
 
   gulp.src(['app/android.html'])
+    .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: false})))
     .pipe(replace(/\{\{cssbundle\}\}/g, cssbundle))
     .pipe(replace(/\{\{googleanalytics\}\}/g, googleanalytics))
     .pipe(replace(/\{\{fa\}\}/g, fa))
-    .pipe(replace(/\{\{mainjs\}\}/g, mainjs))
+    .pipe(replace(/\{\{jquery-m\}\}/g, jqueryM))
+    .pipe(replace(/\{\{html5storage-m\}\}/g, html5storageM))
+    .pipe(replace(/\{\{tracking-m\}\}/g, trackingM))
+    .pipe(replace(/\{\{fastclick-m\}\}/g, fastclickM))
+    .pipe(replace(/\{\{ftscroller-m\}\}/g, ftscrollerM))
+    .pipe(replace(/\{\{main-m\}\}/g, mainM))
     .pipe(replace(/\<html\>/g, '<html manifest="android-2014.manifest">'))
     .pipe(rename('androidapp.html'))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
