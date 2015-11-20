@@ -1,5 +1,5 @@
 //申明各种Global变量
-var _currentVersion = 1087; //当前的版本号
+var _currentVersion = 1088; //当前的版本号
 var _localStorage = 0;
 var exp_times = Math.round(new Date().getTime() / 1000) + 86400;
 var username;
@@ -47,6 +47,8 @@ var gOnlineAPI = false;
 var gSpecial = false;
 var gDeviceId = "";
 var gShowStatusBar = 0;
+var gHomePageIsLatest = true; //The latest home page is displayed
+var gCurrentStoryId = '';
 
 //开机的时候检查屏幕宽度，以便节约流量
 //我们的基本假设是，不管横屏还是竖屏，只要宽度小于700，那就是手机；否则就是平板
@@ -139,11 +141,10 @@ gVerticalScrollOpts = {
 
 //gNowView是指目前显示的Div，可能为fullbody, storyview, adview或channel
 var scrollHeight=0, scrollOverlay=0, readingid, langmode="ch", hist = [], pageStarted=0;
-var thisday = new Date();
-var thed = thisday;
-var themi = thisday.getHours() * 10000 + thisday.getMinutes() * 100;
-var thed = thisday.getFullYear() * 10000 + thisday.getMonth() * 100 + thisday.getDate();
-themi=thed*1000000+themi;
+var thisday;
+var thed;
+var themi;
+var thed;
 var gNowView = 'fullbody';
  
 
@@ -152,8 +153,8 @@ var sectionScroller, theScroller, storyScroller, channelScroller, thenavScroller
 var longholiday = 0;
 //if (thed >= '20130109' && thed <= '20130112') {longholiday = 1};
 
-var thisdayunix = Math.round(thisday.getTime() / 1000); //今天的Unix时间戳
-var expiredayunix = thisdayunix + 7776000; //3 * 30 * 24 * 60 * 60; //本地存储过期日(三个月)的unix时间戳
+var thisdayunix; //今天的Unix时间戳
+var expiredayunix; //3 * 30 * 24 * 60 * 60; //本地存储过期日(三个月)的unix时间戳
 
 //把所有的Ajax requests都放在一个数组里面，如果因为网络不好，用户要求直接转到离线阅读，则立即abort所有requests
 var requests = [], countInsert=[];
@@ -164,7 +165,9 @@ gAppRoot=gAppRoot.replace(/^.*\.com\//g,"").replace(/(\.html).*$/g,"$1").replace
 
 
 //如果是在阅读过程中因为点击广告等原因离开Web App，则在10分钟内重新打开程序，立即回到刚刚在读的文章
-var actionTimeStamp=Math.round(thisday.getTime() / 1000), actionUrl="", actionScroll=0;
+var actionTimeStamp;
+var actionUrl="";
+var actionScroll=0;
 
 //如果网址中有wechatShare，则强制调用iOS原生SDK分享
 var iOSShareWechat = 0;
@@ -177,12 +180,24 @@ var gMinSwipe = 30;
 var gStartSwipe = 15;
 var gIsSwiping = false;
 var gMoveState = 0;
+var gStartPageStorage = '';
 
-//启动
+//functions
+function updateTimeStamp() {
+    thisday = new Date();
+    themi = thisday.getHours() * 10000 + thisday.getMinutes() * 100;
+    thed = thisday.getFullYear() * 10000 + thisday.getMonth() * 100 + thisday.getDate();
+    themi=thed*1000000+themi;
+    thisdayunix = Math.round(thisday.getTime() / 1000);
+    expiredayunix = thisdayunix + 7776000;
+    actionTimeStamp=Math.round(thisday.getTime() / 1000);
+}
+
+//Start the App
 function startpage() {
+    updateTimeStamp();
     gStartStatus = "startpage start";
     var k;
-    var startpageStorage='';
     var oneday = '';
     var ccode = getpvalue(window.location.href,"utm_campaign") || "";
     if (ccode !== "") {
@@ -213,40 +228,61 @@ function startpage() {
     document.body.className = 'fullbody';
     gNowView = 'fullbody';
     try {
-        startpageStorage = localStorage.getItem(gHomePageStorageKey) || '';
+        gStartPageStorage = localStorage.getItem(gHomePageStorageKey) || '';
         _localStorage=1;
-        //loadFromLocalStorage(startpageStorage);
+        //loadFromLocalStorage(gStartPageStorage);
     } catch (err) {
-        startpageStorage = "";
+        gStartPageStorage = "";
         _localStorage=0;
     }
-    if (isOnline() === 'no' && startpageStorage === '') {
-        $('#startstatus').html('系统显示您现在离线，缓存中也没有内容，所以连接服务器很可能失败');
+    if (isOnline() === 'no' && gStartPageStorage === '') {
+        $('#startstatus').html('您没有联网');
         setTimeout(function(){
-            startFromOnline();
+            loadHomePage('start');
         },2000);
     } else {
-        startFromOnline();
+        loadHomePage('start');
+    }
+    //if user use wifi, download the latest 25 stories
+    if (window.gConnectionType !== 'data' && window.gConnectionType !== 'no') {
+        setTimeout(function () {
+            downloadStories('start');
+        }, 1000);
+    }
+
+    try{
+        if (_localStorage===1 && localStorage.getItem(gNewStoryStorageKey)) {
+            savedhomepage = localStorage.getItem(gNewStoryStorageKey);
+            loadStoryData(savedhomepage);
+        }
+    } catch (ignore) {
+        
     }
 
     requestTime = new Date().getTime();
-    gStartStatus = "startpage get_last_updatetime";
+    //gStartStatus = "startpage get_last_updatetime";
     $.get(gGetLastUpdateTime + requestTime, function(data) {
         lateststory = data;
     });
     setInterval(function() {
         requestTime = new Date().getTime();
-        $.get(gGetLastUpdateTime + requestTime,
-            function(data) {
-                if (lateststory != data) {filloneday(oneday);}
-                lateststory = data;
-                connectInternet="yes";
-                setTimeout(function(){connectInternet="unknown";},299000);
-            });
+        $.get(gGetLastUpdateTime + requestTime, function(data) {
+            if (lateststory !== data) {
+                loadHomePage('refresh');
+                if (window.gConnectionType !== 'data' && window.gConnectionType !== 'no') {
+                    downloadStories('refresh');
+                }
+            }
+            lateststory = data;
+            connectInternet="yes";
+            setTimeout(function(){
+                connectInternet="unknown";
+            },299000);
+        });
         checkbreakingnews();
     },100000);
     if (isOnline()=="possible") {checkbreakingnews();}
-    gStartStatus = "startpage useFTScroller";
+    //gStartStatus = "startpage useFTScroller";
     if (useFTScroller === 1) {
         try {
             document.getElementById('fullbodycontainer').addEventListener('touchstart', function(e) {
@@ -304,7 +340,7 @@ function startpage() {
         }
     }
     //Delegate Click Events for Any New Development
-    gStartStatus = "startpage inline-video-container";
+    //gStartStatus = "startpage inline-video-container";
     $('body').on('click','.inline-video-container',function(){
         var videoId = $(this).attr('video-url') || $(this).attr('id') || $(this).attr('vsource') || '';
         var videoTitle = $(this).attr('title') || '视频';
@@ -339,7 +375,7 @@ function startpage() {
             $(".channelNavButton").removeClass("open");
         }
     });
-    gStartStatus = "startpage end";
+    //gStartStatus = "startpage end";
     //Delegate Click on Home Page
     $("body").on("click",".track-click",function(){
         var eventCategory,eventAction,eventLabel;
@@ -382,7 +418,7 @@ function removeStartCover() {
 */
 
 function fillContent() {
-    gStartStatus = "fillContent start";
+    //gStartStatus = "fillContent start";
     var ua=navigator.userAgent || navigator.vendor || "";
     var searchnote = '输入关键字查找文章';
     var mpdata;
@@ -480,6 +516,7 @@ function fillContent() {
     });
 
     //查看旧刊的日历
+    thisday = new Date();
     updatecalendar(thisday, 0);
 
     //如果是iPhone上的Mobile Safari打开，则显示添加到主屏幕的提示
@@ -650,9 +687,9 @@ function fillContent() {
     }
     
     //点击刷新
-    $(".loadingStory").unbind().bind("click",function(){
-        refresh();
-    });
+    // $(".loadingStory").unbind().bind("click",function(){
+    //     refresh();
+    // });
 
     //iOS原生应用分享功能
     if (gIsInSWIFT === true) {
@@ -689,7 +726,7 @@ function fillContent() {
     //禁止长按按钮弹出默认的选择框
         //禁止长按按钮弹出默认的选择框
     $('#fullbody,#channelview,#contentRail,#navOverlay').disableSelection();
-    gStartStatus = "fillContent end";
+    //gStartStatus = "fillContent end";
 }
 
 
@@ -785,7 +822,9 @@ function freezeCheck() {
 }
 
 
+
 //在获取到当天的文章JSON数据接口后，根据文章的priority，配图情况，以及其他信息，将它们插入到版面中，生成类似报纸的效果
+/*
 function fillPage(thedata) {
     gStartStatus = "fillPage start";
     //遍历接口的所有文章，根据其属性将其插入相应位置
@@ -1030,6 +1069,7 @@ function fillPage(thedata) {
     gOnlineAPI = false;
     gStartStatus = "fillPage end";
 }
+*/
 
 function showAppImage(ele) {
     $('#' + ele + ' .image>figure>img').each(function() {
@@ -1052,6 +1092,7 @@ function showThisImage(ele, imgUrl) {
     ele.parent().parent().addClass('imageloaded');
 }
 
+/*
 //插入头版文章
 function insertCover(insertID,insertCount,entryId,shortheadline,coverImg,iconImg,insertLead) {
     var firstBigButton = '';
@@ -1108,19 +1149,16 @@ function insertArticle(insertCountProp,insertID,channelLink,channelTitle,entryId
     countInsert[insertCountProp] = currentInsert + 1;
     gStartStatus = "fillPage end";
 }
+*/
+
 
 //获取某一天的所有文章
 function filloneday(onedaydate) {
-    gStartStatus = "filloneday start";
+    //gStartStatus = "filloneday start";
     var apiurl;
     var loadcontent;
     var savedhomepage;
     var uaStringFillPage;
-    if (isOnline()=="no") {
-		$('.bodynote').append("<b>小提示：</b>您现在离线，只能阅读上次访问时保存下来的文章").show();
-    } else {
-		$('.bodynote').hide();
-    }
     //clearfields();
     
     //更新首页上的视频与互动部分
@@ -1229,7 +1267,7 @@ function filloneday(onedaydate) {
     $("#storytotalnum").html("版本："+_currentVersion+gDeviceId).unbind().bind("click",function(){
         $(this).html(uaStringFillPage);
     });
-    gStartStatus = "filloneday end";
+    //gStartStatus = "filloneday end";
 }
 
 function saveoneday(onedaydate, data) {
@@ -1245,19 +1283,19 @@ function saveoneday(onedaydate, data) {
 }
 
 function notifysuccess() {
-    if (typeof latestunix=="string") {
+    if (typeof latestunix === 'string') {
     var todaystamp = unixtochinese(latestunix, 0);
-    $('#homeload .loadingStatus').html(todaystamp + " 出版");
+        $('#homeload .loadingStatus').html(todaystamp + " 出版");
     }
-    if ($("#homeprogressbar").length>0) {
-        $("#homeprogressbar").animate({width:"100%"}, 1500, function(){
-            $('#homeload .right').html('<a class="button light-btn">刷新</a>');
-            $('#homeload').unbind();
-            //$('.loadingStory').empty();
-        });
-    }
+    // if ($("#homeprogressbar").length>0) {
+    //     $("#homeprogressbar").animate({width:"100%"}, 1500, function(){
+    //         $('#homeload .right').html('<a class="button light-btn">刷新</a>');
+    //         $('#homeload').unbind();
+    //     });
+    // }
 }
 
+/*
 function clearfields() {
     notifysuccess();
     $('#datestamp').empty();
@@ -1282,68 +1320,324 @@ function jumpToPage(){
     _popstate=0;
     
 }
+*/
 
-function startFromOnline() {
-    gStartStatus = "startFromOnline start";
-    setTimeout(function(){
-        $("#loadstatus").html("您的网络连接似乎非常不理想，请在网络情况比较好的时候点击此处重新加载").unbind().bind("click",function(){
-            window.location.reload();
+
+
+
+
+function loadStoryData(data) {
+    var jsonHeadPosition;
+    var jsonWrong;
+    var jsondata;
+    var dataStatus = 'unknown';
+    var thedata = data;
+    //gStartStatus = 'loading story data';
+    //如果返回数据长度不足1000，说明此次返回的数据根本就不对，跳出函数
+    if (thedata.length<1000){return;}
+    thedata = checkhttps(thedata) || "";
+    try {
+        jsonHeadPosition = thedata.indexOf('{"head"');
+        if (jsonHeadPosition>0) {//如果返回的数据前有服务器返回的乱码（参见jsoneerror.html），则先去除它
+            jsonWrong = thedata.substring(0,100);
+            thedata = thedata.slice(jsonHeadPosition);
+            if (gOnlineAPI === true) {
+                trackErr(jsonWrong, "wrong jsondata live");
+            } else {
+                trackErr(jsonWrong, "wrong jsondata cache");
+            }
+        }
+        jsondata = $.parseJSON(thedata);
+    } catch(err) {
+        thedata = thedata.substring(0,22);
+        if (gOnlineAPI === true) {
+            trackErr(err + "." + thedata, "fillPage jsondata");
+            dataStatus = 'online error';
+        } else {
+            trackErr(err + "." + thedata, "fillPage jsondata cache");
+            dataStatus = 'cache error';
+        }
+    }
+    try {
+        if (jsondata.body.odatalist.length>=0) {
+            jsondata = jsondata.body.odatalist;
+        } else {   
+            ga('send','event', 'CatchError', 'API Error', '{errorcode: "' + jsondata.body.oelement.errorcode + '", host: "' + location.host + '"}');
+            fa('send','event', 'CatchError', 'API Error', '{errorcode: "' + jsondata.body.oelement.errorcode + '", host: "' + location.host + '"}');
+        }
+    } catch (ignore) {
+        //alert (ignore.toString());
+    }
+
+    $.each(jsondata, function(entryIndex, entry) {
+        allstories[entry.id] = entry;
+        //console.log (entry);
+    });
+}
+
+function showDateStamp() {
+    var ele = $('#homeload .loadingStatus');
+    var myStamp = ele.attr('data-pubdate');
+    ele.html(myStamp);
+}
+
+function downloadStories(downloadType) {
+    var apiurl;
+    var loadcontent;
+    var savedhomepage;
+    var uaStringFillPage;
+    var todaystamp;
+    var loadingBarContent = '';
+    var message;
+    if (gStartPageAPI === true) {
+        $('#homeload .loadingStatus').html('下载文章供离线阅读...');
+        apiurl = gApiUrl.a10001;
+        message = {};
+        message.head = {};
+        message.head.transactiontype = '10001';
+        message.head.source = 'web';
+        message.body = {};
+        message.body.ielement = {};
+        message.body.ielement.num = 30;
+        gHomeAPIRequest = new Date().getTime();
+        $.ajax({
+            method: gApi001Method,
+            url: apiurl + '?' + themi,
+            //data: JSON.stringify(message),
+            dataType: 'text'
+        })
+        .done(function(data) {
+            gHomeAPISuccess = new Date().getTime();
+            var timeSpent = gHomeAPISuccess - gHomeAPIRequest;
+            ga('send', 'timing', 'App', 'API Request', timeSpent, 'Home Stories');
+            if (data.length <= 300) {
+                return;
+            }
+            gOnlineAPI = true;
+            //fillPage(data);
+            loadStoryData(data);
+            saveoneday('', data);
+            todaystamp = unixtochinese(lateststory, 0);
+            //$('#homeload .right').html('<a class="button light-btn" onclick="refresh(true)">下载最新文章</a>');
+            showDateStamp();
+            if (ipadstorage) {
+                setTimeout(function() {
+                    ipadstorage.droptable();
+                    //save_allimg_to_offline_db();
+                },10000);
+            }
+        }).fail(function(jqXHR){
+            todaystamp = unixtochinese(lateststory, 0);
+            $('#homeload .loadingStatus').html('未能下载成功');
+            setTimeout(function(){
+                showDateStamp();
+            },2000);
+            gOnlineAPI = false;
+            gHomeAPIFail = new Date().getTime();
+            var timeSpent = gHomeAPIFail - gHomeAPIRequest;
+            trackFail(message.head.transactiontype + ":" + jqXHR.status + "," + jqXHR.statusText + "," + timeSpent, "Latest News");
         });
-    },5000);
-    $("#startstatus").html("加载最新版面");
-    $("#startbar").animate({width:"50%"},300,function(){
-        // fetching placeholder template
-        requests.push( 
-            $.ajax({
-                // url with events and date
-                url: gStartPageTemplate + themi,
-                success: function(data) {
-                    $("#startstatus").html("加载最新版面");
-                    connectInternet="yes";
-                    setTimeout(function(){connectInternet="unknown";},300000);
-                    $("#startbar").animate({width:"60%"},300,function(){
-                        data = checkhttps(data);
-                        $('#homecontent').html(data);
-                        fillContent();
-                        try {
-                            localStorage.removeItem(gHomePageStorageKey);
-                            saveLocalStorage(gHomePageStorageKey, data);
-                        } catch (ignore) {
-                        
-                        }
-                        $('#startstatus').html('版面成功加载');
-                        $("#startbar").animate({width:"100%"},1800,function(){
-                                $("#screenstart").remove();
-                                //点击story阅读全文
-                                addstoryclick();
-                                removeBrokenIMG();
-                                //display app images when loaded
-                                showAppImage('fullbody');
-                        });
-                    });                            
-                },
-                error: function () {
-                    $("#startbar").animate({width:"60%"},300,function(){
-                        data = startpageStorage || '';
-                        if (data !== '') { //Use data from the local storage
-                            data = checkhttps(data);
-                            $('#homecontent').html(data);
-                            fillContent();
-                            $('#startstatus').html('服务器开小差了，加载缓存的内容');
-                            $("#startbar").animate({width:"100%"},1800,function(){
-                                $("#screenstart").remove();
-                            });
-                        } else {
-                            $('#startstatus').html('服务器开小差了，请在网络连接好的时候再次刷新！');
-                        }
-                    });  
+    }
+}
+
+function loadToHome(data) {
+        $('#homecontent').html(data);
+        fillContent();
+        addstoryclick();
+        removeBrokenIMG();
+        //display app images when loaded
+        showAppImage('fullbody');
+}
+
+
+
+
+function loadHomePage(loadType) {
+    var dateDescription = '';
+    var dateStamp = '';
+    var homePageRequest = new Date().getTime();
+    updateTimeStamp();
+    $('html').addClass('is-refreshing');
+    if (loadType === 'start') {
+        gStartStatus = 'startFromOnline start';
+        $("#startstatus").html("加载最新主页");
+    } else if (/^[0-9]{4}\-[0-9]{1,2}\-[0-9]{1,2}$/.test(loadType)) {
+        dateDescription = loadType.replace(/^([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2})$/, '$1年$2月$3日');
+        dateStamp = '&date=' + loadType;
+        $('#homeload .loadingStatus').html('加载' + dateDescription + '主页...');
+    } else if (loadType !== 'start') {
+        $('#homeload .loadingStatus').html('加载最新主页...');
+        //$(".loadingStory").html('<div id="homeload"><div class="cell loadingStatus">' + loadcontent + '</div><div class="cell right">' + loadingBarContent + '</div></div>');
+    }
+    requests.push(
+        $.ajax({
+            // url with events and date
+            url: gStartPageTemplate + themi + dateStamp,
+            success: function(data) {
+                var homePageSuccess = 0;
+                var timeSpent = homePageSuccess - homePageRequest;
+                gStartStatus = "startFromOnline success";
+                $("#startstatus").html("版面成功加载");
+                connectInternet="yes";
+                setTimeout(function(){connectInternet="unknown";},300000);
+                data = checkhttps(data);
+                loadToHome(data);
+                showDateStamp();
+                if (/^[0-9]{4}\-[0-9]{1,2}\-[0-9]{1,2}$/.test(loadType)) {
+                    gHomePageIsLatest = false;
+                } else {
+                    gHomePageIsLatest = true;
+                }
+                try {
+                    localStorage.removeItem(gHomePageStorageKey);
+                    saveLocalStorage(gHomePageStorageKey, data);
+                } catch (ignore) {
+                
+                }
+                $("#startbar").animate({width:"100%"},300,function(){
+                    $("#screenstart").remove();
+                });
+                $('html').removeClass('is-refreshing');
+                ga('send', 'timing', 'App', 'Home Page Request', timeSpent, 'Home Page');
+            },
+            error: function () {
+                gStartStatus = "startFromOnline error";
+                if (loadType === 'start') {
+                    $("#startstatus").html("服务器开小差了");
+                    startFromOffline();
                     trackErr(gStartPageTemplate, 'Start Page Template');
+                } else {
+                    $('#homeload .loadingStatus').html('服务器开小差了！');
+                    trackErr(gStartPageTemplate, 'Reload Home Page');
+                }
+                $('html').removeClass('is-refreshing');
+                setTimeout(function(){
+                    showDateStamp();
+                }, 2000);
+            }
+        })
+    );
+    if (loadType === 'start') {
+        setTimeout(function(){
+            //$('#startstatus').html(gStartStatus);
+            if (gStartStatus === 'startFromOnline start') {
+                $('#startstatus').html('准备加载缓存的内容...');
+                setTimeout(function(){
+                    if (gStartStatus === 'startFromOnline start') {
+                        startFromOffline();
+                    }
+                    //$("#screenstart").remove();
+                    $('html').removeClass('is-refreshing');
+                },2000);
+            }
+        },3000);
+    }
+}
+
+function startFromOffline() {
+    var data = gStartPageStorage || '';
+    if (data !== '' && data.indexOf('data-pubdate') > 0) { //Use data from the local storage
+        data = checkhttps(data);
+        loadToHome(data);
+        $('#startstatus').html('连接失败，加载缓存');
+        $("#startbar").animate({width:"100%"},300,function(){
+            $("#screenstart").remove();
+            showDateStamp();
+        });  
+    } else {
+        $('#startstatus').html('连接失败，请稍候再次刷新');
+    }
+}
+
+
+function refresh(forceDownload){
+    var requestTime;
+    var todaystamp;
+    todaystamp = unixtochinese(lateststory, 0);
+    loadcontent = todaystamp + ' 出版';
+    $('#startstatus').html(forceDownload);
+    if (forceDownload === true && $('#startstatus').length > 0) {
+        $('#startstatus').html('再次尝试连接服务器...');
+        setTimeout(function(){
+            if (isOnline() === 'no') {
+                $('#startstatus').html('请联网之后再刷新！');
+            } else {
+                $('#startstatus').html('等待服务器的响应...');
+            }
+        }, 2000);
+    }
+    if (location.href.indexOf("android")>=0) {
+        $("#refreshButton").addClass("blue");
+        requestTime = new Date().getTime();
+        $.ajax("/index.php/jsapi/get_last_updatetime?"+requestTime)
+            .done(function(data) {
+                $("#refreshButton").removeClass("blue");
+                var k=isNaN(parseInt(data,10));
+                if (k===false) {
+                    successTime=new Date().getTime();
+                    if (successTime-requestTime < 300 || forceDownload === true || gHomePageIsLatest === false) {
+                        window.location.reload();
+                    } else if (data==lateststory) {
+                        lateststory=data;
+                        $('#popup-title').html("提示");
+                        $('#popup-description').html("FT中文网没有发布更新的内容，仍然刷新？");
+                        $('#popup-content').html("<div class='standalonebutton'><button class='ui-light-btn' onclick=\"window.location.reload();\">确定</button></div><div class='standalonebutton last-child'><button class='ui-light-btn' onclick=\"$('#popup').removeClass('on');\">取消</button></div>");
+                        $('#popup').addClass('on');
+                    } else {
+                        lateststory=data;
+                        $('#popup-title').html("提示");
+                        $('#popup-description').html("您的网速似乎不大理想，仍然刷新？");
+                        $('#popup-content').html("<div class='standalonebutton'><button class='ui-light-btn' onclick=\"window.location.reload();\">确定</button></div><div class='standalonebutton last-child'><button class='ui-light-btn' onclick=\"$('#popup').removeClass('on');\">取消</button></div>");
+                        $('#popup').addClass('on');
+                    }
+                } else {
+                    $('#popup-title').html("提示");
+                    $('#popup-description').html("您现在无法正确获取FT中文网的数据，请稍后尝试刷新");
+                    $('#popup-content').html("<button class='ui-light-btn' onclick=\"$('#popup').removeClass('on');\">我知道了</button></div>");
+                    $('#popup').addClass('on');
                 }
             })
-        );
-    });
-    gStartStatus = "startFromOnline start";
+            .fail(function() {
+                $('#popup-title').html("提示");
+                $('#popup-description').html("您现在连接不到FT中文网的服务器，请稍后尝试刷新");
+                $('#popup-content').html("<button class='ui-light-btn' onclick=\"$('#popup').removeClass('on');\">我知道了</button></div>");
+                $('#popup').addClass('on');
+            });
+    } else if (gIsInSWIFT === true) {
+        $('html').addClass('is-refreshing');
+        $('#homeload .loadingStatus').html('检查新内容...');
+        requestTime = new Date().getTime();
+        $.get(gGetLastUpdateTime + requestTime,
+            function(data) {
+                if (lateststory !== data || forceDownload === true || gHomePageIsLatest === false) {
+                    $('#homeload .loadingStatus').html('加载新的主页...');
+                    loadHomePage('refresh');
+                    if (window.gConnectionType !== 'data' || forceDownload === true || gHomePageIsLatest === false) {
+                        downloadStories('refresh');
+                    }
+                    lateststory = data;
+                } else {
+                    $('#homeload .loadingStatus').html('您已经下载了最新的内容');
+                    setTimeout(function(){
+                        $('html').removeClass('is-refreshing');
+                        showDateStamp();
+                    },2000);
+                }
+                connectInternet="yes";
+            }
+        ).fail(function(jqXHR){
+            $('html').removeClass('is-refreshing');
+            $('#homeload .loadingStatus').html('网络连接失败');
+            setTimeout(function() {
+                showDateStamp();
+            }, 2000);
+        });
+    } else {
+        window.location.reload();
+    }
+    
 }
+
 
 /*
 function checkbreakingnews() {
@@ -1351,6 +1645,9 @@ function checkbreakingnews() {
     	function(data) { $('#breakingnews').html(data);});
 }
 */
+
+
+
 
 
 function checkbreakingnews() {
@@ -1394,7 +1691,7 @@ function addstoryclick() {
 }
 // 装入热门文章或热门评论，以及年度文章
 function fillArticles(data, place) {
-    gStartStatus = "fillArticles start";
+    //gStartStatus = "fillArticles start";
     var jsondata, i = 0, k="", firstChild;
     switch (place) {
         case 'popoular' : 
@@ -1421,7 +1718,7 @@ function fillArticles(data, place) {
         $(place).html(k);
         addstoryclick();
     }
-    gStartStatus = "fillArticles end";
+    //gStartStatus = "fillArticles end";
 }
 
 function fetchItem(url, storage, wrapper) {
@@ -1571,6 +1868,7 @@ function readstory(theid, theHeadline) {
     gNowView = 'storyview';
 	//阅读时如果有setTimeout，会造成逻辑混乱，导致页面变空白
     sv.find('.storybody').html('正在读取文章数据...1');
+    gCurrentStoryId = theid;
     setTimeout(function() {
         sv.find('.storybody').html('正在读取文章数据...2');
         if (useFTScroller===0) {window.scrollTo(0, 0);}
@@ -1594,7 +1892,11 @@ function readstory(theid, theHeadline) {
                 jsondata = $.parseJSON(data);
                 myid = jsondata.id;
                 allstories[myid] = jsondata;
-                displaystory(myid, langmode);
+                // display the story only when Id matches
+                // otherwise reader will be interupted when connection is slow
+                if (gCurrentStoryId === myid) {
+                    displaystory(myid, langmode);
+                }
             });
         }
     }, 10);	
@@ -2906,6 +3208,11 @@ function closenote(idorclass) {
     setTimeout(function() {$('#'+ idorclass + ',.'+ idorclass).hide();},800);
 }
 
+
+function register() {
+    showchannel('/index.php/users/register?i=2','新用户注册');
+}
+
 function login(fromwhere) {
     var u, p;
     if (fromwhere !== undefined) {
@@ -3109,79 +3416,12 @@ function updatecalendar(theday) {
         } else {
             window.scrollTo(0, 0);
         }
-        filloneday(theday);
+        loadHomePage(theday);
+        //console.log(theday);
+        //filloneday(theday);
     });
 }
 
-function refresh(){
-    var requestTime;
-    if (location.href.indexOf("android")>=0) {
-        $("#refreshButton").addClass("blue");
-        requestTime = new Date().getTime();
-        $.ajax("/index.php/jsapi/get_last_updatetime?"+requestTime)
-            .done(function(data) {
-                $("#refreshButton").removeClass("blue");
-                var k=isNaN(parseInt(data,10));
-                if (k===false) {
-                    successTime=new Date().getTime();
-                    if (successTime-requestTime < 300) {
-                        window.location.reload();
-                    } else if (data==lateststory) {
-                        lateststory=data;
-                        $('#popup-title').html("提示");
-                        $('#popup-description').html("FT中文网没有发布更新的内容，仍然刷新？");
-                        $('#popup-content').html("<div class='standalonebutton'><button class='ui-light-btn' onclick=\"window.location.reload();\">确定</button></div><div class='standalonebutton last-child'><button class='ui-light-btn' onclick=\"$('#popup').removeClass('on');\">取消</button></div>");
-                        $('#popup').addClass('on');
-                    } else {
-                        lateststory=data;
-                        $('#popup-title').html("提示");
-                        $('#popup-description').html("您的网速似乎不大理想，仍然刷新？");
-                        $('#popup-content').html("<div class='standalonebutton'><button class='ui-light-btn' onclick=\"window.location.reload();\">确定</button></div><div class='standalonebutton last-child'><button class='ui-light-btn' onclick=\"$('#popup').removeClass('on');\">取消</button></div>");
-                        $('#popup').addClass('on');
-                    }
-                } else {
-                    $('#popup-title').html("提示");
-                    $('#popup-description').html("您现在无法正确获取FT中文网的数据，请稍后尝试刷新");
-                    $('#popup-content').html("<button class='ui-light-btn' onclick=\"$('#popup').removeClass('on');\">我知道了</button></div>");
-                    $('#popup').addClass('on');
-                }
-            })
-            .fail(function() {
-                $('#popup-title').html("提示");
-                $('#popup-description').html("您现在连接不到FT中文网的服务器，请稍后尝试刷新");
-                $('#popup-content').html("<button class='ui-light-btn' onclick=\"$('#popup').removeClass('on');\">我知道了</button></div>");
-                $('#popup').addClass('on');
-                //$("#refreshButton").removeClass("blue");
-                //alert("您现在连接不到FT中文网的服务器，请稍后尝试刷新");
-            });
-    } else if (gIsInSWIFT === true) {
-        //filloneday('');
-        $('html').addClass('is-refreshing');
-        requestTime = new Date().getTime();
-        //console.log (gGetLastUpdateTime);
-        $.get(gGetLastUpdateTime + requestTime,
-            function(data) {
-                //console.log ('data: ' + data + '\r\nlateststory: ' + lateststory);
-                if (lateststory != data) {
-                    filloneday('');
-                }
-                lateststory = data;
-                connectInternet="yes";
-                //rotating speed should be the same as in the css
-                //rotate at least once
-                setTimeout(function(){
-                    $('html').removeClass('is-refreshing');
-                },2000);
-            }
-        ).fail(function(jqXHR){
-            $('html').removeClass('is-refreshing');
-            //trackErr(message.head.transactiontype, "Most Commented");
-        });
-        fetchItem(gHomePageVideo+themi, 'homepagevideo', '#homepageVideo');
-    } else {
-        window.location.reload();
-    }
-}
 
 function showSearchHist(element) {
     if (element!="") {

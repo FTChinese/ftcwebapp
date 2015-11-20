@@ -992,6 +992,12 @@ html.noScroller,.noScroller body,.noScroller .fullbody,.noScroller #storyScrolle
 .leftPic img,.rightPic img{display:block;width:300px;margin:0 auto 10px auto;}
 /*if we don't want to use FTScroller for the device end--*/
 
+//Channelview
+#channelview {
+	.topStory.first-child {
+	    padding-top: 14px;
+	}
+}
 
 //responsive videos
 .o-responsive-video-container {

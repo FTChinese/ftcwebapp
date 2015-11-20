@@ -96,7 +96,7 @@
 <div url="/index.php/ft/column/007000013?i=2" class="channel oneStory more">露西•凯拉韦</div>
 <div url="/index.php/ft/column/007000021?i=2" class="channel oneStory more">约翰•奥瑟兹</div>
 <div url="/index.php/ft/column/007000023?i=2" class="channel oneStory more">戴维•皮林</div>
-<div url="/index.php/ft/column/007000022?i=2" class="channel oneStory more">卧底经济���家</div>
+<div url="/index.php/ft/column/007000022?i=2" class="channel oneStory more">卧底经济学家</div>
 <div url="/index.php/ft/column/007000024?i=2" class="channel oneStory more">吉莲•邰蒂</div>
 <div url="/index.php/ft/column/007000025?i=2" class="channel oneStory more">吉迪恩•拉赫曼</div>
 <div url="/index.php/ft/column/007000015?i=2" class="channel oneStory more">约翰•加普</div>

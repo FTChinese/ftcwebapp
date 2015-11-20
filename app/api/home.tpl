@@ -46,8 +46,8 @@
                 <div class=clearfloat></div>
 <div class="adiframe banner midBanner" type="90" adwidth="100%" frame="midBanner"></div>
 <div class=clearfloat></div>                                <div id="newsanchor" class="toempty"></div>
-                <div class="adiframe mpu-phone for-phone" type="250" frame="ad300x250-home"></div>                                    <div class="toempty specialanchor" tag="与FT共进午餐" title="与FT共进午餐" adid="2013"></div>
-                                <div id="mediaanchor" class="toempty"></div>
+                <div class="adiframe mpu-phone for-phone" type="250" frame="ad300x250-home"></div>                                    <div class="toempty specialanchor" tag="奢华水上" title="奢华水上" adid="2048"></div>
+                                                <div id="mediaanchor" class="toempty"></div>
                 <div id="peopleanchor" class="toempty"></div>
                 <div id="politicsanchor" class="toempty"></div>
                 <div id="economyanchor" class="toempty"></div>
@@ -360,7 +360,7 @@ background-color: rgba(0,0,0,0.14) !important;
                 <div class="standalonebutton"><button class="ui-light-btn" onclick="turnonOverlay('loginBox')">登录</button></div>                
                 <div class="standalonebutton"><button class="ui-light-btn channel" url="/index.php/ft/channel/phonetemplate.html?channel=myftsetup">设置我的<font class=english>FT</font></button></div>                                
                 <div class="standalonebutton nativeButton"><a href="https://itunes.apple.com/cn/app/ft-zhong-wen-wang-zhi-neng/id443870811?mt=8" target=_blank><button class="ui-light-btn">到<span class=english>App Store</span>上推荐这个应用</button></a></div>
-                <div class="standalonebutton"><button class="ui-light-btn channel" url="/index.php/ft/channel/phonetemplate.html?channel=help">帮���与反馈</button></div>
+                <div class="standalonebutton"><button class="ui-light-btn channel" url="/index.php/ft/channel/phonetemplate.html?channel=help">帮助与反馈</button></div>
                 <div class="currentVersion" id="storytotalnum"></div>
 				<div id="testMessage"></div>                
 			</div>
