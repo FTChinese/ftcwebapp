@@ -1,5 +1,5 @@
 //申明各种Global变量
-var _currentVersion = 1088; //当前的版本号
+var _currentVersion = 1089; //当前的版本号
 var _localStorage = 0;
 var exp_times = Math.round(new Date().getTime() / 1000) + 86400;
 var username;
@@ -197,6 +197,11 @@ function updateTimeStamp() {
 function startpage() {
     updateTimeStamp();
     gStartStatus = "startpage start";
+    try {
+        updateStartStatus('running startpage');
+    } catch (ignore) {
+
+    }
     var k;
     var oneday = '';
     var ccode = getpvalue(window.location.href,"utm_campaign") || "";
@@ -1259,7 +1264,10 @@ function filloneday(onedaydate) {
         }
     }
     */
-    httpspv(gDeviceType + '/homepage');
+    setTimeout(function(){
+        httpspv(gDeviceType + '/homepage');
+    }, 2000);
+    
     uaStringFillPage=navigator.userAgent || navigator.vendor || "";
     if (typeof window.ft_android_id === "string") {
         gDeviceId = window.ft_android_id;
@@ -1332,6 +1340,11 @@ function loadStoryData(data) {
     var jsondata;
     var dataStatus = 'unknown';
     var thedata = data;
+    try {
+        updateStartStatus('running loadStoryData');
+    } catch (ignore) {
+
+    }
     //gStartStatus = 'loading story data';
     //如果返回数据长度不足1000，说明此次返回的数据根本就不对，跳出函数
     if (thedata.length<1000){return;}
@@ -1389,6 +1402,12 @@ function downloadStories(downloadType) {
     var todaystamp;
     var loadingBarContent = '';
     var message;
+    var connectionType = window.gConnectionType || 'unknown connection';
+    try {
+        updateStartStatus('running downloadStories');
+    } catch (ignore) {
+
+    }
     if (gStartPageAPI === true) {
         $('#homeload .loadingStatus').html('下载文章供离线阅读...');
         apiurl = gApiUrl.a10001;
@@ -1400,6 +1419,7 @@ function downloadStories(downloadType) {
         message.body.ielement = {};
         message.body.ielement.num = 30;
         gHomeAPIRequest = new Date().getTime();
+        ga('send', 'event', 'App API 10001', 'Request', connectionType);
         $.ajax({
             method: gApi001Method,
             url: apiurl + '?' + themi,
@@ -1409,6 +1429,7 @@ function downloadStories(downloadType) {
         .done(function(data) {
             gHomeAPISuccess = new Date().getTime();
             var timeSpent = gHomeAPISuccess - gHomeAPIRequest;
+            ga('send', 'event', 'App API 10001', 'Success', connectionType);
             ga('send', 'timing', 'App', 'API Request', timeSpent, 'Home Stories');
             if (data.length <= 300) {
                 return;
@@ -1427,6 +1448,7 @@ function downloadStories(downloadType) {
                 },10000);
             }
         }).fail(function(jqXHR){
+            ga('send', 'event', 'App API 10001', 'Fail', connectionType);
             todaystamp = unixtochinese(lateststory, 0);
             $('#homeload .loadingStatus').html('未能下载成功');
             setTimeout(function(){
@@ -1441,21 +1463,24 @@ function downloadStories(downloadType) {
 }
 
 function loadToHome(data) {
-        $('#homecontent').html(data);
-        fillContent();
-        addstoryclick();
-        removeBrokenIMG();
-        //display app images when loaded
-        showAppImage('fullbody');
+    $('#homecontent').html(data);
+    fillContent();
+    addstoryclick();
+    removeBrokenIMG();
+    //display app images when loaded
+    showAppImage('fullbody');
 }
-
-
-
 
 function loadHomePage(loadType) {
     var dateDescription = '';
     var dateStamp = '';
     var homePageRequest = new Date().getTime();
+    var connectionType = window.gConnectionType || 'unknown connection';
+    try {
+        updateStartStatus('running loadHomePage');
+    } catch (ignore) {
+
+    }
     updateTimeStamp();
     $('html').addClass('is-refreshing');
     if (loadType === 'start') {
@@ -1469,6 +1494,7 @@ function loadHomePage(loadType) {
         $('#homeload .loadingStatus').html('加载最新主页...');
         //$(".loadingStory").html('<div id="homeload"><div class="cell loadingStatus">' + loadcontent + '</div><div class="cell right">' + loadingBarContent + '</div></div>');
     }
+    ga('send', 'event', 'App Home Page', 'Request', connectionType);
     requests.push(
         $.ajax({
             // url with events and date
@@ -1498,17 +1524,29 @@ function loadHomePage(loadType) {
                     $("#screenstart").remove();
                 });
                 $('html').removeClass('is-refreshing');
-                ga('send', 'timing', 'App', 'Home Page Request', timeSpent, 'Home Page');
+                ga('send', 'event', 'App Home Page', 'Success', connectionType);
+                ga('send', 'timing', 'App', 'Home Page Request', timeSpent, connectionType);
             },
             error: function () {
                 gStartStatus = "startFromOnline error";
+                ga('send', 'event', 'App Home Page', 'Fail', connectionType);
                 if (loadType === 'start') {
                     $("#startstatus").html("服务器开小差了");
+                    try {
+                        updateStartStatus('starting home failure');
+                    } catch (ignore) {
+
+                    }
                     startFromOffline();
-                    trackErr(gStartPageTemplate, 'Start Page Template');
+                    //trackErr(gStartPageTemplate, 'Start Page Template');
                 } else {
                     $('#homeload .loadingStatus').html('服务器开小差了！');
-                    trackErr(gStartPageTemplate, 'Reload Home Page');
+                    try {
+                        updateStartStatus('refreshing home failure');
+                    } catch (ignore) {
+
+                    }
+                    //trackErr(gStartPageTemplate, 'Reload Home Page');
                 }
                 $('html').removeClass('is-refreshing');
                 setTimeout(function(){
@@ -1540,11 +1578,21 @@ function startFromOffline() {
         data = checkhttps(data);
         loadToHome(data);
         $('#startstatus').html('连接失败，加载缓存');
+        try {
+            updateStartStatus('load cache to start');
+        } catch (ignore) {
+
+        }
         $("#startbar").animate({width:"100%"},300,function(){
             $("#screenstart").remove();
             showDateStamp();
         });  
     } else {
+        try {
+            updateStartStatus('start fail and no cache');
+        } catch (ignore) {
+
+        }
         $('#startstatus').html('连接失败，请稍候再次刷新');
     }
 }
@@ -1860,22 +1908,22 @@ function readstory(theid, theHeadline) {
     }
     backto = (gNowView == 'channelview' || gNowView == 'storyview') ? '后退' : '返回首页';
     sv.find('.backto').html(backto);
-    sv.find('.storybody').html('正在读取文章数据...');
+    //sv.find('.storybody').html('正在读取文章数据...');
     sv.find('.storydate, .storytitle, .storybyline,.storymore,.storyTag .container').html('');
     $('#allcomments,#columnintro').html('');
     $('#cstoryid').val(theid);
 	document.body.className = 'storyview';
     gNowView = 'storyview';
 	//阅读时如果有setTimeout，会造成逻辑混乱，导致页面变空白
-    sv.find('.storybody').html('正在读取文章数据...1');
+    //sv.find('.storybody').html('正在读取文章数据...1');
     gCurrentStoryId = theid;
     setTimeout(function() {
-        sv.find('.storybody').html('正在读取文章数据...2');
+        //sv.find('.storybody').html('正在读取文章数据...2');
         if (useFTScroller===0) {window.scrollTo(0, 0);}
         if (allstories[theid]) {
             displaystory(theid, langmode);
         } else {//online
-            sv.find('.storybody').html('正在读取文章数据...3');
+            //sv.find('.storybody').html('正在读取文章数据...3');
             if (typeof theHeadline === 'string') {
                 sv.find('.storytitle').html(theHeadline);
             }
@@ -1886,8 +1934,12 @@ function readstory(theid, theHeadline) {
                     sv.find('.storybody').html('wrong scroller');
                 }
             }
-            sv.find('.storybody').html('正在读取文章数据...4');
-            $.get('/index.php/jsapi/get_story_more_info/'+ theid + '?' + themi, function(data) {
+            sv.find('.storybody').html('<div class="loader-container"><div class="loader">正在读取文章数据...</div></div>');
+            //return;
+            $.ajax({
+                method: 'GET',
+                url: '/index.php/jsapi/get_story_more_info/'+ theid + '?' + themi, 
+            }).done(function(data, textStatus) {
                 data = checkhttps(data);
                 jsondata = $.parseJSON(data);
                 myid = jsondata.id;
@@ -1896,6 +1948,16 @@ function readstory(theid, theHeadline) {
                 // otherwise reader will be interupted when connection is slow
                 if (gCurrentStoryId === myid) {
                     displaystory(myid, langmode);
+                }
+            }).fail(function(jqXHR){
+                if (gCurrentStoryId === theid) {
+                    sv.find('.storybody').html('<div class="loader-container"><div class="highlight">获取文章失败！</div><div class="standalonebutton"><button class="ui-light-btn" id="reload-story">重试</button></div></div>');
+                    $('#reload-story').unbind().bind('click', function(){
+                        sv.find('.storybody').html('<div class="loader-container">重新加载文章...</div>');
+                        setTimeout(function(){
+                            readstory(theid, theHeadline);
+                        },1000);
+                    });
                 }
             });
         }
@@ -2416,6 +2478,10 @@ function checkDevice() {
     if (gIsInSWIFT === true) {
         $('html').addClass('is-in-swift');
     }
+    // SVG is default, no-svg is exception
+    if (typeof SVGRect === 'undefined') {
+        $('html').addClass('no-svg');
+    }
 }
 
 function checkhttps(data) {
@@ -2719,6 +2785,7 @@ function showchannel(url, channel, requireLogin, openIniFrame, channelDescriptio
         navTitle;
     var channelHeight = $(window).height() - 45;
     var channelDetail = channelDescription || '';
+    var orignialUrl = url;
 
     //extract tag information from url
     gTagData = url.replace(/^.*channel=/,'').replace(/^.*tag\//,'').replace(/\?.*$/g,'');
@@ -2755,7 +2822,7 @@ function showchannel(url, channel, requireLogin, openIniFrame, channelDescriptio
         channel = navTitle; 
     }
     $('.channeltitle').html(channel);
-    chview.html('<div id="head"><div class="header"><div class="channeltitle">'+ channel + '</div></div></div><div class="opening"><span><p class=booklead id="booklead">连接中...</p><p class=booklead id="loadstatus">触摸<b onclick="backhome()">此处</b>返回</p></span></div>');
+    chview.html('<div id="head"><div class="header"><div class="channeltitle">'+ channel + '</div></div></div><div class="loader-container"><div class="loader">正在读取文章数据...</div></div><div class="standalonebutton"><button class="ui-light-btn" onclick="backhome()">返回</button></div>');
 
     //每次打开的时候都取新的链接，所以在网址后面要添加一个随机参数
     themi = thisday.getHours() * 10000 + thisday.getMinutes() * 100;
@@ -2785,79 +2852,86 @@ function showchannel(url, channel, requireLogin, openIniFrame, channelDescriptio
     if (typeof openIniFrame !== 'undefined' && openIniFrame === true) {
         chview.html('<iframe src="' + url + '" width="100%" height="' + channelHeight + 'px" border=0 frameborder=0></iframe>');
     } else {
-        $.get(url, function(data) {
+        $.ajax({
+            method: 'GET',
+            url: url, 
+        }).done(function(data, textStatus) {
             var pageTitle;
             //$("#progressbar").animate({width:"100%"},300,function(){
-                data = checkhttps(data);
-                chview.html(data);
-                $('.channeltitle').html(channel);
+            data = checkhttps(data);
+            chview.html(data);
+            $('.channeltitle').html(channel);
 
-                //频道页中的分页
-                if (chview.find('.pagination').length>0) {
-                    $('.p_input').parent().hide();
-                    current_Page=chview.find('.pagination span').html();
-                    current_Page=parseInt(current_Page, 10);
-                    chview.find('.pagination a').each(function() {
-                        it = $(this);
-                        pageurl = '/index.php/ft' + it.attr('href') + '&i=2';
-                        pageTitle = it.attr('href') || '';
-                        pageTitle = pageTitle.replace(/^.*\/tag\//g,"").replace(/\?.*$/g,"");
-                        pageTitle = decodeURIComponent(pageTitle);
-                        it.removeAttr('href').addClass('channel').attr('url', pageurl).attr('title',pageTitle);
-                        if (it.html()=="余下全文" || it.html()==">>" || it.html()=="<<") {
-                            it.remove();
-                        }
-                        h=it.html();
-                        h=parseInt(h, 10);
-                        if (current_Page>0 && h>0) {
-                            it.remove();
-                        }
-                    });
-                }
-
-                //点击story阅读全文
-                chview.find('.story').click(function() {
-                    storyid = $(this).attr('storyid');
-                    readstory(storyid);
-                });
-                adclick();
-                chview.find('.navigation .channel').each(function() {
+            //频道页中的分页
+            if (chview.find('.pagination').length>0) {
+                $('.p_input').parent().hide();
+                current_Page=chview.find('.pagination span').html();
+                current_Page=parseInt(current_Page, 10);
+                chview.find('.pagination a').each(function() {
                     it = $(this);
-                    if (it.html() == channel) {it.addClass('on');}
+                    pageurl = '/index.php/ft' + it.attr('href') + '&i=2';
+                    pageTitle = it.attr('href') || '';
+                    pageTitle = pageTitle.replace(/^.*\/tag\//g,"").replace(/\?.*$/g,"");
+                    pageTitle = decodeURIComponent(pageTitle);
+                    it.removeAttr('href').addClass('channel').attr('url', pageurl).attr('title',pageTitle);
+                    if (it.html()=="余下全文" || it.html()==">>" || it.html()=="<<") {
+                        it.remove();
+                    }
+                    h=it.html();
+                    h=parseInt(h, 10);
+                    if (current_Page>0 && h>0) {
+                        it.remove();
+                    }
                 });
-                chview.find('.channel').bind('click',function(){
-                    var p=$(this).attr("title") || $(this).html() || "FT中文网";
-                    showchannel($(this).attr('url'), p, ($(this).hasClass('require-log-in') == true) ? 1 : 0);
-                });
-                //startslides();
+            }
 
-                //记录频道页面PV
-                pvurl=url;
-                if (url.indexOf("myftread")>0) {pvurl=url.replace(/\&/g,"|");}
-                httpspv(gDeviceType + '/channelpage'+ pvurl);
-                //记录文章被阅读
-                recordAction('/phone/channelpage'+ pvurl);
+            //点击story阅读全文
+            chview.find('.story').click(function() {
+                storyid = $(this).attr('storyid');
+                readstory(storyid);
+            });
+            adclick();
+            chview.find('.navigation .channel').each(function() {
+                it = $(this);
+                if (it.html() == channel) {it.addClass('on');}
+            });
+            chview.find('.channel').bind('click',function(){
+                var p=$(this).attr("title") || $(this).html() || "FT中文网";
+                showchannel($(this).attr('url'), p, ($(this).hasClass('require-log-in') == true) ? 1 : 0);
+            });
+            //startslides();
 
-                chview.find('.storytop').prepend('<div class=channelleft><div class=channelback><span class=backarrow></span><span class=backto>返回首页</span></div></div>');
-                if (hist.length > 1) {
-                    $('#channelview .backto').html('后退');
-                } else {
-                    $('#channelview .backto').html('返回首页');
-                }
-                $('.channelback').unbind().bind('click',function() {histback();});
-                //显示视频或互动的评论
-                $("#slideShow #common-comment-container").remove();
-                if ($('#commoncomments').length == 1 && window.topic_object_id != undefined) {
-                    loadcomment(window.topic_object_id, 'commoncomments', 'common');
-                }
-                //处理外部和内部链接
-                handlelinks();
-                //处理频道页的滑动
-                addChannelScroller();
-                //如果频道页有Navigation
-                navScroller($("#channelview"));
-                checkLogin();
-            //});
+            //记录频道页面PV
+            pvurl=url;
+            if (url.indexOf("myftread")>0) {pvurl=url.replace(/\&/g,"|");}
+            httpspv(gDeviceType + '/channelpage'+ pvurl);
+            //记录文章被阅读
+            recordAction('/phone/channelpage'+ pvurl);
+
+            chview.find('.storytop').prepend('<div class=channelleft><div class=channelback><span class=backarrow></span><span class=backto>返回首页</span></div></div>');
+            if (hist.length > 1) {
+                $('#channelview .backto').html('后退');
+            } else {
+                $('#channelview .backto').html('返回首页');
+            }
+            $('.channelback').unbind().bind('click',function() {histback();});
+            //显示视频或互动的评论
+            $("#slideShow #common-comment-container").remove();
+            if ($('#commoncomments').length == 1 && window.topic_object_id != undefined) {
+                loadcomment(window.topic_object_id, 'commoncomments', 'common');
+            }
+            //处理外部和内部链接
+            handlelinks();
+            //处理频道页的滑动
+            addChannelScroller();
+            //如果频道页有Navigation
+            navScroller($("#channelview"));
+            checkLogin();
+        }).fail(function(){
+            chview.html('<div id="head"><div class="header"><div class="channeltitle">'+ channel + '</div></div></div><div class="loader-container"><div class="highlight">获取内容失败！</div></div><div class="standalonebutton"><button class="ui-light-btn" id="reload-channel">重试</button></div>');
+            $('#reload-channel').unbind().bind('click', function(){
+                showchannel(originalUrl, channel, requireLogin, openIniFrame, channelDescription);
+            });
         });
     }
     url=url.replace(/\?.*$/,'');

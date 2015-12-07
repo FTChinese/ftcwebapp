@@ -4,15 +4,19 @@
 
 
     
+                    <script>
+        ga('send','event', 'CatchError', 'API 10001', '');
+        </script>
     
+
 
 <div class="loadingStory">
     <div id="homeload">
-        <div class="cell loadingStatus" data-pubdate="2015年11月18日 出版">
-            2015年11月18日 出版
+        <div class="cell loadingStatus" data-pubdate="2015年12月04日 出版">
+            2015年12月04日 出版
         </div>
         <div class="cell right">
-            <a class="button light-btn" onclick="refresh()">刷新</a>
+            <a class="button light-btn" onclick="refresh(true)">下载</a>
         </div>
     </div>
 </div>
@@ -23,13 +27,13 @@
 <div class="adiframe banner" type="50" frame="ad300"></div>
 
 <div id="coveranchor" class="toempty">
-			<div class="story oneStory first-child topStory track-click" eventLabel="coveranchor: 0" storyid="001064881">
-			<div class="cover headline narrow-screen">重新审视“文明的冲突”</div>
-						<div class="coverIMG image"><figure><img class="app-image" src="http://i.ftimg.net/picture/6/000056376_piclink.jpg"></figure></div>
-						<div class="headline wide-screen">重新审视“文明的冲突”</div>
-			<div class=lead>FT专栏作家拉赫曼：亨廷顿有关“文明的冲突”的理论日益盛行，但多元文化主义并不是一种幼稚的自由主义理想，它是当代世界的现实。放弃多元文化主义，只会导致更多暴力、死亡和悲伤。</div>
+														<div class="story oneStory first-child topStory track-click" eventLabel="coveranchor: 0" storyid="001064809">
+			<div class="cover headline narrow-screen">“理想主义者”基辛格</div>
+						<div class="coverIMG image"><figure><img class="app-image" src="http://i.ftimg.net/picture/4/000056784_piclink.jpg"></figure></div>
+						<div class="headline wide-screen">“理想主义者”基辛格</div>
+			<div class=lead>牛津大学名誉校长彭定康：现年92岁���基辛格是美国全球霸主时代的伟大人物之一。哈佛教授尼尔•弗格森以近千页的篇幅，记述还没被委以重任时期的基辛格。世人常把基辛格视作终极务实的现实主义者，作者却称其兼具道德和理想主义内核。</div>
 		</div>
-																													</div>
+																		</div>
 
 <div id="special-container">
     </div>
@@ -46,48 +50,81 @@
 
 
 <!-- -->
-																							
-																																								
+
+
+																																											
 							
-																																				
-	
-																																				
-	
-																																				
-	
-																																				
-	
-																																				
-	
-																																				
-	
-																																				
-	
-																																				
-	
-																																				
-	
-																																				
-	
-													<div id="newsanchor" class="toempty odd-item">
-	<a class="section" onclick='showchannel("news", "新闻")'><span>新闻</span></a>
-	<div class="first-break break-1-2"></div><div class="story oneStory first-child grid-1-2 track-click" eventLabel="newsanchor: 0" storyid="001064888"><div class=storyInner><div class="headline narrow-screen">普京下令俄军与法国联手打击ISIS</div><div class="headline wide-screen">普京下令俄军与法国联手打击ISIS</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/0/000056380_piclink.jpg"></figure></div><div class=lead>巴黎恐袭和俄罗斯客机坠机之后，面对伊斯兰主义恐怖组织的共同威胁，各方对叙利亚的策略出现转向，西方准备搁置与俄罗斯的分歧。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="newsanchor: 1" storyid="001064886"><div class=storyInner><div class="headline narrow-screen">中国谴责西方在反恐上“双重标准”</div><div class="headline wide-screen">中国谴责西方在反恐上“双重标准”</div><div class=lead>中国外长王毅呼吁国际社会合力打击“东突厥斯坦伊斯兰运动”</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="newsanchor: 2" storyid="001064884"><div class=storyInner><div class="headline narrow-screen">中国将资助并建造阿根廷两座核电厂</div><div class="headline wide-screen">中国将资助并建造阿根廷两座核电厂</div><div class=lead>交易价值达150亿美元，突显尽管国内经济放缓，但中国坚持在拉美巩固地盘</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="newsanchor: 3" storyid="001064885"><div class=storyInner><div class="headline narrow-screen">百度拟联手中信推出在线银行</div><div class="headline wide-screen">百度拟联手中信推出在线银行</div><div class=lead>今年早些时候阿里巴巴和腾讯分别成立的在线银行业绩并不如意</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="newsanchor: 4" storyid="001064887"><div class=storyInner><div class="headline narrow-screen">巴克莱面临美国新罚单</div><div class="headline wide-screen">巴克莱面临美国新罚单</div><div class=lead>该行被指通过自己的外汇交易平台，寻求获得对客户和竞争对手的不公平优势</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="newsanchor: 5" storyid="001064857"><div class=storyInner><div class="headline narrow-screen">游戏王科蒂克</div><div class="headline wide-screen">游戏王科蒂克</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/4/000056334_piclink.jpg"></figure></div><div class=lead>科蒂克缔造畅销系列的本事让他在好莱坞的朋友眼红</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="newsanchor: 6" storyid="001064872"><div class=storyInner><div class="headline narrow-screen">俄政府称客机坠毁是恐怖主义行为所致</div><div class="headline wide-screen">俄政府称客机坠毁是恐怖主义行为所致</div><div class=lead>俄联邦安全局局长称，有证据显示，西奈半岛上空坠落的俄罗斯客机上安放了爆炸装置</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="newsanchor: 7" storyid="001064870"><div class=storyInner><div class="headline narrow-screen">足球大战凸显香港与内地紧张关系</div><div class="headline wide-screen">足球大战凸显香港与内地紧张关系</div><div class=lead>香港队主场对阵中国队，香港与内地间的紧张关系让这场比赛的意义超出了体育范畴</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="newsanchor: 8" storyid="001064862"><div class=storyInner><div class="headline narrow-screen">奥朗德誓言与ISIS全面开战</div><div class="headline wide-screen">奥朗德誓言与ISIS全面开战</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/9/000056339_piclink.jpg"></figure></div><div class=lead>法国总统希望与美俄共同建立打击ISIS的“大型统一联盟”，但奥巴马排除了大规模部署军队的可能性，并借美国在伊拉克的失���发出谨慎的告诫。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="newsanchor: 9" storyid="001064868"><div class=storyInner><div class="headline narrow-screen">普京在G20峰会上从“弃儿”变“宠儿”</div><div class="headline wide-screen">普京在G20峰会上从“弃儿”变“宠儿”</div><div class=lead>西方领导人无奈地认识到，叙利亚要想走向和平是绕不开莫斯科的
-</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="newsanchor: 10" storyid="001064864"><div class=storyInner><div class="headline narrow-screen">“中国经济增速将远低于多数分析师预测”</div><div class="headline wide-screen">“中国经济增速将远低于多数分析师预测”</div><div class=lead>一报告称，对中国过于乐观的增长和消费预测误导外国投资者</div></div></div>
-</div>                                            <!-- -->
+													
+
+
+
+																								
+													
+
+
+
+																								
+													
+
+																								
+													
+
+																								
+													
+
+																								
+													
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="newsanchor" class="toempty even-item">
+	<a class="section" onclick='showchannel("/index.php/ft/channel/phonetemplate.html?channel=news", "新闻")'><span>新闻</span></a>
+	<div class="first-break break-1-2"></div><div class="story oneStory first-child grid-1-2 track-click" eventLabel="newsanchor: 0" storyid="001065135"><div class=storyInner><div class="headline narrow-screen">中国钢企遭遇大面积亏损</div><div class="headline wide-screen">中国钢企遭遇大面积亏损</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/0/000019690_piclink_0_0.jpg"></figure></div><div class=lead>今年头10个月中国最大的101家钢企共亏损720亿元人民币（合110亿美元），超过去年所获利润的两倍。政府开展的整合努力未能成功，导致产能过剩，债务不断积累。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="newsanchor: 1" storyid="001065133"><div class=storyInner><div class="headline narrow-screen">奥巴马：加州枪击案可能是恐怖袭击</div><div class="headline wide-screen">奥巴马：加州枪击案可能是恐怖袭击</div><div class=lead>但他并未完全排除职场受委屈是杀人动机的可能性，他还呼吁收紧控枪法律</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="newsanchor: 2" storyid="001065132"><div class=storyInner><div class="headline narrow-screen">卫星照片显示朝鲜在核试验场挖掘新坑道</div><div class="headline wide-screen">卫星照片显示朝鲜在核试验场挖掘新坑道</div><div class=lead>外界担心已掌握核弹头小型化技术的朝鲜可能再次启动核试验</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="newsanchor: 3" storyid="001065128"><div class=storyInner><div class="headline narrow-screen">分析：中非经贸合作进入调整期</div><div class="headline wide-screen">分析：中非经贸合作进入调整期</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/6/000034856_piclink_144_144.jpg"></figure></div><div class=lead>习近平出席今年中非合作论坛之际，中非经贸关系正变得复杂。虽然中国仍是非洲最大贸易伙伴，但石油和大宗商品价格的低迷，让人担忧双方贸易差额会日益扩大。</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="newsanchor: 4" storyid="001065130"><div class=storyInner><div class="headline narrow-screen">维亚康姆股东敦促向马云出售派拉蒙股权</div><div class="headline wide-screen">维亚康姆股东敦促向马云出售派拉蒙股权</div><div class=lead>以便从阿里巴巴引入新资金，并为在中国制作更多电影铺平道路</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="newsanchor: 5" storyid="001065131"><div class=storyInner><div class="headline narrow-screen">欧洲央行加大量化宽松力度</div><div class="headline wide-screen">欧洲央行加大量化宽松力度</div><div class=lead>宣布延长每月600亿欧元的债券购买计划6个月，并降息至-0.3%的历史低点</div></div></div>
+</div>                                    <!-- -->
 
 
 <div id="quiz-container">
                                         <a class="section" onclick="showchannel('/index.php/ft/channel/phonetemplate.html?channel=newsquiz','智趣问答')"><span>FT商学院</span></a>
-                        <div class="oneStory first-child track-click" eventLabel="quiz: 0" onclick='showSlide("/index.php/ft/interactive/5618?i=2","掀开ISIS的神秘面纱", 0)'>
-                <div class="headline">掀开ISIS的神秘面纱</div>
-                <img src="http://i.ftimg.net/picture/4/000055494_piclink.jpg" class=leftimage width="167">
-                <div class=lead>当地时间11月13日， 6起枪击案、3起爆炸和1起人质劫持事件同时发生在巴黎——这个欧洲“浪漫之都”，随后ISIS通过网络宣称对这次恐怖袭击负责。ISIS的本质是什么？什么人在支持ISIS？ISIS到底有多富有？本期教程10个小问题带你揭开ISIS的神秘面纱。</div>
+                        <div class="oneStory first-child track-click" eventLabel="quiz: 0" onclick='showSlide("/index.php/ft/interactive/4526?i=2","一周新闻小测（11.30-12.4）", 0)'>
+                <div class="headline">一周新闻小测（11.30-12.4）</div>
+                <img src="http://i.ftimg.net/picture/9/000049339_piclink.jpg" class=leftimage width="167">
+                <div class=lead>十个题目，带你快速梳理近期全球财经新闻大事件</div>
                 <div class=clearfloat></div>
             </div>
                                                         <div class="oneStory track-click" eventLabel="quiz: 1" onclick='showSlide("/index.php/ft/interactive/4438?i=2","测测你的新闻IQ", 0)'>
                 <div class="headline">测测你的新闻IQ</div>
-                <img src="http://i.ftimg.net/picture/6/000056306_piclink.jpg" class=leftimage width="167">
-                <div class=lead>最新财经大事知多少：增聘1900名间谍应对ISIS威胁的国家？宣布关闭3家在华门店的奢侈品牌？百度在互联网金融服务领域的新动作？小测带你快速梳理当日财经新闻大事件。</div>
+                <img src="http://i.ftimg.net/picture/2/000056802_piclink.jpg" class=leftimage width="167">
+                <div class=lead>最新财经大事知多少：核试验场挖掘新坑道的国家？中国股市即将启动的股指熔断机制？受中国经济放缓冲击最严重的大宗商品出口国？小测带你快速梳理当日财经新闻大事件。</div>
                 <div class=clearfloat></div>
             </div>
                             </div>
@@ -95,6 +132,56 @@
 
 
 <!-- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div id="specialanchor2" class="toempty">
 	
 	
@@ -102,6 +189,56 @@
 
 
 <!-- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div id="peopleanchor" class="toempty">
 	
 	
@@ -109,65 +246,248 @@
 
 
 <!-- -->
-																							
-																									
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+																																																																				
 							
-																																				
-	
-																																				
-	
-																																				
-	
-																																				
-	
-													<div id="politicsanchor" class="toempty odd-item">
-	<a class="section" onclick='showchannel("politics", "政治与政策")'><span>政治与政策</span></a>
-	<div class="first-break break-1-2"></div><div class="story oneStory first-child grid-1-2 track-click" eventLabel="politicsanchor: 0" storyid="001064875"><div class=storyInner><div class="headline narrow-screen">谴责暴力与宽容异己都是普世价值</div><div class="headline wide-screen">谴责暴力与宽容异己都是普世价值</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/5/000025715_piclink_0_0.jpg"></figure></div><div class=lead>FT中文网公共政策评论员刘波：在现代倡导宽容、平等、自由、多元化，不仅是基于伦理考虑，也是基于全社会成员最大的共同利益，这对欧洲和中国同时适用。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="politicsanchor: 1" storyid="001064871"><div class=storyInner><div class="headline narrow-screen">文明的冲突是恐怖之源吗？</div><div class="headline wide-screen">文明的冲突是恐怖之源吗？</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/9/000056369_piclink.jpg"></figure></div><div class=lead>美国斯坦福大学曹起曈：简单将恐怖主义归咎于伊斯兰教造成的文明冲突，可能会掩盖真正的问题：为何愿意以生命为代价发动袭击的恐怖分子络绎不绝？</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="politicsanchor: 2" storyid="001064876"><div class=storyInner><div class="headline narrow-screen">“习马会”恐难以制约蔡英文</div><div class="headline wide-screen">“习马会”恐难以制约蔡英文</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/6/000040406_piclink.jpg"></figure></div><div class=lead>美国哥伦比亚大学访问学者笑蜀：台湾既有“太阳花世代”支撑的民意后盾，国际上更有美日默契，未来的蔡英文政府不缺好牌。指望“习马会”制约它，可能太乐观。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="politicsanchor: 3" storyid="001064861"><div class=storyInner><div class="headline narrow-screen">巴黎血案，阿拉伯世界怎么想？</div><div class="headline wide-screen">巴黎血案，阿拉伯世界怎么想？</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/8/000030518_piclink_0_0.jpg"></figure></div><div class=lead>FT中文网特约撰稿人周轶君：“我们向巴黎致哀，但我们也是受害者，不要只看见你们的苦难。”——这大概是阿拉伯世界对巴黎恐怖袭击的主流看法。</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="politicsanchor: 4" storyid="001064858"><div class=storyInner><div class="headline narrow-screen">世界没有能免遭恐袭的避风港</div><div class="headline wide-screen">世界没有能免遭恐袭的避风港</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/2/000016402_piclink_0_0.jpg"></figure></div><div class=lead>FT专栏作家斯蒂芬斯：发生在巴黎的杀戮，让欧洲有一种整体遭到围攻的感觉。不得不承认，我们生活在一个系统性动荡的时代，正经历一场不寻常的战争。欧洲不应再认为，通过置身中东事外，就可以让自己免遭恐怖袭击。</div></div></div>
-</div>                    <!-- -->
+													
+
+
+
+																								
+													
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="politicsanchor" class="toempty even-item">
+	<a class="section" onclick='showchannel("/index.php/ft/channel/phonetemplate.html?channel=politics", "政治与政策")'><span>政治与政策</span></a>
+	<div class="first-break break-1-2"></div><div class="story oneStory first-child grid-1-2 track-click" eventLabel="politicsanchor: 0" storyid="001065124"><div class=storyInner><div class="headline narrow-screen">列侬的遗孀</div><div class="headline wide-screen">列侬的遗孀</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/2/000046152_piclink.jpg"></figure></div><div class=lead>FT中文网专栏作家许知远：我在雾霾中散步，在一个长椅上抽了支烟。我很想告诉陈继华，25年过去了，我觉得的确列侬比钱学森更重要。但我找不到他的号码了。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="politicsanchor: 1" storyid="001065123"><div class=storyInner><div class="headline narrow-screen">创建全球清洁煤炭联盟</div><div class="headline wide-screen">创建全球清洁煤炭联盟</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/9/000031349_piclink_72_72.jpg"></figure></div><div class=lead>印度政府首席经济顾问萨勃拉曼尼亚：我们需要找到有效的技术，让煤炭“变得清洁和绿色”，而不是淘汰煤炭。创造一个全球联盟的时机已经成熟。</div></div></div>
+</div>        <!-- -->
 
 <!-- -->
-																							
-																																								
+
+
+
+
+																																											
 							
-																																				
-	
-																																				
-	
-																																				
-	
-																																				
-	
-													<div id="economyanchor" class="toempty odd-item">
-	<a class="section" onclick='showchannel("economy", "经济与金融")'><span>经济与金融</span></a>
-	<div class="first-break break-1-2"></div><div class="story oneStory first-child grid-1-2 track-click" eventLabel="economyanchor: 0" storyid="001064873"><div class=storyInner><div class="headline narrow-screen">巴黎恐怖袭击如何影响石油市场？</div><div class="headline wide-screen">巴黎恐怖袭击如何影响石油市场？</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/1/000048491_piclink.jpg"></figure></div><div class=lead>社科院财经战略研究院冯明：巴黎恐怖袭击事件对国际石油市场不会产生大的直接冲击，短暂震荡后很快会恢复，但其间接影响不容忽视。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="economyanchor: 1" storyid="001064867"><div class=storyInner><div class="headline narrow-screen">全球跨境资本流动：冲击与挑战</div><div class="headline wide-screen">全球跨境资本流动：冲击与挑战</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/0/000047740_piclink.jpg"></figure></div><div class=lead>国际结算银行潘凡轲、舒畅：跨境资本流动对金融稳定提出挑战，投资者羊群行为或导致金融冲击。为何亚洲受金融危机影响相对小？ 资本流动如何影响货币政策传导？</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="economyanchor: 2" storyid="001064878"><div class=storyInner><div class="headline narrow-screen">美联储加息后将发生什么？</div><div class="headline wide-screen">美联储加息后将发生什么？</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/0/000054940_piclink.jpg"></figure></div><div class=lead>工银国际研究部联席主管程实：近来一系列高频数据和政策信息表明，美联储或于年底首次加息。投资者都很关心：美联储加息后会发生什么？我们不妨从历史中寻找答案。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="economyanchor: 3" storyid="001064882"><div class=storyInner><div class="headline narrow-screen">股东并非公司所有者</div><div class="headline wide-screen">股东并非公司所有者</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/0/000016460_piclink_0_0.jpg"></figure></div><div class=lead>FT专栏作家凯：股东是公司所有者，在此基础上，董事义务是让股东价值最大化。我已经数不清有多少次被人告知“这是法律”了，但这不是法律。</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="economyanchor: 4" storyid="001064869"><div class=storyInner><div class="headline narrow-screen">中信澳元衍生品巨亏案正式聆讯</div><div class="headline wide-screen">中信澳元衍生品巨亏案正式聆讯</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/7/000043167_piclink.jpg"></figure></div><div class=lead>2008年中信泰富因时机不当的澳元衍生品投资损失了20亿美元，香港市场失当行为审裁处周一起对该公司及五名前董事涉嫌误导市场展开聆讯。</div></div></div>
-</div>                    <!-- -->
+													
+
+
+
+																								
+													
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+																								
+													
+
+
+
+
+
+
+
+
+
+
+
+
+
+																								
+													
+
+
+
+
+
+
+
+<div id="economyanchor" class="toempty even-item">
+	<a class="section" onclick='showchannel("/index.php/ft/channel/phonetemplate.html?channel=economy", "经济与金融")'><span>经济与金融</span></a>
+	<div class="first-break break-1-2"></div><div class="story oneStory first-child grid-1-2 track-click" eventLabel="economyanchor: 0" storyid="001065134"><div class=storyInner><div class="headline narrow-screen">调查：中国需求下滑对不同国家的冲击</div><div class="headline wide-screen">调查：中国需求下滑对不同国家的冲击</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/6/000022786_piclink_0_0.jpg"></figure></div><div class=lead>中国经济放缓将冲击新兴市场国家，尤其是大宗商品出口国，蒙古和安哥拉两国面临的风险最大。但实施了经济结构多元化改革和财政改革的国家更能抵御冲击。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="economyanchor: 1" storyid="001065122"><div class=storyInner><div class="headline narrow-screen">“莲花一现”：莲花味精的涨跌</div><div class="headline wide-screen">“莲花一现”：莲花味精的涨跌</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/8/000056778_piclink.jpg"></figure></div><div class=lead>北京媒体人李微敖：最近，一家名为河南莲花味精股份有限公司的上市公司，成为中国股市内外热议的焦点，缘由跟一位叫“习银平”的先生有关。</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="economyanchor: 2" storyid="001065127"><div class=storyInner><div class="headline narrow-screen">保护海洋为何重要？</div><div class="headline wide-screen">保护海洋为何重要？</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/0/000029610_piclink_0_0.jpg"></figure></div><div class=lead>中外对话总编希尔顿：全球领导人齐聚巴黎气候大会之际，保护海洋的呼声再次响起。但目前海洋所遭受的巨大压力并未纳入这次大会的议事日程中。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="economyanchor: 3" storyid="001065110"><div class=storyInner><div class="headline narrow-screen">中国教育是否会拖经济增长后腿？</div><div class="headline wide-screen">中国教育是否会拖经济增长后腿？</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/5/000048815_piclink.jpg"></figure></div><div class=lead>中欧国际工商学院朱天：东亚学生是缺乏创造力的考试机器？为何中国人特别重视教育？研究显示经济增长率与教育质量正相关，中国科研水平落后发达国家不是因为应试教育。</div></div></div>
+</div>                <!-- -->
 
 <div class=clearfloat></div>
 <div class="adiframe banner" type="50" frame="banner-bottom-home"></div>
 <div class=clearfloat></div>
 
 <!-- -->
-																							
-																																								
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+																																																																				
 							
-																																				
-	
-																																				
-	
-													<div id="businessanchor" class="toempty odd-item">
-	<a class="section" onclick='showchannel("business", "商业与管理")'><span>商业与管理</span></a>
-	<div class="first-break break-1-2"></div><div class="story oneStory first-child grid-1-2 track-click" eventLabel="businessanchor: 0" storyid="001064879"><div class=storyInner><div class="headline narrow-screen">对冲基金老将的归宿</div><div class="headline wide-screen">对冲基金老将的归宿</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/2/000056372_piclink.jpg"></figure></div><div class=lead>为规避欧洲监管新规，许多对冲基金已转型为家族理财室。但家族理财室管理着巨额资金，对全球资本流动有重大影响。监管跟上只是时间问题。
-</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="businessanchor: 1" storyid="001064883"><div class=storyInner><div class="headline narrow-screen">网络专车怎么管？</div><div class="headline wide-screen">网络专车怎么管？</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/5/000056375_piclink.jpg"></figure></div><div class=lead>为中国网络租车行业制定的一系列监管规定即将成型，它们将体现出中国政府能在多大程度上容忍互联网的“颠覆”。中国最大的几家高科技企业正密切关注这些规定。</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="businessanchor: 2" storyid="001064856"><div class=storyInner><div class="headline narrow-screen">“坐如钟”不如坐立不安</div><div class="headline wide-screen">“坐如钟”不如坐立不安</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/2/000056332_piclink.jpg"></figure></div><div class=lead>FT专栏作家华莱士：医学界早就认为，久坐带来的健康风险类似于每天抽一包烟。现在科学证据表明，有一种简单而效的方式可以降低久坐的危害。</div></div></div>
-</div>            <!-- -->
+													
+
+
+
+																								
+													
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="businessanchor" class="toempty even-item">
+	<a class="section" onclick='showchannel("/index.php/ft/channel/phonetemplate.html?channel=business", "商业与管理")'><span>商业与管理</span></a>
+	<div class="first-break break-1-2"></div><div class="story oneStory first-child grid-1-2 track-click" eventLabel="businessanchor: 0" storyid="001065125"><div class=storyInner><div class="headline narrow-screen">扎克伯格夫妇如何为“下一代”操心</div><div class="headline wide-screen">扎克伯格夫妇如何为“下一代”操心</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/1/000016071_piclink_0_0.jpg"></figure></div><div class=lead>FT专栏作家加普：初为人父让扎克伯格的捐赠之举增添了更多深层含义。扎克伯格夫妇的慈善战略和钢铁大王卡内基相似，但挑战更复杂：找到创新方���解决全球性问题。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="businessanchor: 1" storyid="001065100"><div class=storyInner><div class="headline narrow-screen">成功三字经：我没用</div><div class="headline wide-screen">成功三字经：我没用</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/8/000016218_piclink_0_0.jpg"></figure></div><div class=lead>FT专栏作家凯拉韦：研究显示，相信自己拥有过人才能的经理人业绩往往最差。反而是那些低估自己才能的管理者，工作表现最佳。细细想想，这一点也不意外。</div></div></div>
+</div>        <!-- -->
 
 
 <div id="societyanchor" class="toempty"></div>
 
 <!-- -->
-<div id="societyanchor" class="toempty">
-	
-	
-</div><!-- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+																																																					
+							
+													
+
+
+
+<div id="societyanchor" class="toempty odd-item">
+	<a class="section" onclick='showchannel("/index.php/ft/channel/phonetemplate.html?channel=society", "社会与文化")'><span>社会与文化</span></a>
+	<div class="first-break break-1-2"></div><div class="story oneStory first-child grid-1-2 track-click" eventLabel="societyanchor: 0" storyid="001065085"><div class=storyInner><div class="headline narrow-screen">寻找中国被拐卖的儿童</div><div class="headline wide-screen">寻找中国被拐卖的儿童</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/5/000056725_piclink.jpg"></figure></div><div class=lead>中国经济快速发展的背后，是大量农民工潮水般涌入城市，这为人贩子在半废弃乡村或城中村诱拐无人照看的幼童带来机会。在今年的年度募捐活动中，英国《金融时报》与“停止人口贩卖”组织合作，揭示中国被拐卖儿童和其家庭令人辛酸的悲惨遭遇。</div></div></div>
+</div>    <!-- -->
 
 
 <a id="homepageEmail" class="banner grey-box" href="mailto:ftchinese.feedback@gmail.com?subject=Feedback about FTC Web App - from home page">
@@ -176,19 +496,176 @@
 </a>
 
 <!-- -->
-<div id="lifestyleanchor" class="toempty">
-	
-	
-</div><!-- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+																																																					
+							
+													
+
+																								
+													
+
+
+
+
+
+
+
+
+
+
+
+																								
+													
+
+
+
+																								
+													
+
+																								
+													
+
+
+
+																								
+													
+
+
+
+
+
+<div id="lifestyleanchor" class="toempty even-item">
+	<a class="section" onclick='showchannel("/index.php/ft/channel/phonetemplate.html?channel=lifestyle", "生活时尚")'><span>生活时尚</span></a>
+	<div class="first-break break-1-2"></div><div class="story oneStory first-child grid-1-2 track-click" eventLabel="lifestyleanchor: 0" storyid="001065111"><div class=storyInner><div class="headline narrow-screen">萧邦联席总裁薛佛乐的家</div><div class="headline wide-screen">萧邦联席总裁薛佛乐的家</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/0/000056750_piclink.jpg"></figure></div><div class=lead>薛佛乐的父亲1963年买下了萧邦公司。这座位于瑞士山麓、有着250年历史的别墅，是父亲送她的礼物，她把它修复得更加优雅时尚。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="lifestyleanchor: 1" storyid="001065118"><div class=storyInner><div class="headline narrow-screen">神秘岛屿：旅游新刺激</div><div class="headline wide-screen">神秘岛屿：旅游新刺激</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/2/000056752_piclink.jpg"></figure></div><div class=lead>克罗地亚附近亚得里亚海西部藏着无数鲜为人知的原生态小岛，有的岛民还延续着中世纪宗教生活。如今可乘豪华游艇，揭开其神秘面纱。</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="lifestyleanchor: 2" storyid="001065096"><div class=storyInner><div class="headline narrow-screen">中国私人博物馆可持续性堪忧</div><div class="headline wide-screen">中国私人博物馆可持续性堪忧</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/9/000055529_piclink.jpg"></figure></div><div class=lead>FT中文网专栏作家吴可佳：欧美的私人博物馆不由国家管理，但全部对大众开放，管理理念是回馈社会，与中国的私人博物馆概念不一样。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="lifestyleanchor: 3" storyid="001065126"><div class=storyInner><div class="headline narrow-screen">龙虾该不该这么贵？</div><div class="headline wide-screen">龙虾该不该这么贵？</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/6/000056786_piclink.jpg"></figure></div><div class=lead>《FT周末杂志》专栏作家海沃德：远在制冷技术让分销鲜鱼变为可能之前，龙虾和牡蛎就在为人类提供新鲜蛋白质。当年，这两种海鲜常被视为工业化城市中穷人的食物。</div></div></div><div class="break-1-2"></div><div class="story oneStory grid-1-2 track-click" eventLabel="lifestyleanchor: 4" storyid="001065121"><div class=storyInner><div class="headline narrow-screen">中国电影市场的赢家与输家</div><div class="headline wide-screen">中国电影市场的赢家与输家</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/7/000056777_piclink.jpg"></figure></div><div class=lead>FT中文网撰稿人曹峻：2015成为史上最强中国原创电影年。以“小妞”、“小鲜肉”、小成本、小编导为主导的中国新生代电影团队完胜好莱坞与大制作。</div></div></div><div class="break-2-2"></div><div class="story oneStory grid-2-2 track-click" eventLabel="lifestyleanchor: 5" storyid="001065117"><div class=storyInner><div class="headline narrow-screen">经纪人推热中国古典音乐市场</div><div class="headline wide-screen">经纪人推热中国古典音乐市场</div><div class="icon image"><figure><img class="app-image" src="http://i.ftimg.net/picture/7/000056757_piclink.jpg"></figure></div><div class=lead>FT中文网撰稿人左驰：去年钢琴家朱晓玫的大热，以及德慕斯、马里纳爵士等殿堂级音乐家的中国巡演，都离不开新兴古典音乐经纪人的幕后运作。</div></div></div>
+</div>                        <!-- -->
 
 
 <!-- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div id="bookanchor" class="toempty">
 	
 	
 </div><!-- -->
 
 <!-- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div id="letteranchor" class="toempty">
 	
 	
@@ -196,6 +673,56 @@
 
 
 <!-- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div id="moreanchor" class="toempty">
 	
 	
@@ -220,33 +747,38 @@
 
 <div id="speedread-container">
                                         <a class="section" onclick="showchannel('/index.php/ft/channel/phonetemplate.html?channel=speedread','金融英语速读')"><span>金融英语速读</span></a>
-                        <div class="oneStory first-child track-click" eventLabel="speedread: 0" onclick='showSlide("/index.php/ft/interactive/5627?i=2","亚马逊帮初创企业做销售", 0)'>
-                <div class="headline">亚马逊帮初创企业做销售</div>
-                <img src="http://i.ftimg.net/picture/3/000056353_piclink.jpg" class=leftimage width="167">
-                <div class=lead>亚马逊本周将在英国为初创企业启动网售平台，为新兴技术公司扩大客户群提供新的渠道。</div>
+                        <div class="oneStory first-child track-click" eventLabel="speedread: 0" onclick='showSlide("/index.php/ft/interactive/5766?i=2","酒店业的信息安全危机", 0)'>
+                <div class="headline">酒店业的信息安全危机</div>
+                <img src="http://i.ftimg.net/picture/1/000056801_piclink.jpg" class=leftimage width="167">
+                <div class=lead>上月希尔顿酒店宣布其信息系统遭黑客入侵，特朗普酒店近日也表示其支付系统已经被黑客攻击了一年之久。近几年客户信息遭到黑客窃取的事情层出不穷，甚至有专家警告说，这里，就是黑客们的下一个靶场。</div>
                 <div class=clearfloat></div>
             </div>
-                                    </div>
-
-
-<div id="video-container">
-                                        <a class="section" onclick="showchannel('/index.php/ft/channel/phonetemplate.html?channel=video','视频')"><span>视频</span></a>
-                        <div class="oneStory first-child track-click" eventLabel="video: 0" onclick='watchVideo("626AA5CA0BC8E98E9C33DC5901307461","法国对ISIS目标发动空袭","1730","星期日晚，法国军方派遣12架战机，对ISIS据点发动空袭，目标包括一个军事指挥所，弹药库和一座训练营，以回应上周五巴黎遭受的恐怖袭击。同时，全球民众走出家门，用各自的方式悼念受难者。","http://i.ftimg.net/picture/8/000056348_piclink.jpg")'>
-                <div class="headline">法国对ISIS目标发动空袭</div>
-                <img src="http://i.ftimg.net/picture/8/000056348_piclink.jpg" class=leftimage width="167">
-                <div class=lead>星期日晚，法国军方派遣12架战机，对ISIS据点发动空袭，目标包括一个军事指挥所，弹药库和一座训练营，以回应上周五巴黎遭受的恐怖袭击。同时，全球民众走出家门，用各自的方式悼念受难者。</div>
+                                                        <div class="oneStory track-click" eventLabel="speedread: 1" onclick='showSlide("/index.php/ft/interactive/5754?i=2","“糖税”为肥胖减重？", 0)'>
+                <div class="headline">“糖税”为肥胖减重？</div>
+                <img src="http://i.ftimg.net/picture/2/000056772_piclink.jpg" class=leftimage width="167">
+                <div class=lead>是时候政府出面解决儿童超重和肥胖现象了！英国国会议员建议政府应该采取强制措施：包括对含糖饮料进行征税，以及控制不健康食品和饮料的降价促销活动等，打击儿童身上的小肥肉。</div>
                 <div class=clearfloat></div>
             </div>
                         </div>
 
+
+<div id="video-container">
+    </div>
+
                         <a class="section" onclick="showchannel('/index.php/ft/channel/phonetemplate.html?channel=photo','图辑')"><span>图辑</span></a>
-                <a photo-id="904" class="oneStory first-child track-click" eventLabel="photo: 0" onclick="showSlide('/index.php/ft/photonews/904?i=2','巴黎恐怖袭击：城市的默哀')">
-            <div class="headline">巴黎恐怖袭击：城市的默哀</div>
-            <img src="http://i.ftimg.net/photonews/2015/11/564ae2a82959e9.48048576.jpeg" class=leftimage width="167">
-            <div class=lead>当地时间11月16日，法国民众默哀一分钟，悼念巴黎恐袭遇难者。</div>
+                <a photo-id="918" class="oneStory first-child track-click" eventLabel="photo: 0" onclick="showSlide('/index.php/ft/photonews/918?i=2','美国加州枪击案')">
+            <div class="headline">美国加州枪击案</div>
+            <img src="http://i.ftimg.net/photonews/2015/12/56614df14bf537.06660287.jpg" class=leftimage width="167">
+            <div class=lead>美国加利福尼亚州圣贝纳迪诺（San Bernardino）一处社会服务机构星期三发生枪击事件，造成14人丧生，21人受伤，有两名嫌疑人被击毙。</div>
             <div class=clearfloat></div>
         </a>
-                            
+                                <a photo-id="917" class="oneStory track-click" eventLabel="photo: 1" onclick="showSlide('/index.php/ft/photonews/917?i=2','陈升宽寻子：被拐卖的儿童')">
+            <div class="headline">陈升宽寻子：被拐卖的儿童</div>
+            <img src="http://i.ftimg.net/photonews/2015/12/565feaf2ebb5a5.45793494.jpeg" class=leftimage width="167">
+            <div class=lead>每天早上到工厂上工前，兆沅的父亲陈升宽都会到湛江的幼儿园和公园寻找孩子。他蹲在马路牙子上，扫视着路过的孩子。在中国，每年有成千上万的儿童被拐卖，这与本国的人口控制政策是分不开的。</div>
+            <div class=clearfloat></div>
+        </a>
+                        
 
 </div>
 <!--calendar-->

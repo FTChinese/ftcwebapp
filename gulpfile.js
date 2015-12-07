@@ -305,6 +305,9 @@ gulp.task('copy', ['build'], function () {
     .pipe(replace(/phone\//g, 'mba-2014/'))
     .pipe(rename('mba-2014.manifest'))
     .pipe(gulp.dest('../testing/dev_www/mobile_webroot/'));
+  gulp.src(['dist/images/**/*'])
+    .pipe(gulp.dest('../testing/dev_www/mobile_webroot/images'));
+
   
   // android file;
   var fs = require('fs');
@@ -376,6 +379,8 @@ gulp.task('publish', function () {
     .pipe(gulp.dest('../dev_www/mobile_webroot/'));
   gulp.src('../testing/dev_www/mobile_webroot/mba-2014.html')
     .pipe(gulp.dest('../dev_www/mobile_webroot/'));
+  gulp.src('../testing/dev_www/mobile_webroot/images/**/*')
+    .pipe(gulp.dest('../dev_www/mobile_webroot/images'));
 });
 
 gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras', 'api', 'phone', 'log', 'ga'], function () {

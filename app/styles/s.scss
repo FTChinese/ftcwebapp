@@ -93,6 +93,9 @@ html.noScroller, html.hasScroller, body.noScroller, body.hasScroller {background
 		background-position: center center;
 		margin: auto;
 	}
+	.navList li.first-child {
+		padding-top: 33px;
+	}
 }
 .is-in-swift.is-refreshing #refreshButton {
 	opacity: 0.7;
@@ -921,9 +924,16 @@ color:white;
 width:56px;
 }
 
-
-
 //.navList li:after{content:">";position:absolute;right:0;top:0;bottom:0;padding:14px 14px 0 0;font-weight:bold;color:#FFF;font-family: arial;}
+.navList li.vd:before, .navList li.photo:before, .navList li.speedread:before, .navList li.radio:before {
+	content: ""; 
+	width: 56px;
+	height: 25px;
+	float: left;
+	background-size: 22px 22px;
+	background-repeat: no-repeat;
+	background-position: left center;
+}
 .navList li.home:before {content:"\f124";color:#FFF1E0;}
 .navList li.china:before {content:"\f12b";}
 .navList li.global:before {content:"\f12d";}
@@ -935,12 +945,36 @@ width:56px;
 .navList li.management:before {content:"\f120";}
 .navList li.lifestyle:before {content:"\f11d";}
 .navList li.mba:before {content:"\f11f";}
-.navList li.vd:before {content:"\25B6";}
-.navList li.photo:before {content:"\2752";}
-.navList li.quiz:before {content:"\2714";}
-.navList li.speedread:before {content:"\25D5";}
+.navList li.quiz:before {content:"\f139";}
 .navList li.hotstory:before {content:"\f138";}
 .navList li.clip:before {content:"\f10f";}
+.navList li.specialreport:before {content:"\f12b";}
+.navList li.vd:before {
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+ICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4gICAgPHBhdGggZD0iTTE3IDEwLjVWN2MwLS41NS0uNDUtMS0xLTFINGMtLjU1IDAtMSAuNDUtMSAxdjEwYzAgLjU1LjQ1IDEgMSAxaDEyYy41NSAwIDEtLjQ1IDEtMXYtMy41bDQgNHYtMTFsLTQgNHoiLz48L3N2Zz4=);
+}
+.navList li.photo:before {
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+ICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRoLTI0eiIgZmlsbD0ibm9uZSIvPiAgICA8cGF0aCBkPSJNMTAgOHY4bDUtNC01LTR6bTktNWgtMTRjLTEuMSAwLTIgLjktMiAydjE0YzAgMS4xLjkgMiAyIDJoMTRjMS4xIDAgMi0uOSAyLTJ2LTE0YzAtMS4xLS45LTItMi0yem0wIDE2aC0xNHYtMTRoMTR2MTR6Ii8+PC9zdmc+);
+}
+.navList li.radio:before {
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+ICAgIDxwYXRoIGQ9Ik0zLjI0IDYuMTVDMi41MSA2LjQzIDIgNy4xNyAyIDh2MTJjMCAxLjEuODkgMiAyIDJoMTZjMS4xMSAwIDItLjkgMi0yVjhjMC0xLjExLS44OS0yLTItMkg4LjNsOC4yNi0zLjM0TDE1Ljg4IDEgMy4yNCA2LjE1ek03IDIwYy0xLjY2IDAtMy0xLjM0LTMtM3MxLjM0LTMgMy0zIDMgMS4zNCAzIDMtMS4zNCAzLTMgM3ptMTMtOGgtMnYtMmgtMnYySDRWOGgxNnY0eiIvPiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PC9zdmc+);
+}
+.navList li.speedread:before {
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+ICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRoLTI0eiIgZmlsbD0ibm9uZSIvPiAgICA8cGF0aCBkPSJNMTUgMWgtNnYyaDZ2LTJ6bS00IDEzaDJ2LTZoLTJ2NnptOC4wMy02LjYxbDEuNDItMS40MmMtLjQzLS41MS0uOS0uOTktMS40MS0xLjQxbC0xLjQyIDEuNDJjLTEuNTUtMS4yNC0zLjUtMS45OC01LjYyLTEuOTgtNC45NyAwLTkgNC4wMy05IDlzNC4wMiA5IDkgOSA5LTQuMDMgOS05YzAtMi4xMi0uNzQtNC4wNy0xLjk3LTUuNjF6bS03LjAzIDEyLjYxYy0zLjg3IDAtNy0zLjEzLTctN3MzLjEzLTcgNy03IDcgMy4xMyA3IDctMy4xMyA3LTcgN3oiLz48L3N2Zz4=);
+}
+.no-svg {
+	.navList li.vd:before {
+		background-image: url(../images/png/videocam.png);
+	}
+	.navList li.photo:before {
+		background-image: url(../images/png/slideshow.png);
+	}
+	.navList li.radio:before {
+		background-image: url(../images/png/radio.png);
+	}
+	.navList li.speedread:before {
+		background-image: url(../images/png/timer.png);
+	}
+}
 /*--overlay navigation end--*/
 
 
@@ -1208,12 +1242,3 @@ html.noScroller,.noScroller body,.noScroller .fullbody,.noScroller #storyScrolle
 @media only screen and (width: 768px) {
     .banner.midBanner {display:block;}
 }
-/*修复某个版本横板webview高度设错的问题*/
-@media only screen and (width: 1024px) and (min-height: 900px){
-    .is-ipad #screenstart,.is-ipad .night .opening,.is-ipad #fullbodycontainer {
-        height: 748px;
-        min-height: 748px;
-        max-height: 748px;
-    }
-}
-/*Media Queries*/
