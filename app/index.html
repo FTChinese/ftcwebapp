@@ -147,7 +147,7 @@ function commonProblem() {
 
 <div id="o-connection-status"></div>
 <div class=copyright onclick="showConnectionStatus()">
-<b>&copy; 英国金融时报</b> 有限公司 2015&nbsp;&nbsp;
+<b>&copy; 英国金融时报</b> 有限公司 2016&nbsp;&nbsp;
 <span><acronym title="Financial Times">FT中文网</acronym>为英国金融时报的注册商标</span>
 </div>
 
@@ -240,112 +240,6 @@ function commonProblem() {
 <div id="channelview" class="fullbodyView"></div>
 <!-- channel view end -->
 
-<style>
-#contentRail .nutmeg-content_left{
-width: 100%;
-float: none;
-}
-#contentRail .nutmeg-content_left button{
-width: 20%;
-}
-#contentRail button{
-box-sizing:border-box;
-max-width: 64px;
-height:100%;
-padding:0;
-font-size:15px;
-position: relative;
-line-height: 1;
-font-weight: normal;
-background: transparent;
-border: none;
-box-shadow: none;
--moz-box-shadow: none;
--webkit-box-shadow: none;
-margin-right: 0px;
-border-radius: 0px;
-overflow: hidden;
-float: left;
-}
-#contentRail button.floatright{
-float: right;
-}
-#contentRail .nutmeg-content_left{
-font-size: 0;
--webkit-text-size-adjust:none;
-}
-
-#contentRail div {height:100%;}
-#contentRail .nutmeg-content{
-padding: 0;
-}
-#contentRail button>i,#contentRail button>i:after{
-display: block;
-font-weight: normal;
-font-size:15px;    
-line-height: 1;
-}
-#contentRail button>i{
-position: absolute;
-top:5px;
-left: 0px;
-display: block;
-width:100%;
-}
-#contentRail button>span{
-font-size: 12px;
-margin-left: 0;
-display: block;
-width:100%;
-vertical-align: baseline;
-position: absolute;
-bottom: 5px;
-left: 0px;
-}
-#contentRail i.ft-icon-logout:after{
-content: "\f131";
-}
-#contentRail i.ft-icon-login:after{
-content: "\f130";
-font-size:17px;
-}
-#contentRail i.ft-icon-setting:after{
-content: "\f12e";
-}
-#contentRail i.ft-icon-ch:after{
-content:"\f12b";
-}
-#contentRail i.ft-icon-en:after{
-content:"\f12d";
-}
-#contentRail i.ft-icon-ce:after{
-	content: " "; 
-	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+ICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRoLTI0eiIgZmlsbD0ibm9uZSIvPiAgICA8cGF0aCBkPSJNMTIuODcgMTUuMDdsLTIuNTQtMi41MS4wMy0uMDNjMS43NC0xLjk0IDIuOTgtNC4xNyAzLjcxLTYuNTNoMi45M3YtMmgtN3YtMmgtMnYyaC03djEuOTloMTEuMTdjLS42NyAxLjkzLTEuNzMgMy43Ni0zLjE3IDUuMzYtLjkzLTEuMDMtMS43LTIuMTYtMi4zMS0zLjM1aC0yYy43MyAxLjYzIDEuNzMgMy4xNyAyLjk4IDQuNTZsLTUuMDkgNS4wMiAxLjQyIDEuNDIgNS01IDMuMTEgMy4xMS43Ni0yLjA0em01LjYzLTUuMDdoLTJsLTQuNSAxMmgybDEuMTItM2g0Ljc1bDEuMTMgM2gybC00LjUtMTJ6bS0yLjYyIDdsMS42Mi00LjMzIDEuNjIgNC4zM2gtMy4yNHoiLz48L3N2Zz4=);
-	
-	width: 18px;
-	height: 18px;
-	background-size: 18px 18px;
-	background-repeat: no-repeat;
-	background-position: center center;
-	margin: auto;
-}
-.no-svg #contentRail i.ft-icon-ce:after{
-	background-image: url(images/png/translate.png);
-}
-#contentRail button.open,#contentRail button.open>i:after{
-color: #fff;
-}
-#contentRail button>i:after{
-font-size: 17px;
-}
-#contentRail .chbutton, #contentRail .enbutton, #contentRail .cebutton{
-/*line-height: 45px;*/
-}
-
-#contentRail button:active, #contentRail button.open {
-background-color: rgba(0,0,0,0.14) !important;
-}
-</style>
 
 
 
@@ -494,6 +388,27 @@ background-color: rgba(0,0,0,0.14) !important;
 </div>
 
 
+<div id="downloadNative" class=overlay>
+<div class=overlayBG></div>
+<div class=inner>
+<div class=cell>
+<div class=settingbox>
+<div class=overlay-header>
+<div class="nutmeg-content_right rightmargin"><button onclick="closeOverlay()" class="overlay_close-btn" aria-label="Settings"></button></div>
+<p>下载原生应用</p>
+</div>
+<div class="padding">
+<div class=centerButton>下载FT中文网的原生应用，方便离线浏览：</div>
+<br>
+<div class=centerButton><a href="http://app.ftchinese.com/d.html?utm_source=marketing&utm_medium=campaign&utm_campaign=WEBAPP1">1. 立即点击此处下载</a></div>
+<br>
+<div class=centerButton onclick="closeOverlay()">2. 先看看这个Web App</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
 <div id=yourDevice class=overlay>
 <div class=overlayBG></div>
 <div class=inner>
@@ -540,7 +455,7 @@ background-color: rgba(0,0,0,0.14) !important;
 <div class="settingbox">
 <div class="overlay-header">
 <div class="nutmeg-content_right rightmargin">
-<button onclick="shareArticle();"><i class="ft-icon-share"></i></button>
+<button onclick="shareArticle();" id="video-share"><i class="ft-icon-share"></i></button>
 <button onclick="closeOverlay()" class="overlay_close-btn" aria-label="Settings"></button>
 </div>
 <p></p>
@@ -755,14 +670,6 @@ background-color: rgba(0,0,0,0.14) !important;
 </div>
 
 <div id="tip" class="tip"></div>
-
-
-
-
-
-
-
-
 </div>
 </body>
 <!-- Google Analytics -->
@@ -901,4 +808,6 @@ fa('create','UA-XXXX-Y',{'alwaysSendReferrer':true});fa('send','pageview');
 <!--
 name="baidu-tc-cerfication" data-appid="4880050" src="http://apps.bdimg.com/cloudaapi/lightapp.js"
 -->
+
+
 </html>

@@ -1,5 +1,5 @@
 //申明各种Global变量
-var _currentVersion = 1089; //当前的版本号
+var _currentVersion = 1093; //当前的版本号
 var _localStorage = 0;
 var exp_times = Math.round(new Date().getTime() / 1000) + 86400;
 var username;
@@ -19,6 +19,7 @@ var connectInternet = 'no';
 var uaString = navigator.userAgent || navigator.vendor || '';
 var osVersionMore = '';
 var useFTScroller = 0;
+var nativeVerticalScroll = false;
 var noFixedPosition = 0;
 var unusedEntryIndex;
 var requestTime;
@@ -49,6 +50,7 @@ var gDeviceId = "";
 var gShowStatusBar = 0;
 var gHomePageIsLatest = true; //The latest home page is displayed
 var gCurrentStoryId = '';
+var gNoticeAdded = false;
 
 //开机的时候检查屏幕宽度，以便节约流量
 //我们的基本假设是，不管横屏还是竖屏，只要宽度小于700，那就是手机；否则就是平板
@@ -100,9 +102,9 @@ if (window.location.hostname === 'localhost' || window.location.hostname.indexOf
     gHotStory = 'api/hotstory.json?';
     gWebRoot = 'http://m.ftchinese.com';
     if (screenWidth >= 700) {
-        gStartPageTemplate = 'api/homecontentwide.tpl?';
+        gStartPageTemplate = 'api/homecontentwide.html?';
     } else {
-        gStartPageTemplate = 'api/homecontent.tpl?';
+        gStartPageTemplate = 'api/homecontent.html?';
     }
 }
 
@@ -176,6 +178,8 @@ if (JSON.parse) {$.parseJSON = JSON.parse;}
 
 var gTouchStartX = -1;
 var gTouchMoveX = -1;
+var gTouchStartY = -1;
+var gTouchMoveY = -1;
 var gMinSwipe = 30;
 var gStartSwipe = 15;
 var gIsSwiping = false;
@@ -295,23 +299,32 @@ function startpage() {
                 gIsSwiping = false;
                 if (typeof window.gFTScrollerActive === "object" || $('#slideShow').hasClass('on') === true ) {
                     gTouchStartX = -1;
+                    gTouchStartY = -1;
                     return false;
                 }
                 gTouchStartX = e.changedTouches[0].clientX;
+                gTouchStartY = e.changedTouches[0].clientY;
             }, false);
 
             document.getElementById('fullbodycontainer').addEventListener('touchmove', function(e) {
+                var xDistance;
+                var yDistance;
                 gNowView = document.body.className;
                 if (gNowView==='fullbody') {return;}
                 if ( (typeof window.gFTScrollerActive === "object" && gIsSwiping === false) || $('#slideShow').hasClass('on') === true ) {
                     gTouchStartX = -1;
                     gTouchMoveX = -1;
+                    gTouchStartY = -1;
+                    gTouchMoveY = -1;
                     return false;
                 }
                 gTouchMoveX = e.changedTouches[0].clientX;
+                gTouchMoveY = e.changedTouches[0].clientY;
+                xDistance = Math.abs(gTouchMoveX - gTouchStartX);
+                yDistance = Math.abs(gTouchMoveY - gTouchStartY);
                 if (gTouchStartX !== -1) {
                     //whether the user is swiping or scrolling
-                    if (((gTouchMoveX - gTouchStartX > gStartSwipe && gMoveState === 0) || (gTouchMoveX - gTouchStartX < -gStartSwipe && gMoveState ===0) || (gTouchMoveX - gTouchStartX > gMinSwipe && gMoveState<0) || (gTouchMoveX - gTouchStartX < -gMinSwipe && gMoveState>0)) && typeof window.gFTScrollerActive !== "object") {
+                    if (((xDistance > gStartSwipe && gMoveState ===0) || (xDistance > gMinSwipe && gMoveState<0)) && typeof window.gFTScrollerActive !== "object" && yDistance < 30 && yDistance/xDistance < 0.5) {
                         window.gFTScrollerActive = {};
                         gIsSwiping = true;
                     }
@@ -408,7 +421,6 @@ function startpage() {
 
 function loadFromLocalStorage(startpageStorage) {
     $('#homecontent').html(startpageStorage);
-    //fillContent();
 }
 
 /*not working
@@ -422,7 +434,7 @@ function removeStartCover() {
 }
 */
 
-function fillContent() {
+function fillContent(loadType) {
     //gStartStatus = "fillContent start";
     var ua=navigator.userAgent || navigator.vendor || "";
     var searchnote = '输入关键字查找文章';
@@ -435,6 +447,7 @@ function fillContent() {
     var theTimeStamp = new Date();
     var lastActionTime;
     var thestoryId;
+    var parts;
     filloneday('');
     $('.closestory,.back,.backbutton').unbind().bind('click',function() {histback();});
 	
@@ -465,11 +478,16 @@ function fillContent() {
     navScroller($("#fullbody"));
     
     //文章页不能默认上下
-    if (useFTScroller==1) {
-    document.getElementById('fullbodycontainer').addEventListener('touchmove', function(e) {
-        e.preventDefault();
-    });
+    if (useFTScroller==1 && nativeVerticalScroll === false) {
+        document.getElementById('fullbodycontainer').addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        });
+    } else if (nativeVerticalScroll === true) {
+        document.getElementById('contentRail').addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }); 
     }
+
 
     //给用户的提示
     if (!!pmessage) {$('.bodynote').append(pmessage);} else {$('.bodynote').hide();}
@@ -521,18 +539,29 @@ function fillContent() {
     });
 
     //查看旧刊的日历
-    thisday = new Date();
+    
+    if (typeof loadType === 'string' && /^[0-9]{4}\-[0-9]{1,2}\-[0-9]{1,2}$/i.test(loadType)) {
+        //var parts ='04/03/2014'.split('/');
+        parts = loadType.split('-');
+        thisday = new Date(parts[0],parts[1]-1,parts[2]); 
+        //thisday = new Date(loadType);
+        //$('#o-connection-status').html(loadType);
+    } else {
+        thisday = new Date();
+    }
     updatecalendar(thisday, 0);
-
     //如果是iPhone上的Mobile Safari打开，则显示添加到主屏幕的提示
     if (_localStorage==0) {
         turnonOverlay('storageSetting');
     } else if (/safari/i.test(ua) && /ios/i.test(osVersion) && iOSShareWechat===0) {
         turnonOverlay('addHome');
+    } else if (/baidu|micromessenger/i.test(ua)) {
+        turnonOverlay('downloadNative');
     } else if ((ua.indexOf('Android 2') !== -1 || ua.indexOf('Android 3') !== -1) && (getvalue('yourDevice')==null)) {//如果是比较老的安卓手机，则提示用旧版程序或手机站     
         turnonOverlay('yourDevice');
         savevalue('yourDevice',1);
     }
+
 
     if (historyAPI()==true) {
         window.addEventListener("popstate", function() {
@@ -592,7 +621,10 @@ function fillContent() {
 	}
     
     if (location.href.indexOf("android")>0) {
-        $('#setting .nightreading').after('<div class="nightreading notificationOn" id="notification"><strong>通知</strong><span class="displayvalue" onclick="switchNotification()"><span class="ui-toggle"><span class="ui-toggle-button2"></span><span class="ui-toggle-label ui-toggle-label-on">开</span><span class="ui-toggle-label ui-toggle-label-off">关</span></span></span></div>');
+        if (gNoticeAdded === false) {
+            gNoticeAdded = true;
+            $('#setting .nightreading').after('<div class="nightreading notificationOn" id="notification"><strong>通知</strong><span class="displayvalue" onclick="switchNotification()"><span class="ui-toggle"><span class="ui-toggle-button2"></span><span class="ui-toggle-label ui-toggle-label-on">开</span><span class="ui-toggle-label ui-toggle-label-off">关</span></span></span></div>');
+        }
         $('#setting .description').remove();
         if (window.ftjavacriptapp !== undefined) {
             if (ftjavacriptapp.is_push()=='0') {
@@ -608,12 +640,12 @@ function fillContent() {
     $("#storyScroller").unbind().bind("click",function(e){
         var k=e.clientY, h, x=e.clientX, w=$(window).width(), doScroll=0;
         h = (typeof storyScroller === 'object' && useFTScroller === 1) ? $(this).innerHeight() : $(window).height()-45;
-        if (k>0 && h>50 && (typeof storyScroller === 'object' || useFTScroller===0)) {
+        if (k>0 && h>50 && (typeof storyScroller === 'object' || useFTScroller===0 || nativeVerticalScroll === true)) {
             if (k/h>0.8) {
-                h=h-20;
+                h=h-40;
                 doScroll=1;
             } else if (k/h<0.2) {
-                h=-h+20;
+                h=-h+40;
                 doScroll=1;
             } else if (x/w<0.2 && !/\b(link)\b/.test(e.target.className) && noFixedPosition==1) {
                 histback();
@@ -622,7 +654,11 @@ function fillContent() {
             //alert (k + "/" + h + "/" + doScroll);
             if (doScroll===1) {
                 if (useFTScroller===1) {
-                    storyScroller.scrollBy(0,h,500);
+                    if (nativeVerticalScroll === true) {
+                        $('#storyScroller').animate({ scrollTop: this.scrollTop + h }, '500');
+                    } else {
+                        storyScroller.scrollBy(0,h,500);    
+                    }
                 } else {
                     $('html,body').animate({ scrollTop: window.pageYOffset + h }, '300');
                 }
@@ -699,6 +735,7 @@ function fillContent() {
     //iOS原生应用分享功能
     if (gIsInSWIFT === true) {
         $('#shareButton').attr('onclick','').wrap('<a id="iOSAction"></a>');
+        $('#video-share').attr('onclick','').wrap('<a id="iOS-video-action"></a>');
     }
 
     //跳到页面
@@ -772,7 +809,7 @@ function freezeScroll() {
     if (useFTScroller===0){
         if (fOverflow === true && footerShow === true && fStatus !== 3) {
             fStatus = 3; 
-            i.className = "f3 inner";//using commonJS is said to be much faster than jQuery 
+            i.className = "f3 inner";
         } else if (fOverflow === true && footerShow === false && fBottomShow === true && fStatus !== 2) {
             fStatus = 2; 
             i.className = "f2 inner";
@@ -1309,6 +1346,7 @@ function clearfields() {
     $('#datestamp').empty();
     $('#fullbody .toempty').empty();
 }
+*/
 
 function jumpToPage(){
     var hashURI = location.hash || "", _channel_name, _channel_title, k;
@@ -1328,7 +1366,7 @@ function jumpToPage(){
     _popstate=0;
     
 }
-*/
+
 
 
 
@@ -1462,13 +1500,21 @@ function downloadStories(downloadType) {
     }
 }
 
-function loadToHome(data) {
+function loadToHome(data, loadType) {
     $('#homecontent').html(data);
-    fillContent();
+    if (loadType !== undefined) {
+        fillContent(loadType);
+    } else {
+        fillContent();
+    }
     addstoryclick();
     removeBrokenIMG();
     //display app images when loaded
     showAppImage('fullbody');
+    //display button to download native app
+    if (/baidu|micromessenger/i.test(uaString)) {
+        $('#download-native').removeClass('hidden');
+    } 
 }
 
 function loadHomePage(loadType) {
@@ -1507,7 +1553,7 @@ function loadHomePage(loadType) {
                 connectInternet="yes";
                 setTimeout(function(){connectInternet="unknown";},300000);
                 data = checkhttps(data);
-                loadToHome(data);
+                loadToHome(data, loadType);
                 showDateStamp();
                 if (/^[0-9]{4}\-[0-9]{1,2}\-[0-9]{1,2}$/.test(loadType)) {
                     gHomePageIsLatest = false;
@@ -1614,6 +1660,7 @@ function refresh(forceDownload){
             }
         }, 2000);
     }
+    /*
     if (location.href.indexOf("android")>=0) {
         $("#refreshButton").addClass("blue");
         requestTime = new Date().getTime();
@@ -1651,7 +1698,8 @@ function refresh(forceDownload){
                 $('#popup-content').html("<button class='ui-light-btn' onclick=\"$('#popup').removeClass('on');\">我知道了</button></div>");
                 $('#popup').addClass('on');
             });
-    } else if (gIsInSWIFT === true) {
+    } else */
+    if (gIsInSWIFT === true || 1 === 1) {
         $('html').addClass('is-refreshing');
         $('#homeload .loadingStatus').html('检查新内容...');
         requestTime = new Date().getTime();
@@ -1683,7 +1731,6 @@ function refresh(forceDownload){
     } else {
         window.location.reload();
     }
-    
 }
 
 
@@ -1755,17 +1802,25 @@ function fillArticles(data, place) {
         jsondata = $.parseJSON(data);
     }
     catch(e) {
+        //console.log ('wrong data format');
         jsondata = data;
     }
-    if (jsondata!=null) {
-        $.each(jsondata, function(entryIndex, entry) {
-            i = (place == '.yearpopular') ? i + 1 : entryIndex + 1;
-            firstChild = (i==1) ? " first-child" : "";
-            k+='<div class="story oneStory more'+firstChild+'" storyid="' + entry.storyid + '"><span class=rank>' + i + '. </span><span class="hl">' + entry.cheadline + '</span></div>';
-        });
-        $(place).html(k);
-        addstoryclick();
+
+    //console.log (jsondata);
+    try {
+        if (jsondata!=null) {
+            $.each(jsondata, function(entryIndex, entry) {
+                i = (place == '.yearpopular') ? i + 1 : entryIndex + 1;
+                firstChild = (i==1) ? " first-child" : "";
+                k+='<div class="story oneStory more'+firstChild+'" storyid="' + entry.storyid + '"><span class=rank>' + i + '. </span><span class="hl">' + entry.cheadline + '</span></div>';
+            });
+            $(place).html(k);
+            addstoryclick();
+        }
+    } catch (ignore) {
+        console.log ('fill Article Failed!');
     }
+
     //gStartStatus = "fillArticles end";
 }
 
@@ -1919,7 +1974,11 @@ function readstory(theid, theHeadline) {
     gCurrentStoryId = theid;
     setTimeout(function() {
         //sv.find('.storybody').html('正在读取文章数据...2');
-        if (useFTScroller===0) {window.scrollTo(0, 0);}
+        if (useFTScroller===0) {
+            window.scrollTo(0, 0);
+        } else if (nativeVerticalScroll === true) {
+            document.getElementById('storyScroller').scrollTop = 0;
+        } 
         if (allstories[theid]) {
             displaystory(theid, langmode);
         } else {//online
@@ -2288,10 +2347,10 @@ function displaystory(theid, language) {
             }
         });
         if (osVersion.indexOf("nothing")>=0) {
-            k = "【" + allId.cheadline + "】\r\n\r\n" + k + "\r\n\r\n点击阅读全文：\r\n\r\nhttp://m.ftchinese.com/story/"+allId.id+"#ccode=2G158002\r\n\r\n或访问app.ftchinese.com下载FT中文网移动应用，阅读更多精彩文章";
+            k = "【" + allId.cheadline + "】\r\n\r\n" + k + "\r\n\r\n点击阅读全文：\r\n\r\nhttp://m.ftchinese.com/story/"+allId.id+"#ccode=2G168002\r\n\r\n或访问app.ftchinese.com下载FT中文网移动应用，阅读更多精彩文章";
             //$("#shareMobile").val();
         } else {
-            k = "【" + allId.cheadline + "】\r\n"+k+"\r\n\r\n......  \r\n继续阅读请点击链接：\r\nhttp://m.ftchinese.com/story/"+allId.id+"#ccode=2G158002";
+            k = "【" + allId.cheadline + "】\r\n"+k+"\r\n\r\n......  \r\n继续阅读请点击链接：\r\nhttp://m.ftchinese.com/story/"+allId.id+"#ccode=2G168002";
         }
     }
 
@@ -2303,6 +2362,10 @@ function displaystory(theid, language) {
     //it'll break the JS when compiled into inline JS
     //causing the android app to break on starting
     highchartsCheck(allId.cbody);
+
+    if (nativeVerticalScroll === true) {
+        document.getElementById('storyScroller').scrollTop = 0;
+    } 
 }
 //阅读文章
 
@@ -2324,7 +2387,7 @@ function updateShare(domainUrl, mobileDomainUrl, contentType, contentId, content
     $('#shareLinkedIn').attr('href','https:\/\/www.linkedin.com/cws/share?isad=1&url=' + url +'&original_referer=https%3A%2F%2Fdeveloper.linkedin.com%2Fsites%2Fall%2Fthemes%2Fdlc%2Fsandbox.php%3F&token=&isFramed=true&lang=zh_CN&_ts=1422502780259.2795');
     $('#shareSocial,#shareSinaWeibo').val(contentLongTitle + url);
     $('#shareURL').val(url);
-    $('#shareMobile').val('【' + contentTitle + '】' + url + '#ccode=2G158002');
+    $('#shareMobile').val('【' + contentTitle + '】' + url + '#ccode=2G168002');
     $('#shareEmail').attr('href','mailto:?subject='+contentTitle+'&body='+ contentLongTitle + url);
     //如果是iOS原生应用，传参数给SDK分享微信
     $('#webappWeixin,#nativeWeixin').hide();
@@ -2359,7 +2422,7 @@ function updateShare(domainUrl, mobileDomainUrl, contentType, contentId, content
         }
         if (gIsInSWIFT === true) {
             k=k.replace(/ftcweixin:/g,'iosaction:');
-            $('#iOSAction').attr('href',k);
+            $('#iOSAction, #iOS-video-action').attr('href',k);
         }
     } else {
         $("#webappWeixin").show();
@@ -2436,12 +2499,22 @@ function checkDevice() {
         osVersion = "other";
     }
     if (osVersion != "other") {osVersionMore="("+osVersion+")";}
-    if ((osVersion.indexOf("ios")>=0 || /Android[4-5]/i.test(osVersion) || osVersion.indexOf("bb10")>=0 || (typeof window.gCustom === "object" && gCustom.useFTScroller === true)) && typeof window.FTScroller==="function"/* && !/iPad/i.test(uaString)*/) {
+    if ((osVersion.indexOf("ios")>=0 || /Android[4-9]/i.test(osVersion) || osVersion.indexOf("bb10")>=0 || (typeof window.gCustom === "object" && gCustom.useFTScroller === true)) && typeof window.FTScroller==="function"/* && !/iPad/i.test(uaString)*/) {
         setCookie('viewpc', 0, '', '/');
         useFTScroller=1;
     } else if (osVersion.indexOf("Android2")>=0 || osVersion.indexOf("Android1")>=0){
         noFixedPosition=1;
     }
+    // using native vertical scroll doesn't make text selection easy 
+    // and comes with other problems
+    // stop using it for now and revisit the issue in the future
+    
+    
+    if (/Android[4-9]/i.test(osVersion) || /ios[5-9]/i.test(osVersion)) {
+        nativeVerticalScroll = true;
+    }
+    
+
     if (useFTScroller==1) {
         $("html").removeClass("noScroller").addClass("hasScroller");
     } else {
@@ -3554,56 +3627,79 @@ function reflowscroller() {
 
 function addHomeScroller() {
     if (useFTScroller===0) {return;}
-    if (typeof theScroller !=="object") {
+    if (nativeVerticalScroll === true) {
+        $('#homeScroller').css({'overflow-y': 'scroll', '-webkit-overflow-scrolling': 'touch', 'overflow-scrolling': 'touch'});
+        document.getElementById('homeScroller').addEventListener('scroll', function(){
+            homeScrollEvent();
+        });
+    } else if (typeof theScroller !=="object") {
         theScroller = new FTScroller(document.getElementById("fullbody"), gVerticalScrollOpts);
         theScroller.addEventListener("scrollend", function (){
-            screenHeight = $(window).height();
-            $("#fullbody .adiframe:visible:not(.loaded-in-view)").each(function(){
-                var FrameID;
-                //console.log($(this).attr("id") + ":" + $(this).attr("class") + ":" + $(this).offset().top);
-                if ($(this).offset().top>=0 && $(this).offset().top <= screenHeight) {
-                    try {
-                    FrameID = $(this).find("iframe").eq(0).attr("id");
-                    document.getElementById(FrameID).contentDocument.location.reload(true);
-                    } catch (ignore) {
-                    }
-                    $(this).addClass("loaded-in-view");
-                }
-            });
+            homeScrollEvent();           
         });
     }
+}
+
+function homeScrollEvent() {
+    screenHeight = $(window).height();
+    $("#fullbody .adiframe:visible:not(.loaded-in-view)").each(function(){
+        var FrameID;
+        //console.log($(this).attr("id") + ":" + $(this).attr("class") + ":" + $(this).offset().top);
+        if ($(this).offset().top>=0 && $(this).offset().top <= screenHeight) {
+            try {
+            FrameID = $(this).find("iframe").eq(0).attr("id");
+            document.getElementById(FrameID).contentDocument.location.reload(true);
+            } catch (ignore) {
+            }
+            $(this).addClass("loaded-in-view");
+        }
+    });
 }
 
 function addStoryScroller() {
     if (useFTScroller===0) {return;}
     //it is possible that storyScroller is an object but not an FTScroller
     //so try to scroll it first and fall back if it fails
-    try {
-        storyScroller.scrollTo(0, 0);
-    } catch (ignore) {
-        storyScroller = new FTScroller(document.getElementById("storyScroller"), gVerticalScrollOpts);
-        if (screenWidth>=700 && screenHeight>=400) {//不考虑在使用过程中转屏的情况
-            storyScroller.addEventListener("scroll", function(){
-                ftScrollerTop = storyScroller.scrollTop;
-                freezeScroll();
-            });
+    if (nativeVerticalScroll === true) {
+        $('#storyScroller').css({'overflow-y': 'scroll', '-webkit-overflow-scrolling': 'touch', 'overflow-scrolling': 'touch'});
+        document.getElementById('storyScroller').addEventListener('scroll', function(){
+            freezeScroll();
+        });
+    } else {
+        try {
+            storyScroller.scrollTo(0, 0);
+        } catch (ignore) {
+            storyScroller = new FTScroller(document.getElementById("storyScroller"), gVerticalScrollOpts);
+            if (screenWidth>=700 && screenHeight>=400) {//不考虑在使用过程中转屏的情况
+                storyScroller.addEventListener("scroll", function(){
+                    ftScrollerTop = storyScroller.scrollTop;
+                    freezeScroll();
+                });
+            }
         }
     }
 }
 
 
 function addnavScroller(theId) {
-    if (thenavScroller === undefined && typeof window.FTScroller === "function") {
+    if (nativeVerticalScroll === true) {
+        $('#' + theId).css({'overflow-y': 'scroll', '-webkit-overflow-scrolling': 'touch', 'overflow-scrolling': 'touch'});
+    } else if (thenavScroller === undefined && typeof window.FTScroller === "function") {
         thenavScroller = new FTScroller(document.getElementById(theId), gVerticalScrollOpts);
     }
 }
 
 function addChannelScroller() {
     if (useFTScroller===0) {return;}
-    if (typeof channelScroller !== 'object') {
-        channelScroller = new FTScroller(document.getElementById('channelScroller'), gVerticalScrollOpts);
+    if (nativeVerticalScroll === true) {
+        $('#channelScroller').css({'overflow-y': 'scroll', '-webkit-overflow-scrolling': 'touch', 'overflow-scrolling': 'touch'});
+        document.getElementById('channelScroller').scrollTop = 0;
+    } else {
+        if (typeof channelScroller !== 'object') {
+            channelScroller = new FTScroller(document.getElementById('channelScroller'), gVerticalScrollOpts);
+        }
+        channelScroller.scrollTo(0, 0);
     }
-    channelScroller.scrollTo(0, 0);
 }
 
 
@@ -3917,14 +4013,22 @@ function updateConnectionClass() {
 function scrollToTop() {
     try {
         if (gNowView === 'fullbody') {
-            theScroller.scrollTo(0,0,500);
+            scrollEle(theScroller, 'homeScroller');
         } else if (gNowView === 'storyview') {
-            storyScroller.scrollTo(0,0,500);
+            scrollEle(storyScroller, 'storyScroller');
         } else if (gNowView === 'channelview') {
-            channelScroller.scrollTo(0,0,500);
+            scrollEle(channelScroller, 'channelScroller');
         }
     } catch (ignore) {
 
+    }
+}
+
+function scrollEle(ele, id) {
+    if (nativeVerticalScroll === true) {
+        $('#' + id).animate({scrollTop: 0}, '500');
+    } else {
+        ele.scrollTo(0,0,500);
     }
 }
 

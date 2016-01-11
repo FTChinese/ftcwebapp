@@ -18,6 +18,41 @@ img {border:0;max-width:100%;}
 
 <body style="background-color:#E9DECF;">
 <script>
+function GetCookie(name){
+    var start = document.cookie.indexOf(name+"="),
+        len = start+name.length+1,
+        end = document.cookie.indexOf(";",len);
+    if ((!start) && (name !== document.cookie.substring(0,name.length))) {return null;}
+    if (start === -1) {return null;}
+    if (end === -1) {end = document.cookie.length; }
+    return decodeURIComponent(document.cookie.substring(len,end));
+}
+
+function adReachability() {
+  var thirdPartyVendors = {
+    'dcR': '_dc',
+    'mmR': '_mm',
+    'szR': '_sz',
+    'amR': '_am'
+  };
+  var adParameter = '';
+  var adReachabilityStatus;
+  for (var k in thirdPartyVendors) {
+      if (thirdPartyVendors.hasOwnProperty(k)) {
+         //user[k] = data[k];
+         //console.log (k + ': ' + thirdPartyVendors[k]);
+         adReachabilityStatus = GetCookie(k);
+         if (adReachabilityStatus === 'reachable') {
+          adParameter += '&' + thirdPartyVendors[k] + '=1';
+         } else if (adReachabilityStatus === null) {
+          adParameter += '&' + thirdPartyVendors[k] + '=2';
+         }
+      }
+  }
+//  console.log (adParameter);
+  return adParameter;
+}
+
 var uaString=navigator.userAgent || navigator.vendor || "",deviceType="",k=window.location.href,c,adchannelId,adPositionId,adType,adType,adId,adLink,bodyWidth=document.body.offsetWidth || 0;
 var matchSpecial = false;
 var gSpecialAdId = '';
@@ -137,7 +172,7 @@ if (adCode === 'fullScreen' && 1>2) {
 
 
 } else {
-document.writeln('<div class="'+adType+'" id="ad-content"><scr'+'ipt type="text/javascript" src="http://dolphin.ftimg.net/s?z=ft&c=' + c + '&t='+Math.round(Math.random() * 1000000)+'" charset="gbk" ></scr'+'ipt></div>');
+document.writeln('<div class="'+adType+'" id="ad-content"><scr'+'ipt type="text/javascript" src="http://dolphin.ftimg.net/s?z=ft&c=' + c + adReachability() + '&t='+Math.round(Math.random() * 1000000)+'" charset="gbk" ></scr'+'ipt></div>');
 }
 </script>
 
@@ -227,17 +262,20 @@ adId = 'ad-' + adId;
 
 
 try {
-    if ((adType === 'halfpage') && (gImgTag>0||gDivTag>0||giFrameTag>0)) {
+    if ((adType === 'halfpage' || adType === 'mpu') && (gImgTag>0||gDivTag>0||giFrameTag>0)) {
 
-        gAdContent = document.getElementById("ad-content").getElementsByTagName("div") || document.getElementById("ad-content").getElementsByTagName("iframe") || document.getElementById("ad-content").getElementsByTagName("img");
+        gAdContent = document.getElementById("ad-content").getElementsByTagName("img")  || document.getElementById("ad-content").getElementsByTagName("iframe") || document.getElementById("ad-content").getElementsByTagName("div");
+        console.log (parent.document.getElementById(adId));
         gAdContent = gAdContent[0];
         adHeight = gAdContent.style.height;
         adHeight = adHeight.replace(/px/,"");
         adHeight = parseInt(adHeight, 10) || 0;
+
+        // console.log ('ad height: ' + adHeight);
         if (adHeight === 250) {
             parent.document.getElementById(adId).className = "adiframe mpu";
             parent.document.getElementById(adId).style.height = "250px";
-        } else {
+        } else if (adHeight === 600) {
             parent.document.getElementById(adId).className = "adiframe halfpage";
             parent.document.getElementById(adId).style.height = "600px";
         }

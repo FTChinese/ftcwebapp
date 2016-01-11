@@ -17,6 +17,7 @@ function getUrltoFile (urlSource, fileName) {
       res.on('data', function (chunk) {
           data += chunk;
       });
+      //console.log (data);
       res.on('end', function () {
         var fs = require('fs');
         fs.writeFile(fileName, data, function(err) {
@@ -109,14 +110,45 @@ gulp.task('ea', function () {
   postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea003.json');
   message.head.transactiontype = '10007';
   postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea007.json');
-  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homecontent', './app/api/homecontent.tpl');
-  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homecontent&screentype=wide', './app/api/homecontentwide.tpl');
+  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homecontentsource', './app/api/homecontent.html');
+  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homecontentsource&screentype=wide', './app/api/homecontentwide.html');
   getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?', './app/api/home.tpl');
   getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homepagevideo&', './app/api/homepagevideo.tpl');
   getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=skyZ&', './app/api/skyZ.tpl');
   getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/ipadvideo.html?', './app/api/ipadvideo.tpl');
   getUrltoFile ('http://m.ftchinese.com/index.php/jsapi/get_last_updatetime?', './app/api/get_last_updatetime.json');
   getUrltoFile ('http://m.ftchinese.com/index.php/jsapi/hotstory/1days?', './app/api/hotstory.json');
+});
+
+
+gulp.task('test', function () {
+  var message = {};
+  message.head = {};
+  message.head.transactiontype = '10001';
+  message.head.source = 'web';
+  message.body = {};
+  message.body.ielement = {};
+  message.body.ielement.num = 25;
+  //http://app003.ftmailbox.com/index.php/jsapi/get_last_publish_story?day=2015-6-17&
+
+  //postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea001.json');
+  //postDatatoFile('http://m.ftchinese.com/index.php/jsapi/get_last_publish_story?day=2015-10-13&', message, './app/api/ea001.json');
+  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homecontentsource&screentype=wide', './app/api/homecontentwide.html');
+  
+});
+
+
+gulp.task('hp', function () {
+  gulp.src('app/api/homecontent.html')
+    .pipe(gulp.dest('../dev_www/frontend/tpl/phone'));
+  gulp.src('app/api/homecontentwide.html')
+    .pipe(gulp.dest('../dev_www/frontend/tpl/phone'));
+});
+
+
+gulp.task('phone', function () {
+  return gulp.src('app/phone/**/*')
+    .pipe(gulp.dest('dist/phone'));
 });
 
 gulp.task('jshint', function () {
@@ -153,10 +185,7 @@ gulp.task('api', function () {
     .pipe(gulp.dest('dist/api'));
 });
 
-gulp.task('phone', function () {
-  return gulp.src('app/phone/**/*')
-    .pipe(gulp.dest('dist/phone'));
-});
+
 
 gulp.task('log', function () {
   return gulp.src('app/log/**/*')

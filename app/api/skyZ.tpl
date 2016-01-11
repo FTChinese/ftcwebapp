@@ -85,7 +85,7 @@
 <div url="/index.php/ft/column/007000010?i=2" class="channel oneStory more">中间论坛</div>
 <div url="/index.php/ft/column/007000046?i=2" class="channel oneStory more">杏林守望者</div>
 <div url="/index.php/ft/column/007000055?i=2" class="channel oneStory more">名利场</div>
-<div url="/index.php/ft/column/007000059?i=2" class="channel oneStory more">时代的噪���</div>
+<div url="/index.php/ft/column/007000059?i=2" class="channel oneStory more">时代的噪音</div>
 <div url="/index.php/ft/column/007000060?i=2" class="channel oneStory more">谈艺录</div>
 
 </div>
