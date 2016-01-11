@@ -46,8 +46,7 @@
                 <div class=clearfloat></div>
 <div class="adiframe banner midBanner" type="90" adwidth="100%" frame="midBanner"></div>
 <div class=clearfloat></div>                                <div id="newsanchor" class="toempty"></div>
-                <div class="adiframe mpu-phone for-phone" type="250" frame="ad300x250-home"></div>                                    <div class="toempty specialanchor" tag="奢华水上" title="奢华水上" adid="2048"></div>
-                                                <div id="mediaanchor" class="toempty"></div>
+                <div class="adiframe mpu-phone for-phone" type="250" frame="ad300x250-home"></div>                                                <div id="mediaanchor" class="toempty"></div>
                 <div id="peopleanchor" class="toempty"></div>
                 <div id="politicsanchor" class="toempty"></div>
                 <div id="economyanchor" class="toempty"></div>
@@ -692,6 +691,5 @@ background-color: rgba(0,0,0,0.14) !important;
     </ul>
 </div>
 
-<div id="tip" class="tip"></div>
-
+<div id="tip" class="tip"></div>
 

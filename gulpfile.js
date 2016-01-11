@@ -104,13 +104,14 @@ gulp.task('ea', function () {
   //http://app003.ftmailbox.com/index.php/jsapi/get_last_publish_story?day=2015-6-17&
 
   //postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea001.json');
-  //postDatatoFile('http://m.ftchinese.com/index.php/jsapi/get_last_publish_story?day=2015-10-13&', message, './app/api/ea001.json');
-  postDatatoFile('http://app003.ftmailbox.com/index.php/jsapi/get_new_story?rows=25&', message, './app/api/ea001.json');
+  postDatatoFile('http://m.ftchinese.com/index.php/jsapi/get_last_publish_story?day=2016-1-8&', message, './app/api/ea001.json');
+  //postDatatoFile('http://app003.ftmailbox.com/index.php/jsapi/get_new_story?rows=25&', message, './app/api/ea001.json');
   message.head.transactiontype = '10003';
   postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea003.json');
   message.head.transactiontype = '10007';
   postDatatoFile('http://m.ftchinese.com/eaclient/apijson.php', message, './app/api/ea007.json');
-  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homecontentsource', './app/api/homecontent.html');
+  //getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homecontentsource', './app/api/homecontent.html');
+  getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homecontentsource&date=20160108', './app/api/homecontent.html');
   getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homecontentsource&screentype=wide', './app/api/homecontentwide.html');
   getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?', './app/api/home.tpl');
   getUrltoFile ('http://m.ftchinese.com/index.php/ft/channel/phonetemplate.html?channel=homepagevideo&', './app/api/homepagevideo.tpl');

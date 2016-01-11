@@ -2074,6 +2074,7 @@ function displaystory(theid, language) {
     var storyIndustry = allId.industry || '';
     var storyGenre = allId.genre || '';
     var eauthor = allId.eauthor || 'FTChinese';
+    var insertAd = 3;
     langmode = language;
     //文章的scroller
     addStoryScroller();
@@ -2149,23 +2150,20 @@ function displaystory(theid, language) {
                 ebodyCount += 1;
                 leftc = eText[ebodyCount] || '';
                 leftc = removeTag(leftc);
-            } else {
-                ebodyTotal += 1; 
             }
+            ebodyTotal += 1; 
             ebodyCount += 1;
             rightc = cText[cbodyCount] || '';
-
             rightc = removeTag(rightc);
-            //alert (rightc);
             if (rightc.length <= 2) { //short code means no need to display
                 cbodyCount += 1;
                 rightc = cText[cbodyCount] || '';
                 rightc = removeTag(rightc);
-            } else {
-                cbodyTotal += 1; 
             }
+            cbodyTotal += 1; 
             cbodyCount += 1;
             ct += '<div class=ebodyt title="'+ ebodyTotal +'">'+ leftc + '</div><div class=cbodyt title="'+ cbodyTotal +'">' + rightc + '</div><div class=clearfloat></div>';
+            console.log ("i: " + i + " ebodyTotal: " + ebodyTotal + ' cbodyTotal: ' + cbodyTotal);
         }
         ceDiff = cbodyTotal - ebodyTotal;
         $('#storyview .storybody').html('<div class=ce>' + ct + '</div>');
@@ -2204,7 +2202,10 @@ function displaystory(theid, language) {
         }
         if (allId.ebody && allId.ebody.length > 30) {$('.chbutton').addClass('nowreading');} else {$('.cebutton,.enbutton,.chbutton').addClass('nowreading');}
     }
-    $('<div class="adiframe mpu-phone for-phone" type="250" frame="ad300x250-story"></div>').insertBefore($('#storyview .storybody p').eq(3));
+    if ($('#storyview .storybody p').eq(insertAd - 1).find('b').length > 0) {
+        insertAd = 4;
+    }
+    $('<div class="adiframe mpu-phone for-phone" type="250" frame="ad300x250-story"></div>').insertBefore($('#storyview .storybody p').eq(insertAd));
     if (byline.replace(/ /g,"")==""){byline = "FT中文网";}
     storyTag = ',' + storyTag + ',';
     storyTag = storyTag.replace(/，/g, ',')

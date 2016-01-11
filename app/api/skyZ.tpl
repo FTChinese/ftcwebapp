@@ -67,13 +67,13 @@
 <div url="/index.php/ft/column/007000036?i=2" class="channel oneStory more">市场的边界</div>
 <div url="/index.php/ft/column/007000040?i=2" class="channel oneStory more">CMRC朗润经济评论</div>
 <div url="/index.php/ft/column/007000020?i=2" class="channel oneStory more">剃刀边缘</div>
+<div url="/index.php/ft/column/007000049?i=2" class="channel oneStory more">经济人</div>
 <div url="/index.php/ft/column/007000043?i=2" class="channel oneStory more">中国股事钩沉</div>
 <div url="/index.php/ft/column/007000004?i=2" class="channel oneStory more">远观中国</div>
 <div url="/index.php/ft/column/007000042?i=2" class="channel oneStory more">我是书虫</div>
-<div url="/index.php/ft/column/007000041?i=2" class="channel oneStory more">经济观察者</div>
+<div url="/index.php/ft/column/007000041?i=2" class="channel oneStory more">经济营��察者</div>
 <div url="/index.php/ft/column/007000027?i=2" class="channel oneStory more">智库</div>
 <div url="/index.php/ft/column/007000047?i=2" class="channel oneStory more">沈时度势</div>
-<div url="/index.php/ft/column/007000049?i=2" class="channel oneStory more">经济人</div>
 <div url="/index.php/ft/column/007000038?i=2" class="channel oneStory more">中外对话</div>
 <div url="/index.php/ft/column/007000051?i=2" class="channel oneStory more">简化字不讲理</div>
 <div url="/index.php/ft/column/007000048?i=2" class="channel oneStory more">新百家</div>
@@ -117,7 +117,7 @@
 </div>
 
 <div class=copyright>
-    <b><font face="arial">&copy; </font>英国金融时报</b> 有限公司 <font face="arial">2015</font>&nbsp;&nbsp;
+    <b><font face="arial">&copy; </font>英国金融时报</b> 有限公司 <font face="arial">2016</font>&nbsp;&nbsp;
     <span><acronym title="Financial Times">FT中文网</acronym>为英国金融时报的注册商标</span>
 </div>
 
