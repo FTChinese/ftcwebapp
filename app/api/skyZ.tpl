@@ -71,7 +71,7 @@
 <div url="/index.php/ft/column/007000043?i=2" class="channel oneStory more">中国股事钩沉</div>
 <div url="/index.php/ft/column/007000004?i=2" class="channel oneStory more">远观中国</div>
 <div url="/index.php/ft/column/007000042?i=2" class="channel oneStory more">我是书虫</div>
-<div url="/index.php/ft/column/007000041?i=2" class="channel oneStory more">经济营��察者</div>
+<div url="/index.php/ft/column/007000041?i=2" class="channel oneStory more">经济���察者</div>
 <div url="/index.php/ft/column/007000027?i=2" class="channel oneStory more">智库</div>
 <div url="/index.php/ft/column/007000047?i=2" class="channel oneStory more">沈时度势</div>
 <div url="/index.php/ft/column/007000038?i=2" class="channel oneStory more">中外对话</div>
@@ -85,8 +85,9 @@
 <div url="/index.php/ft/column/007000010?i=2" class="channel oneStory more">中间论坛</div>
 <div url="/index.php/ft/column/007000046?i=2" class="channel oneStory more">杏林守望者</div>
 <div url="/index.php/ft/column/007000055?i=2" class="channel oneStory more">名利场</div>
-<div url="/index.php/ft/column/007000059?i=2" class="channel oneStory more">时代的噪音</div>
+<div url="/index.php/ft/column/007000059?i=2" class="channel oneStory more">时代的噪���</div>
 <div url="/index.php/ft/column/007000060?i=2" class="channel oneStory more">谈艺录</div>
+<div url="/index.php/ft/column/007000061?i=2" class="channel oneStory more">寻食记</div>
 
 </div>
 

@@ -1,5 +1,5 @@
 //申明各种Global变量
-var _currentVersion = 1093; //当前的版本号
+var _currentVersion = 1098; //当前的版本号
 var _localStorage = 0;
 var exp_times = Math.round(new Date().getTime() / 1000) + 86400;
 var username;
@@ -1993,7 +1993,13 @@ function readstory(theid, theHeadline) {
                     sv.find('.storybody').html('wrong scroller');
                 }
             }
-            sv.find('.storybody').html('<div class="loader-container"><div class="loader">正在读取文章数据...</div></div>');
+            var k = '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>';
+            k = k + k + k;
+            k = k + k + k;
+            k = k + k + k;
+            k = k + k + k; 
+            //sv.find('.storybody').html(k);
+            sv.find('.storybody').html('<div class="loader-container" style="height: 1000px;"><div class="loader">正在读取文章数据...</div></div>' + k);
             //return;
             $.ajax({
                 method: 'GET',
@@ -2010,7 +2016,7 @@ function readstory(theid, theHeadline) {
                 }
             }).fail(function(jqXHR){
                 if (gCurrentStoryId === theid) {
-                    sv.find('.storybody').html('<div class="loader-container"><div class="highlight">获取文章失败！</div><div class="standalonebutton"><button class="ui-light-btn" id="reload-story">重试</button></div></div>');
+                    sv.find('.storybody').html('<div class="loader-container"><div class="highlight">获取文章失败！</div><div class="standalonebutton"><button class="ui-light-btn" id="reload-story">重试</button></div></div>' + k);
                     $('#reload-story').unbind().bind('click', function(){
                         sv.find('.storybody').html('<div class="loader-container">重新加载文章...</div>');
                         setTimeout(function(){
@@ -2163,7 +2169,7 @@ function displaystory(theid, language) {
             cbodyTotal += 1; 
             cbodyCount += 1;
             ct += '<div class=ebodyt title="'+ ebodyTotal +'">'+ leftc + '</div><div class=cbodyt title="'+ cbodyTotal +'">' + rightc + '</div><div class=clearfloat></div>';
-            console.log ("i: " + i + " ebodyTotal: " + ebodyTotal + ' cbodyTotal: ' + cbodyTotal);
+            //console.log ("i: " + i + " ebodyTotal: " + ebodyTotal + ' cbodyTotal: ' + cbodyTotal);
         }
         ceDiff = cbodyTotal - ebodyTotal;
         $('#storyview .storybody').html('<div class=ce>' + ct + '</div>');
@@ -2420,6 +2426,7 @@ function updateShare(domainUrl, mobileDomainUrl, contentType, contentId, content
         $("#shareFav").attr("href",k+"&to=fav");
         if (location.href.indexOf("android")>=0) {
             $("#shareFav").parent().remove();
+            $("#shareMoment").parent().addClass('last-child');
         }
         if (gIsInSWIFT === true) {
             k=k.replace(/ftcweixin:/g,'iosaction:');
@@ -3559,7 +3566,9 @@ function updatecalendar(theday) {
         $('.highlight').not($(this)).removeClass('highlight');
         $(this).addClass('highlight');
         $('#datestamp').empty();
-        if (typeof theScroller === "object") {
+        if (nativeVerticalScroll === true) {
+            $('#homeScroller').animate({scrollTop: 0}, '500');
+        } if (typeof theScroller === "object") {
             theScroller.scrollTo(0,0);
         } else {
             window.scrollTo(0, 0);

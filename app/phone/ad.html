@@ -245,8 +245,8 @@ try {
         } else {
             gParentA.onclick=function(){};
             if (adLink.indexOf('http://dolphin.ftimg.net/') === 0) {
-                gReferal = 'http://www3.ftchinese.com/app/adsame/go.php?isad=1&url=';
-                adLink = gReferal + encodeURIComponent(adLink);
+                //gReferal = 'http://www3.ftchinese.com/app/adsame/go.php?isad=1&url=';
+                //adLink = gReferal + encodeURIComponent(adLink);
             }
             gParentA.href=adLink;
         }
@@ -279,12 +279,17 @@ try {
             parent.document.getElementById(adId).className = "adiframe halfpage";
             parent.document.getElementById(adId).style.height = "600px";
         }
-    } else { //if no ad is delivered, hide the ad position altogether
-
+    } else { 
+        //if no ad is delivered, hide the ad position altogether
         //console.log (adId + ' gDivTag: ' + gDivTag);
+
+        /*
 
         gParentHTML = parent.document.getElementsByTagName("html")[0];
         gParentHTMLClass = gParentHTML.className;
+
+        console.log (adType + adId + ': ' + parent.document.getElementById(adId).offsetTop);
+
         if (gDivTag>0 || gImgTag>0 || gATag>0 || gVideoTag>0 || giFrameTag>0) {
             parent.document.getElementById(adId).style.display = "block";
             gParentHTMLClass = gParentHTMLClass.replace(/ no\-banner/g,"");
@@ -293,6 +298,7 @@ try {
             gParentHTMLClass = gParentHTMLClass + ((gParentHTMLClass.indexOf("no-banner")<0) ? " no-banner" : "");
         }
         gParentHTML.className = gParentHTMLClass;
+        */
     }
 } catch (ignore) {
 }

@@ -132,7 +132,7 @@ function commonProblem() {
 <li class="channel markets" url="/index.php/ft/channel/phonetemplate.html?channel=markets">金融市场</li>
 <li class="channel business" url="/index.php/ft/channel/phonetemplate.html?channel=business">商业</li>
 <li class="channel management" url="/index.php/ft/channel/phonetemplate.html?channel=management">管理</li>
-<li class="channel management" url="/index.php/ft/channel/phonetemplate.html?channel=specialreport">特别报道</li>
+<li class="channel management" url="/index.php/ft/channel/phonetemplate.html?channel=datanews">数据新闻</li>
 <li class="channel management" url="/index.php/ft/tag/与FT共进午餐?i=2">与FT共进午餐</li>
 <li class="channel lifestyle" url="/index.php/ft/channel/phonetemplate.html?channel=lifestyle">生活时尚</li>
 <li class="channel photo" url="/index.php/ft/channel/phonetemplate.html?channel=video">视频</li>
@@ -244,112 +244,6 @@ function commonProblem() {
 <div id="channelview" class="fullbodyView"></div>
 <!--channel view end-->
 
-<style>
-#contentRail .nutmeg-content_left{
-width: 100%;
-float: none;
-}
-#contentRail .nutmeg-content_left button{
-width: 20%;
-}
-#contentRail button{
-box-sizing:border-box;
-max-width: 64px;
-height:100%;
-padding:0;
-font-size:15px;
-position: relative;
-line-height: 1;
-font-weight: normal;
-background: transparent;
-border: none;
-box-shadow: none;
--moz-box-shadow: none;
--webkit-box-shadow: none;
-margin-right: 0px;
-border-radius: 0px;
-overflow: hidden;
-float: left;
-}
-#contentRail button.floatright{
-float: right;
-}
-#contentRail .nutmeg-content_left{
-font-size: 0;
--webkit-text-size-adjust:none;
-}
-
-#contentRail div {height:100%;}
-#contentRail .nutmeg-content{
-padding: 0;
-}
-#contentRail button>i,#contentRail button>i:after{
-display: block;
-font-weight: normal;
-font-size:15px;    
-line-height: 1;
-}
-#contentRail button>i{
-position: absolute;
-top:5px;
-left: 0px;
-display: block;
-width:100%;
-}
-#contentRail button>span{
-font-size: 12px;
-margin-left: 0;
-display: block;
-width:100%;
-vertical-align: baseline;
-position: absolute;
-bottom: 5px;
-left: 0px;
-}
-#contentRail i.ft-icon-logout:after{
-content: "\f131";
-}
-#contentRail i.ft-icon-login:after{
-content: "\f130";
-font-size:17px;
-}
-#contentRail i.ft-icon-setting:after{
-content: "\f12e";
-}
-#contentRail i.ft-icon-ch:after{
-content:"\f12b";
-}
-#contentRail i.ft-icon-en:after{
-content:"\f12d";
-}
-#contentRail i.ft-icon-ce:after{
-	content: " "; 
-	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+ICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRoLTI0eiIgZmlsbD0ibm9uZSIvPiAgICA8cGF0aCBkPSJNMTIuODcgMTUuMDdsLTIuNTQtMi41MS4wMy0uMDNjMS43NC0xLjk0IDIuOTgtNC4xNyAzLjcxLTYuNTNoMi45M3YtMmgtN3YtMmgtMnYyaC03djEuOTloMTEuMTdjLS42NyAxLjkzLTEuNzMgMy43Ni0zLjE3IDUuMzYtLjkzLTEuMDMtMS43LTIuMTYtMi4zMS0zLjM1aC0yYy43MyAxLjYzIDEuNzMgMy4xNyAyLjk4IDQuNTZsLTUuMDkgNS4wMiAxLjQyIDEuNDIgNS01IDMuMTEgMy4xMS43Ni0yLjA0em01LjYzLTUuMDdoLTJsLTQuNSAxMmgybDEuMTItM2g0Ljc1bDEuMTMgM2gybC00LjUtMTJ6bS0yLjYyIDdsMS42Mi00LjMzIDEuNjIgNC4zM2gtMy4yNHoiLz48L3N2Zz4=);
-	
-	width: 18px;
-	height: 18px;
-	background-size: 18px 18px;
-	background-repeat: no-repeat;
-	background-position: center center;
-	margin: auto;
-}
-.no-svg #contentRail i.ft-icon-ce:after{
-	background-image: url(images/png/translate.png);
-}
-#contentRail button.open,#contentRail button.open>i:after{
-color: #fff;
-}
-#contentRail button>i:after{
-font-size: 17px;
-}
-#contentRail .chbutton, #contentRail .enbutton, #contentRail .cebutton{
-/*line-height: 45px;*/
-}
-
-#contentRail button:active, #contentRail button.open {
-background-color: rgba(0,0,0,0.14) !important;
-}
-</style>
 
 
 
@@ -363,7 +257,7 @@ background-color: rgba(0,0,0,0.14) !important;
 <button class="storyOnly enbutton" onclick="displaystory(readingid,'en')"><i class="ft-icon-en"></i><span>英文</span></button>
 <button class="storyOnly cebutton" onclick="displaystory(readingid,'ce')"><i class="ft-icon-ce"></i><span>中英</span></button>
 <button class="homeOnly channelOnly channelNavButton" onclick="switchNavOverlay()"><i class="ft-icon-sections"></i><span>频道</span></button>
-<button class="homeOnly" onclick="myFT()"><i class="ft-icon ft-icon-profile"></i><span>我的<font class=english>FT</font></span></button>
+<button class="homeOnly" onclick="myFT()"><i class="ft-icon ft-icon-profile"></i><span>我的FT</span></button>
 <button class="homeOnly channelOnly" onclick="openSearch()"><i class="ft-icon-search"></i><span>搜索</span></button>
 <button class="homeOnly channelOnly nutmeg_settings-btnn floatright" onclick="turnonOverlay('setting')" aria-label="Settings"><i class="ft-icon-setting"></i><span>设置</span></button>
 <button id="refreshButton" class="homeOnly channelOnly floatright" onclick="refresh()"><i class="ft-icon-refresh"></i><span>刷新</span></button>
@@ -723,15 +617,15 @@ background-color: rgba(0,0,0,0.14) !important;
 <li class="channel markets" url="/index.php/ft/channel/phonetemplate.html?channel=markets">金融市场</li>
 <li class="channel business" url="/index.php/ft/channel/phonetemplate.html?channel=business">商业</li>
 <li class="channel management" url="/index.php/ft/channel/phonetemplate.html?channel=management">管理</li>
-<li class="channel specialreport" url="/index.php/ft/channel/phonetemplate.html?channel=specialreport">特别报道</li>
-<li class="channel management" url="/index.php/ft/tag/与FT共进午餐?i=2">与FT共进午餐</li>
+<li class="channel specialreport" url="/index.php/ft/channel/phonetemplate.html?channel=datanews">数据新闻</li>
+<li class="channel lunch" url="/index.php/ft/tag/与FT共进午餐?i=2">与FT共进午餐</li>
 <li class="channel lifestyle" url="/index.php/ft/channel/phonetemplate.html?channel=lifestyle">生活时尚</li>
 <li class="channel vd" url="/index.php/ft/channel/phonetemplate.html?channel=video">视频</li>
 <li class="channel photo" url="/index.php/ft/channel/phonetemplate.html?channel=photo">图辑</li>
 <li class="channel quiz" url="/index.php/ft/channel/phonetemplate.html?channel=newsquiz">互动小测</li>
 <li class="channel speedread" url="/index.php/ft/channel/phonetemplate.html?channel=speedread">金融英语速读</li>
 <li class="channel radio" url="/index.php/ft/channel/phonetemplate.html?channel=audio&navFolder=academy&navName=navhorizontal">FT商学院电台</li>
-<li class="channel hotstory" url="/index.php/ft/channel/phonetemplate.html?channel=speedread">热门文章</li>
+<li class="channel hotstory" url="/index.php/ft/channel/phonetemplate.html?channel=month">热门文章</li>
 <li class="channel clip require-log-in" url="/index.php/users/favstorylist?i=2">我的收藏</li>
 </ul>
 </div>
