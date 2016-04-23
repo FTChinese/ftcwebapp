@@ -1130,7 +1130,7 @@ html.noScroller,.noScroller body,.noScroller .fullbody,.noScroller #storyScrolle
 /*--Transition Effects End--*/
 
 /*Media Queries*/
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 490px) {
     #allcomments dt span,#commoncomments dt span{float:none;}
     #clipArticle, #changeFont {display:none;}
     .rightPic,.leftPic{margin:10px auto;text-align:center;font-size:0.9em;color:#d66d06;float:none;width:100%;}
