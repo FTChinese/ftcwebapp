@@ -1,2 +1,1 @@
-# ftcwebapp
-FTC Web App Source Code Management
+# This project is deprecated. Please use the repository webapp instead. 
